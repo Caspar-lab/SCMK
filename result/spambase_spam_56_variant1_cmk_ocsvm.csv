@@ -1,0 +1,6 @@
+dataset,N,anomaly_rate,n_train,latent_dim,auc_ocsvm,best_nu,train_time_s
+spambase_spam_56_variant1,2844,0.0197,2788,16,0.449586,0.2,172.48
+spambase_spam_56_variant1,2844,0.0197,2788,32,0.533908,0.2,178.19
+spambase_spam_56_variant1,2844,0.0197,2788,64,0.534043,0.2,196.44
+spambase_spam_56_variant1,2844,0.0197,2788,128,0.560002,0.2,246.25
+spambase_spam_56_variant1,2844,0.0197,2788,256,0.573453,0.1,319.52

@@ -1,0 +1,6 @@
+dataset,latent_dim,lambda_scatter,auc_scatter,best_nu,elapsed_s
+cardiotocography_2and3_33_variant1,16,1000.0,0.68071,0.1,90.52
+cardiotocography_2and3_33_variant1,32,1000.0,0.676664,0.01,136.98
+cardiotocography_2and3_33_variant1,64,1000.0,0.682322,0.01,145.09
+cardiotocography_2and3_33_variant1,128,1000.0,0.648192,0.01,129.62
+cardiotocography_2and3_33_variant1,256,1000.0,0.650096,0.2,149.27

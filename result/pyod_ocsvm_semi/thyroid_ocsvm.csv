@@ -1,0 +1,7 @@
+dataset,nu,auc,n_support,fit_time_s
+thyroid,0.01,0.932164,38,0.05
+thyroid,0.05,0.906213,185,0.22
+thyroid,0.1,0.892198,371,0.5
+thyroid,0.2,0.876723,737,0.85
+thyroid,0.3,0.868396,1105,1.26
+thyroid,0.5,0.857903,1840,2.09

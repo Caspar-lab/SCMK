@@ -1,0 +1,4 @@
+dataset,latent_dim,lambda_scatter,auc_scatter,best_nu,elapsed_s
+iris_Irisvirginica_11_variant1,4,1000,0.684545,0.01,17.04
+iris_Irisvirginica_11_variant1,6,1000,0.676364,0.01,15.3
+iris_Irisvirginica_11_variant1,8,1000,0.685455,0.01,16.04

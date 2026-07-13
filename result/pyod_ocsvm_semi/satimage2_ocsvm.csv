@@ -1,0 +1,7 @@
+dataset,nu,auc,n_support,fit_time_s
+satimage2,0.01,0.977944,59,0.14
+satimage2,0.05,0.975477,288,0.66
+satimage2,0.1,0.975229,575,1.29
+satimage2,0.2,0.975738,1148,2.51
+satimage2,0.3,0.975868,1720,3.79
+satimage2,0.5,0.976165,2866,6.1

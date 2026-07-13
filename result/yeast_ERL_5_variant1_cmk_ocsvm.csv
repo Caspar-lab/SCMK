@@ -1,0 +1,6 @@
+dataset,N,anomaly_rate,n_train,latent_dim,auc_ocsvm,best_nu,train_time_s
+yeast_ERL_5_variant1,1141,0.0044,1136,16,0.995246,0.1,64.14
+yeast_ERL_5_variant1,1141,0.0044,1136,32,0.981514,0.01,64.79
+yeast_ERL_5_variant1,1141,0.0044,1136,64,0.992077,0.2,73.13
+yeast_ERL_5_variant1,1141,0.0044,1136,128,0.984155,0.01,87.39
+yeast_ERL_5_variant1,1141,0.0044,1136,256,0.977993,0.05,123.52

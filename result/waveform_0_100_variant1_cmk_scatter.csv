@@ -1,0 +1,6 @@
+dataset,latent_dim,lambda_scatter,auc_scatter,best_nu,elapsed_s
+waveform_0_100_variant1,16,1000.0,0.51939,0.2,198.69
+waveform_0_100_variant1,32,1000.0,0.523503,0.2,204.57
+waveform_0_100_variant1,64,1000.0,0.500844,0.2,223.44
+waveform_0_100_variant1,128,1000.0,0.501277,0.2,265.35
+waveform_0_100_variant1,256,1000.0,0.497801,0.2,311.65

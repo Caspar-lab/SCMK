@@ -1,0 +1,47 @@
+统计检验（半监督 seed=2）：SCMK vs 9 个对比算法，N=20 数据集，k=10 方法
+输入: selection_scatter_semi_seed2.csv  (scatter 列=scatter_semi_seed2)
+==================================================================
+Friedman 检验:  chi^2=58.811,  p=2.271e-09
+Iman-Davenport: F=9.220  (df1=9, df2=171)
+结论: p<0.05 → 存在显著差异 (拒绝 H0)
+
+Nemenyi 临界差:  CD(0.05)=3.029   CD(0.10)=2.796
+
+平均秩 (越小越好):
+  SCMK       1.575
+  DFNO       3.850
+  DisentAD   5.200
+  ECOD       5.450
+  WFRDA      5.475
+  KFGOD      5.950
+  DIF        6.050
+  GBRAD      7.000
+  MFIOD      7.150
+  ILGNI      7.300
+
+SCMK 平均秩 = 1.575（SCMK 为最优秩）
+与 SCMK 平均秩之差 > CD(0.05) 即显著劣于 SCMK:
+  KFGOD      Δrank=4.375  [significant] 显著劣于 SCMK
+  GBRAD      Δrank=5.425  [significant] 显著劣于 SCMK
+  DisentAD   Δrank=3.625  [significant] 显著劣于 SCMK
+  MFIOD      Δrank=5.575  [significant] 显著劣于 SCMK
+  ILGNI      Δrank=5.725  [significant] 显著劣于 SCMK
+  WFRDA      Δrank=3.900  [significant] 显著劣于 SCMK
+  DFNO       Δrank=2.275    未达显著
+  DIF        Δrank=4.475  [significant] 显著劣于 SCMK
+  ECOD       Δrank=3.875  [significant] 显著劣于 SCMK
+
+成对 Wilcoxon signed-rank (SCMK > 算法, 单侧) + Holm 校正:
+  算法            AUC均值  avg_rank   SCMK胜           p      p_holm    
+  KFGOD         0.797     5.950    19/20    6.68e-06    2.67e-05  ***
+  GBRAD         0.759     7.000    18/20    4.77e-06    2.38e-05  ***
+  DisentAD      0.821     5.200    19/20    2.86e-06    1.72e-05  ***
+  MFIOD         0.760     7.150    19/20    2.86e-06    2.29e-05  ***
+  ILGNI         0.735     7.300    19/20    2.86e-06    2.00e-05  ***
+  WFRDA         0.804     5.475    19/20    6.68e-06    2.00e-05  ***
+  DFNO          0.853     3.850    17/20    1.99e-04    1.99e-04  ***
+  DIF           0.781     6.050    19/20    1.91e-06    1.72e-05  ***
+  ECOD          0.799     5.450    19/20    9.54e-06    1.91e-05  ***
+
+SCMK: AUC均值=0.932  avg_rank=1.575
+显著性标记: *** p<0.001, ** p<0.01, * p<0.05, ns 不显著（Holm 校正后）

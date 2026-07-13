@@ -1,0 +1,6 @@
+dataset,N,anomaly_rate,n_train,latent_dim,auc_ocsvm,best_nu,train_time_s
+waveform_0_100_variant1,3443,0.029,3343,16,0.564334,0.01,199.69
+waveform_0_100_variant1,3443,0.029,3343,32,0.563276,0.01,221.64
+waveform_0_100_variant1,3443,0.029,3343,64,0.558896,0.01,228.25
+waveform_0_100_variant1,3443,0.029,3343,128,0.544726,0.01,291.38
+waveform_0_100_variant1,3443,0.029,3343,256,0.552276,0.01,404.33

@@ -1,0 +1,35 @@
+{
+    "python.defaultInterpreterPath": "D:\\Anaconda3\\python.exe",
+    "python.terminal.activateEnvironment": true,
+    "python.terminal.activateEnvInCurrentTerminal": true,
+    "debugpy.debugJustMyCode": false,
+
+    "latex-workshop.view.pdf.viewer": "browser",
+    "latex-workshop.latex.outDir": "%DIR%",
+    "latex-workshop.latex.recipe.default": "pdflatex x2",
+    "latex-workshop.latex.recipes": [
+        {
+            "name": "pdflatex x2",
+            "tools": ["pdflatex", "pdflatex"]
+        },
+        {
+            "name": "pdflatex x1",
+            "tools": ["pdflatex"]
+        }
+    ],
+    "latex-workshop.latex.tools": [
+        {
+            "name": "pdflatex",
+            "command": "pdflatex",
+            "args": [
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "%DOC%"
+            ],
+            "env": {}
+        }
+    ],
+    "python-envs.defaultEnvManager": "ms-python.python:conda",
+    "python-envs.defaultPackageManager": "ms-python.python:conda"
+}

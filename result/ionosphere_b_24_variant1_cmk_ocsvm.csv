@@ -1,0 +1,6 @@
+dataset,N,anomaly_rate,n_train,latent_dim,auc_ocsvm,best_nu,train_time_s
+ionosphere_b_24_variant1,249,0.0964,225,16,0.742222,0.01,5.23
+ionosphere_b_24_variant1,249,0.0964,225,32,0.697037,0.01,7.64
+ionosphere_b_24_variant1,249,0.0964,225,64,0.660556,0.01,8.29
+ionosphere_b_24_variant1,249,0.0964,225,128,0.600926,0.01,13.77
+ionosphere_b_24_variant1,249,0.0964,225,256,0.650556,0.01,18.62

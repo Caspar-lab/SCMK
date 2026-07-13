@@ -1,0 +1,7 @@
+dataset,nu,auc,n_support,fit_time_s
+horse_1_12_variant1,0.01,0.926913,24,0.01
+horse_1_12_variant1,0.05,0.913251,24,0.0
+horse_1_12_variant1,0.1,0.910178,34,0.01
+horse_1_12_variant1,0.2,0.930328,57,0.01
+horse_1_12_variant1,0.3,0.947746,82,0.01
+horse_1_12_variant1,0.5,0.951503,129,0.02

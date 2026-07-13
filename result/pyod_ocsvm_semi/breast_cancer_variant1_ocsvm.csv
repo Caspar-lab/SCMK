@@ -1,0 +1,7 @@
+dataset,nu,auc,n_support,fit_time_s
+breast_cancer_variant1,0.01,0.641645,29,0.01
+breast_cancer_variant1,0.05,0.642054,30,0.0
+breast_cancer_variant1,0.1,0.641996,33,0.01
+breast_cancer_variant1,0.2,0.65417,50,0.01
+breast_cancer_variant1,0.3,0.665701,66,0.01
+breast_cancer_variant1,0.5,0.689582,105,0.01

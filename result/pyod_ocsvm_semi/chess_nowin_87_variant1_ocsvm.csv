@@ -1,0 +1,7 @@
+dataset,nu,auc,n_support,fit_time_s
+chess_nowin_87_variant1,0.01,0.941689,28,0.03
+chess_nowin_87_variant1,0.05,0.960001,93,0.08
+chess_nowin_87_variant1,0.1,0.965111,174,0.14
+chess_nowin_87_variant1,0.2,0.963231,336,0.27
+chess_nowin_87_variant1,0.3,0.960869,505,0.43
+chess_nowin_87_variant1,0.5,0.957756,838,0.67

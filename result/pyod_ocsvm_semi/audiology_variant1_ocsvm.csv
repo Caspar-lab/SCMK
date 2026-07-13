@@ -1,0 +1,7 @@
+dataset,nu,auc,n_support,fit_time_s
+audiology_variant1,0.01,0.951313,15,0.0
+audiology_variant1,0.05,0.951313,17,0.0
+audiology_variant1,0.1,0.950794,25,0.01
+audiology_variant1,0.2,0.953805,38,0.01
+audiology_variant1,0.3,0.952559,54,0.01
+audiology_variant1,0.5,0.950171,89,0.01

@@ -1,0 +1,6 @@
+dataset,N,anomaly_rate,n_train,latent_dim,auc_ocsvm,best_nu,train_time_s
+pima_TRUE_55_variant1,555,0.0991,500,16,0.621491,0.1,31.15
+pima_TRUE_55_variant1,555,0.0991,500,32,0.626873,0.01,37.27
+pima_TRUE_55_variant1,555,0.0991,500,64,0.640545,0.01,36.3
+pima_TRUE_55_variant1,555,0.0991,500,128,0.669127,0.01,42.67
+pima_TRUE_55_variant1,555,0.0991,500,256,0.655527,0.01,57.72

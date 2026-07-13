@@ -1,0 +1,6 @@
+dataset,latent_dim,lambda_scatter,auc_scatter,best_nu,elapsed_s
+diabetes_tested_positive_26_variant1,16,1000.0,0.603846,0.2,29.75
+diabetes_tested_positive_26_variant1,32,1000.0,0.615,0.2,31.34
+diabetes_tested_positive_26_variant1,64,1000.0,0.602077,0.2,32.55
+diabetes_tested_positive_26_variant1,128,1000.0,0.605769,0.2,46.48
+diabetes_tested_positive_26_variant1,256,1000.0,0.611538,0.2,47.29

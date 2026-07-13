@@ -1,0 +1,7 @@
+dataset,nu,auc,n_support,fit_time_s
+wdbc_M_39_variant1,0.01,0.998994,5,0.0
+wdbc_M_39_variant1,0.05,0.997486,19,0.01
+wdbc_M_39_variant1,0.1,0.997414,38,0.01
+wdbc_M_39_variant1,0.2,0.99684,73,0.01
+wdbc_M_39_variant1,0.3,0.996696,108,0.02
+wdbc_M_39_variant1,0.5,0.99605,181,0.03

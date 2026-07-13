@@ -1,0 +1,7 @@
+dataset,nu,auc,n_support,fit_time_s
+annealing_variant1,0.01,0.770282,12,0.01
+annealing_variant1,0.05,0.78962,40,0.02
+annealing_variant1,0.1,0.773841,79,0.03
+annealing_variant1,0.2,0.753149,156,0.06
+annealing_variant1,0.3,0.757496,230,0.08
+annealing_variant1,0.5,0.77044,381,0.13

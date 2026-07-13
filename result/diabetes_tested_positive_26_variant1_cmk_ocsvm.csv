@@ -1,0 +1,6 @@
+dataset,N,anomaly_rate,n_train,latent_dim,auc_ocsvm,best_nu,train_time_s
+diabetes_tested_positive_26_variant1,526,0.0494,500,16,0.590385,0.01,28.37
+diabetes_tested_positive_26_variant1,526,0.0494,500,32,0.556462,0.01,31.35
+diabetes_tested_positive_26_variant1,526,0.0494,500,64,0.576538,0.01,34.33
+diabetes_tested_positive_26_variant1,526,0.0494,500,128,0.581846,0.01,46.06
+diabetes_tested_positive_26_variant1,526,0.0494,500,256,0.595308,0.01,59.4

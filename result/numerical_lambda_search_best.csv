@@ -1,0 +1,15 @@
+dataset,best_lambda,best_auc,best_nu,baseline_auc,gain_vs_baseline
+cardio,10.0,0.978776,0.01,0.89382,0.084956
+cardiotocography_2and3_33_variant1,10.0,0.903287,0.01,0.851781,0.051506
+diabetes_tested_positive_26_variant1,10.0,0.746769,0.01,0.556462,0.190307
+ionosphere_b_24_variant1,10.0,1.0,0.01,0.697037,0.302963
+pageblocks_1_258_variant1,1000.0,0.983511,0.2,0.815776,0.167735
+pima_TRUE_55_variant1,10.0,0.726873,0.01,0.626873,0.1
+sonar_M_10_variant1,10.0,1.0,0.01,0.690722,0.309278
+spambase_spam_56_variant1,1000.0,0.671853,0.01,0.533908,0.137945
+thyroid_disease_variant1,0.1,0.665823,0.01,0.640484,0.025339
+waveform_0_100_variant1,1.0,0.741576,0.01,0.563276,0.1783
+wbc_malignant_39_variant1,1000.0,0.568723,0.2,0.495611,0.073112
+wdbc_M_39_variant1,1000.0,0.924729,0.2,0.787115,0.137614
+wpbc_variant1,100.0,0.584613,0.01,0.537128,0.047485
+yeast_ERL_5_variant1,0.1,0.996127,0.1,0.981514,0.014613

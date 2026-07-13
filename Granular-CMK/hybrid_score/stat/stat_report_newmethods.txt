@@ -1,0 +1,36 @@
+统计检验（新方法集, 3-seed 均值）：SCMK vs 7 个对比算法，N=20, k=8
+==================================================================
+Friedman: chi^2=34.975, p=1.131e-05 | Iman-Davenport F=6.327 (df1=7, df2=133)
+Nemenyi CD(0.05)=2.348  CD(0.10)=2.153
+
+平均秩 (越小越好):
+  SCMK       2.225
+  LMKAD      3.775
+  DFNO       3.825
+  NeuTraLAD  4.225
+  DeepSVDD   5.250
+  KFGOD      5.350
+  DisentAD   5.400
+  ICL        5.950
+
+SCMK 平均秩 = 2.225（SCMK 为最优秩）
+与 SCMK 秩差 > CD(0.05) 即显著劣于 SCMK:
+  KFGOD      Δrank=3.125  [显著]
+  DisentAD   Δrank=3.175  [显著]
+  DeepSVDD   Δrank=3.025  [显著]
+  DFNO       Δrank=1.600  未达显著
+  LMKAD      Δrank=1.550  未达显著
+  ICL        Δrank=3.725  [显著]
+  NeuTraLAD  Δrank=2.000  未达显著
+
+成对 Wilcoxon (SCMK>算法,单侧)+Holm:
+  算法            AUC均值  avg_rank   SCMK胜           p      p_holm
+  KFGOD         0.797     5.350    19/20    2.86e-06    2.00e-05  ***
+  DisentAD      0.812     5.400    17/20    1.61e-04    6.45e-04  ***
+  DeepSVDD      0.827     5.250    17/20    6.68e-05    3.34e-04  ***
+  DFNO          0.863     3.825    13/20    1.65e-02    1.65e-02  *
+  LMKAD         0.850     3.775    14/20    4.45e-03    8.90e-03  **
+  ICL           0.787     5.950    18/20    1.34e-05    8.01e-05  ***
+  NeuTraLAD     0.835     4.225    16/20    1.27e-03    3.81e-03  **
+
+SCMK: AUC均值=0.914  avg_rank=2.225

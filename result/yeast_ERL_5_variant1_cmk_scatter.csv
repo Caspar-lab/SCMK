@@ -1,0 +1,6 @@
+dataset,latent_dim,lambda_scatter,auc_scatter,best_nu,elapsed_s
+yeast_ERL_5_variant1,16,1000.0,0.867606,0.05,66.08
+yeast_ERL_5_variant1,32,1000.0,0.713556,0.1,67.3
+yeast_ERL_5_variant1,64,1000.0,0.783803,0.05,72.67
+yeast_ERL_5_variant1,128,1000.0,0.789437,0.1,85.91
+yeast_ERL_5_variant1,256,1000.0,0.803521,0.2,99.19

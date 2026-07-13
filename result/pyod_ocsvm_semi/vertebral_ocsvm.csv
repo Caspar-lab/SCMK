@@ -1,0 +1,7 @@
+dataset,nu,auc,n_support,fit_time_s
+vertebral,0.01,0.579206,3,0.0
+vertebral,0.05,0.451587,12,0.0
+vertebral,0.1,0.429524,22,0.0
+vertebral,0.2,0.420794,44,0.01
+vertebral,0.3,0.433651,65,0.01
+vertebral,0.5,0.411111,106,0.01

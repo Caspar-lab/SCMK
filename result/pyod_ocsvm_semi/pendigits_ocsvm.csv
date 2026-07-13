@@ -1,0 +1,7 @@
+dataset,nu,auc,n_support,fit_time_s
+pendigits,0.01,0.914573,75,0.18
+pendigits,0.05,0.921965,341,0.88
+pendigits,0.1,0.929759,676,1.62
+pendigits,0.2,0.936036,1349,3.38
+pendigits,0.3,0.942026,2017,4.73
+pendigits,0.5,0.946934,3358,7.62

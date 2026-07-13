@@ -1,0 +1,6 @@
+dataset,latent_dim,auc_rw,elapsed_s
+cardio,16,0.454128,133.36
+cardio,32,0.453568,117.67
+cardio,64,0.470814,141.74
+cardio,128,0.473231,161.03
+cardio,256,0.457592,221.86

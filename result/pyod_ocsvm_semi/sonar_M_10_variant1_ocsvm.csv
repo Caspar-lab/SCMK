@@ -1,0 +1,7 @@
+dataset,nu,auc,n_support,fit_time_s
+sonar_M_10_variant1,0.01,0.970103,6,0.0
+sonar_M_10_variant1,0.05,0.993814,9,0.0
+sonar_M_10_variant1,0.1,0.990722,12,0.0
+sonar_M_10_variant1,0.2,0.987629,22,0.0
+sonar_M_10_variant1,0.3,0.986598,31,0.0
+sonar_M_10_variant1,0.5,0.984536,51,0.0

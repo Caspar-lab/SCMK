@@ -1,0 +1,15 @@
+dataset,N,anomaly_rate,n_train,latent_dim,auc_ocsvm,best_nu,train_time_s
+cardio,1831,0.0961,1655,16,0.921148,0.1,117.62
+cardiotocography_2and3_33_variant1,1688,0.0195,1655,256,0.913082,0.01,238.94
+diabetes_tested_positive_26_variant1,526,0.0494,500,256,0.595308,0.01,59.4
+ionosphere_b_24_variant1,249,0.0964,225,16,0.742222,0.01,5.23
+iris_Irisvirginica_11_variant1,111,0.0991,100,256,0.602727,0.05,4.03
+pageblocks_1_258_variant1,5171,0.0499,4913,16,0.842381,0.01,317.43
+pima_TRUE_55_variant1,555,0.0991,500,128,0.669127,0.01,42.67
+sonar_M_10_variant1,107,0.0935,97,16,0.778351,0.05,2.75
+spambase_spam_56_variant1,2844,0.0197,2788,256,0.573453,0.1,319.52
+waveform_0_100_variant1,3443,0.029,3343,16,0.564334,0.01,199.69
+wbc_malignant_39_variant1,483,0.0807,444,128,0.525295,0.2,29.1
+wdbc_M_39_variant1,396,0.0985,357,32,0.787115,0.2,15.11
+wpbc_variant1,198,0.2374,151,16,0.577568,0.2,3.97
+yeast_ERL_5_variant1,1141,0.0044,1136,16,0.995246,0.1,64.14

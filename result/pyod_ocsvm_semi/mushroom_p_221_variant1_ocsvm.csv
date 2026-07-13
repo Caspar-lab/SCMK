@@ -1,0 +1,7 @@
+dataset,nu,auc,n_support,fit_time_s
+mushroom_p_221_variant1,0.01,0.916263,159,0.41
+mushroom_p_221_variant1,0.05,0.920934,259,0.67
+mushroom_p_221_variant1,0.1,0.927399,461,1.18
+mushroom_p_221_variant1,0.2,0.932956,864,2.16
+mushroom_p_221_variant1,0.3,0.943091,1277,3.15
+mushroom_p_221_variant1,0.5,0.968372,2116,5.09

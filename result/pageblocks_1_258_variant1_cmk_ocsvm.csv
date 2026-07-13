@@ -1,0 +1,6 @@
+dataset,N,anomaly_rate,n_train,latent_dim,auc_ocsvm,best_nu,train_time_s
+pageblocks_1_258_variant1,5171,0.0499,4913,16,0.842381,0.01,317.43
+pageblocks_1_258_variant1,5171,0.0499,4913,32,0.815776,0.01,378.38
+pageblocks_1_258_variant1,5171,0.0499,4913,64,0.808676,0.01,455.88
+pageblocks_1_258_variant1,5171,0.0499,4913,128,0.792903,0.01,633.7
+pageblocks_1_258_variant1,5171,0.0499,4913,256,0.802085,0.01,1019.62

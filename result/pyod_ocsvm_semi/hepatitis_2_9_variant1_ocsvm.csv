@@ -1,0 +1,7 @@
+dataset,nu,auc,n_support,fit_time_s
+hepatitis_2_9_variant1,0.01,1.0,14,0.0
+hepatitis_2_9_variant1,0.05,1.0,13,0.0
+hepatitis_2_9_variant1,0.1,0.998693,16,0.0
+hepatitis_2_9_variant1,0.2,0.997386,24,0.0
+hepatitis_2_9_variant1,0.3,0.993464,29,0.0
+hepatitis_2_9_variant1,0.5,0.992157,44,0.0

@@ -1,0 +1,6 @@
+dataset,latent_dim,lambda_scatter,auc_scatter,best_nu,elapsed_s
+sonar_M_10_variant1,16,1000.0,1.0,0.01,2.92
+sonar_M_10_variant1,32,1000.0,1.0,0.01,2.73
+sonar_M_10_variant1,64,1000.0,1.0,0.05,2.88
+sonar_M_10_variant1,128,1000.0,1.0,0.05,3.21
+sonar_M_10_variant1,256,1000.0,1.0,0.01,3.84

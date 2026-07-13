@@ -1,0 +1,7 @@
+dataset,nu,auc,n_support,fit_time_s
+mushroom_p_85_variant1,0.01,0.938657,168,0.36
+mushroom_p_85_variant1,0.05,0.934838,273,0.64
+mushroom_p_85_variant1,0.1,0.928028,457,1.04
+mushroom_p_85_variant1,0.2,0.921547,860,1.91
+mushroom_p_85_variant1,0.3,0.928235,1280,2.78
+mushroom_p_85_variant1,0.5,0.940092,2119,4.55
