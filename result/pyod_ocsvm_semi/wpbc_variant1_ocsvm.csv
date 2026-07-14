@@ -1,0 +1,7 @@
+dataset,nu,auc,n_support,fit_time_s
+wpbc_variant1,0.01,0.447372,6,0.0
+wpbc_variant1,0.05,0.447654,11,0.0
+wpbc_variant1,0.1,0.438495,17,0.0
+wpbc_variant1,0.2,0.460054,32,0.0
+wpbc_variant1,0.3,0.48288,47,0.01
+wpbc_variant1,0.5,0.503452,76,0.01

@@ -1,0 +1,7 @@
+dataset,nu,auc,n_support,fit_time_s
+optdigits,0.01,0.40028,62,0.14
+optdigits,0.05,0.539913,261,0.68
+optdigits,0.1,0.567648,512,1.13
+optdigits,0.2,0.589276,1019,2.24
+optdigits,0.3,0.594993,1525,3.32
+optdigits,0.5,0.601357,2536,5.42

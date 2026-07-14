@@ -1,0 +1,6 @@
+dataset,latent_dim,lambda_scatter,auc_scatter,best_nu,elapsed_s
+thyroid_disease_variant1,16,1000.0,0.591974,0.01,454.3
+thyroid_disease_variant1,32,1000.0,0.563251,0.01,484.31
+thyroid_disease_variant1,64,1000.0,0.494134,0.01,517.7
+thyroid_disease_variant1,128,1000.0,0.521311,0.01,652.45
+thyroid_disease_variant1,256,1000.0,0.576815,0.01,791.32

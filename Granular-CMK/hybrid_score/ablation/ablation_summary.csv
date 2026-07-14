@@ -1,0 +1,7 @@
+variant,mean_auc,delta_vs_full,component_removed
+Full,0.9770,0.0000,none (complete method)
+w/o_scatter,0.8032,-0.1738,scatter loss (lambda=0)
+w/o_cross,0.9685,-0.0085,cross-kernel contrastive loss
+single_kernel,0.9407,-0.0363,multi-kernel (K=5 -> K=1)
+normalized_only,0.9111,-0.0659,ensemble (direction signal only)
+normrbf_only,0.9192,-0.0578,ensemble (magnitude signal only)

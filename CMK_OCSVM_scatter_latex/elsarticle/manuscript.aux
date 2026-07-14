@@ -1,0 +1,190 @@
+\relax 
+\citation{pang2021review,ruff2021unifying}
+\citation{scholkopf2001ocsvm,tax2004svdd}
+\citation{scholkopf2001ocsvm}
+\citation{tax2004svdd}
+\citation{breunig2000lof}
+\citation{liu2008iforest}
+\citation{zhou2017rda}
+\citation{ruff2018svdd}
+\citation{gonen2011mkl,lanckriet2004sdp}
+\citation{liu2016mkkm,huang2012mkkm}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{2}{}\protected@file@percent }
+\newlabel{sec:intro}{{1}{2}{}{section.1}{}}
+\citation{oord2018infonce}
+\citation{chen2020simclr}
+\citation{tack2020csi,qiu2021neutral}
+\citation{chandola2009survey}
+\citation{knorr2000distance}
+\citation{breunig2000lof}
+\citation{liu2008iforest}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Related work}{4}{}\protected@file@percent }
+\newlabel{sec:related}{{2}{4}{}{section.2}{}}
+\citation{scholkopf2001ocsvm}
+\citation{tax2004svdd}
+\citation{zhou2017rda}
+\citation{ruff2018svdd}
+\citation{golan2018geo}
+\citation{bergman2020goad}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}One-class and deep anomaly detection}{5}{}\protected@file@percent }
+\newlabel{subsec:rel-ad}{{2.1}{5}{}{subsection.2.1}{}}
+\citation{lanckriet2004sdp,rakotomamonjy2008simplemkl}
+\citation{gonen2008localized}
+\citation{gonen2011mkl}
+\citation{liu2016mkkm,huang2012mkkm}
+\citation{oord2018infonce}
+\citation{chen2020simclr}
+\citation{he2020moco}
+\citation{grill2020byol}
+\citation{chen2021simsiam}
+\citation{wang2020uniformity}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Multiple kernel learning}{6}{}\protected@file@percent }
+\newlabel{subsec:rel-mkl}{{2.2}{6}{}{subsection.2.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Contrastive representation learning}{6}{}\protected@file@percent }
+\newlabel{subsec:rel-cl}{{2.3}{6}{}{subsection.2.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Positioning of this work}{7}{}\protected@file@percent }
+\newlabel{subsec:rel-pos}{{2.4}{7}{}{subsection.2.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}The proposed SCMK method}{7}{}\protected@file@percent }
+\newlabel{sec:method}{{3}{7}{}{section.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Problem formulation and notation}{7}{}\protected@file@percent }
+\newlabel{subsec:problem}{{3.1}{7}{}{subsection.3.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Multi-scale kernel bank}{8}{}\protected@file@percent }
+\newlabel{subsec:kernels}{{3.2}{8}{}{subsection.3.2}{}}
+\newlabel{eq:median}{{1}{8}{}{equation.1}{}}
+\newlabel{eq:gaussian}{{2}{8}{}{equation.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Cross-kernel contrastive representation learning}{8}{}\protected@file@percent }
+\newlabel{subsec:contrastive}{{3.3}{8}{}{subsection.3.3}{}}
+\@writefile{toc}{\contentsline {paragraph}{Per-kernel embeddings.}{8}{}\protected@file@percent }
+\newlabel{eq:embedding}{{3}{8}{}{equation.3}{}}
+\@writefile{toc}{\contentsline {paragraph}{Cross-kernel positive pairs.}{9}{}\protected@file@percent }
+\newlabel{eq:affinity}{{4}{9}{}{equation.4}{}}
+\@writefile{toc}{\contentsline {paragraph}{Cross-kernel InfoNCE.}{9}{}\protected@file@percent }
+\newlabel{eq:infonce}{{5}{9}{}{equation.5}{}}
+\newlabel{eq:lcross}{{6}{9}{}{equation.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Multi-kernel scatter regularization}{9}{}\protected@file@percent }
+\newlabel{subsec:scatter}{{3.4}{9}{}{subsection.3.4}{}}
+\@writefile{toc}{\contentsline {paragraph}{Motivation.}{9}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Definition.}{10}{}\protected@file@percent }
+\newlabel{eq:lscat}{{7}{10}{}{equation.7}{}}
+\@writefile{toc}{\contentsline {paragraph}{Exact equivalence to within-class scatter.}{10}{}\protected@file@percent }
+\newlabel{prop:scatter}{{1}{10}{}{proposition.1}{}}
+\newlabel{eq:equiv}{{8}{10}{}{equation.8}{}}
+\newlabel{eq:proofstep}{{9}{10}{}{equation.9}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}Joint objective and collapse avoidance}{11}{}\protected@file@percent }
+\newlabel{subsec:joint}{{3.5}{11}{}{subsection.3.5}{}}
+\newlabel{eq:total}{{10}{11}{}{equation.10}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.6}Dual-signal anomaly scoring}{11}{}\protected@file@percent }
+\newlabel{subsec:detection}{{3.6}{11}{}{subsection.3.6}{}}
+\@writefile{toc}{\contentsline {paragraph}{Directional signal: linear OC-SVM on the angular embedding.}{12}{}\protected@file@percent }
+\newlabel{eq:concat}{{11}{12}{}{equation.11}{}}
+\newlabel{eq:ocsvm}{{12}{12}{}{equation.12}{}}
+\@writefile{toc}{\contentsline {paragraph}{Magnitude signal: RBF OC-SVM on the projection norms.}{12}{}\protected@file@percent }
+\newlabel{eq:rmag}{{13}{12}{}{equation.13}{}}
+\@writefile{toc}{\contentsline {paragraph}{Score fusion.}{13}{}\protected@file@percent }
+\newlabel{eq:fuse}{{14}{13}{}{equation.14}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.7}Overall algorithm and complexity}{13}{}\protected@file@percent }
+\newlabel{subsec:algorithm}{{3.7}{13}{}{subsection.3.7}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Geometric view of the two complementary signals on the learned representation. The grey sphere is the unit-norm (direction) manifold; a sample's radius is $1+\log $ of its projection magnitude, so normal points ($\approx \!1$) lie on the shell. \textbf  {(a)} On Autos the anomalies remain on the shell but concentrate in one angular region---separable by \emph  {direction}, while their magnitude is uninformative. \textbf  {(b)} On WBC the anomalies are angularly intermixed with the normal class yet bulge far outside the shell---separable only by \emph  {magnitude}. The angular (linear OC-SVM) detector handles~(a), the radial (RBF OC-SVM) detector handles~(b), and the max-fusion is robust on both without knowing the regime in advance. For visualization only, the principal in-sphere axis is the normal/anomaly mean-difference direction (labels are used solely for this projection, never for training or scoring).}}{14}{}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{fig:sphere}{{1}{14}{}{figure.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Experiments}{14}{}\protected@file@percent }
+\newlabel{sec:exp}{{4}{14}{}{section.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Experimental setup}{14}{}\protected@file@percent }
+\newlabel{subsec:exp-setup}{{4.1}{14}{}{subsection.4.1}{}}
+\citation{kfgod2024}
+\citation{disentad2025}
+\citation{deepsvdd2018}
+\citation{dfno2024}
+\citation{lmkad}
+\citation{icl2022}
+\citation{neutralad2021}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces SCMK for one-class anomaly detection}}{15}{}\protected@file@percent }
+\newlabel{alg:scmk}{{1}{15}{}{algorithm.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Comparison with recent detectors}{16}{}\protected@file@percent }
+\newlabel{subsec:exp-comparison}{{4.2}{16}{}{subsection.4.2}{}}
+\citation{kfgod2024}
+\citation{disentad2025}
+\citation{deepsvdd2018}
+\citation{dfno2024}
+\citation{lmkad}
+\citation{icl2022}
+\citation{neutralad2021}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces The twenty benchmark datasets ($N$: samples, $D$: features, $\rho $: anomaly rate).}}{17}{}\protected@file@percent }
+\newlabel{tab:datasets}{{1}{17}{}{table.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Per-dataset ROC curves on the twenty datasets.}}{18}{}\protected@file@percent }
+\newlabel{fig:roc_all}{{2}{18}{}{figure.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces AUC of SCMK against seven recent detectors on twenty datasets. The one-class methods (SCMK, Disent-AD, DeepSVDD, LMKAD, ICL, NeuTraLAD) are reported as mean$_{\pm \text  {std}}$ over three random splits (seeds $0,1,2$). Best mean in each row is in \textbf  {bold}.}}{19}{}\protected@file@percent }
+\newlabel{tab:comparison}{{2}{19}{}{table.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Runtime evaluation}{19}{}\protected@file@percent }
+\newlabel{subsec:exp-runtime}{{4.3}{19}{}{subsection.4.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Maximum G-mean ($\sqrt  {\mathrm  {TPR}\cdot \mathrm  {TNR}}$) of SCMK against seven recent detectors on twenty datasets, as a threshold-based complement to the AUC in Table~\ref {tab:comparison}. The one-class methods (SCMK, Disent-AD, DeepSVDD, LMKAD, ICL, NeuTraLAD) are reported as mean$_{\pm \text  {std}}$ over three random splits (seeds $0,1,2$); KFGOD and DFNO are transductive on the full set (single-valued). Best mean in each row is in \textbf  {bold}.}}{20}{}\protected@file@percent }
+\newlabel{tab:gmean}{{3}{20}{}{table.3}{}}
+\@writefile{toc}{\contentsline {paragraph}{The multiple-kernel overhead is real but bounded.}{20}{}\protected@file@percent }
+\citation{demsar2006}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Mean \textbf  {(a)} training and \textbf  {(b)} inference time (seconds, log scale) over the twenty datasets on a single GPU. SCMK$_{K=1}$ is the single-kernel variant; KFGOD and DFNO are transductive and appear only under inference. SCMK's multiple-kernel training cost ($3.07$\,s) stays below NeuTraLAD and ICL, and its inference ($11$\,ms) is among the fastest---far below the transductive KFGOD ($1.96$\,s) and DFNO ($0.28$\,s).}}{21}{}\protected@file@percent }
+\newlabel{fig:runtime}{{3}{21}{}{figure.3}{}}
+\@writefile{toc}{\contentsline {paragraph}{Inference is near-instant and scales gracefully.}{21}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Statistical significance}{21}{}\protected@file@percent }
+\newlabel{subsec:exp-stat}{{4.4}{21}{}{subsection.4.4}{}}
+\citation{lmkad}
+\citation{dfno2024}
+\citation{neutralad2021}
+\citation{deepsvdd2018}
+\citation{kfgod2024}
+\citation{disentad2025}
+\citation{icl2022}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Critical-difference diagram (Nemenyi post-hoc, $\alpha =0.05$, $\mathrm  {CD}=2.35$) over the twenty datasets, using each method's per-dataset mean AUC. Lower rank (towards the right) is better; methods not connected by a thick bar are not significantly different. SCMK (mean rank $2.23$) has the best rank; DisentAD, DeepSVDD, KFGOD and ICL are significantly worse, while LMKAD, DFNO and NeuTraLAD share its top cluster.}}{22}{}\protected@file@percent }
+\newlabel{fig:cd}{{4}{22}{}{figure.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5}Parameter sensitivity}{22}{}\protected@file@percent }
+\newlabel{subsec:exp-sensitivity}{{4.5}{22}{}{subsection.4.5}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Pairwise comparison of SCMK against each baseline (ordered by average rank): mean rank, number of datasets on which SCMK wins, and one-sided Wilcoxon signed-rank $p$-values before and after Holm correction. $^{***}$:\ $p<0.001$; $^{**}$:\ $p<0.01$; $^{*}$:\ $p<0.05$.}}{23}{}\protected@file@percent }
+\newlabel{tab:wilcoxon}{{4}{23}{}{table.4}{}}
+\@writefile{toc}{\contentsline {paragraph}{$\lambda $ is the only sensitive knob.}{23}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{$d$ and $\nu $ are robust.}{23}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Parameter sensitivity of SCMK on the twenty datasets (mean test AUC over seeds $\{0,1,2\}$; shaded band: standard deviation across datasets). \textbf  {(a)} Embedding dimension $d$ and \textbf  {(c)} OC-SVM $\nu $ are flat (span $0.03$--$0.04$), so SCMK is insensitive to them. \textbf  {(b)} The scatter weight $\lambda $ is the only sensitive parameter: a weak penalty ($\lambda \!\le \!1$) underperforms even $\lambda =0$, while $\lambda \!\ge \!10$ is needed for the intra-class compactness that drives detection, plateauing over $[10,1000]$.}}{24}{}\protected@file@percent }
+\newlabel{fig:sens}{{5}{24}{}{figure.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.6}Ablation study}{24}{}\protected@file@percent }
+\newlabel{subsec:exp-ablation}{{4.6}{24}{}{subsection.4.6}{}}
+\@writefile{toc}{\contentsline {paragraph}{Scatter loss is the dominant component.}{24}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Dual-signal fusion is what makes the detector robust.}{24}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Ablation of the four core components (AUC). Best result in each row is in \textbf  {bold}. The average row shows that the full model is the most robust overall, even though a single-signal variant occasionally peaks on a dataset of its favoured regime.}}{25}{}\protected@file@percent }
+\newlabel{tab:ablation}{{5}{25}{}{table.5}{}}
+\@writefile{toc}{\contentsline {paragraph}{Multi-kernel and contrastive terms.}{25}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5}Conclusion and future work}{25}{}\protected@file@percent }
+\newlabel{sec:conclusion}{{5}{25}{}{section.5}{}}
+\bibcite{scholkopf2001ocsvm}{{1}{}{{}}{{}}}
+\bibcite{tax2004svdd}{{2}{}{{}}{{}}}
+\bibcite{breunig2000lof}{{3}{}{{}}{{}}}
+\bibcite{liu2008iforest}{{4}{}{{}}{{}}}
+\bibcite{chandola2009survey}{{5}{}{{}}{{}}}
+\bibcite{knorr2000distance}{{6}{}{{}}{{}}}
+\bibcite{zhou2017rda}{{7}{}{{}}{{}}}
+\bibcite{ruff2018svdd}{{8}{}{{}}{{}}}
+\bibcite{golan2018geo}{{9}{}{{}}{{}}}
+\bibcite{bergman2020goad}{{10}{}{{}}{{}}}
+\bibcite{tack2020csi}{{11}{}{{}}{{}}}
+\bibcite{qiu2021neutral}{{12}{}{{}}{{}}}
+\bibcite{pang2021review}{{13}{}{{}}{{}}}
+\bibcite{ruff2021unifying}{{14}{}{{}}{{}}}
+\bibcite{gonen2011mkl}{{15}{}{{}}{{}}}
+\bibcite{lanckriet2004sdp}{{16}{}{{}}{{}}}
+\bibcite{rakotomamonjy2008simplemkl}{{17}{}{{}}{{}}}
+\bibcite{gonen2008localized}{{18}{}{{}}{{}}}
+\bibcite{liu2016mkkm}{{19}{}{{}}{{}}}
+\bibcite{huang2012mkkm}{{20}{}{{}}{{}}}
+\bibcite{oord2018infonce}{{21}{}{{}}{{}}}
+\bibcite{chen2020simclr}{{22}{}{{}}{{}}}
+\bibcite{he2020moco}{{23}{}{{}}{{}}}
+\bibcite{grill2020byol}{{24}{}{{}}{{}}}
+\bibcite{chen2021simsiam}{{25}{}{{}}{{}}}
+\bibcite{wang2020uniformity}{{26}{}{{}}{{}}}
+\bibcite{demsar2006}{{27}{}{{}}{{}}}
+\bibcite{dfno2024}{{28}{}{{}}{{}}}
+\bibcite{deepsvdd2018}{{29}{}{{}}{{}}}
+\bibcite{disentad2025}{{30}{}{{}}{{}}}
+\bibcite{kfgod2024}{{31}{}{{}}{{}}}
+\bibcite{lmkad}{{32}{}{{}}{{}}}
+\bibcite{icl2022}{{33}{}{{}}{{}}}
+\bibcite{neutralad2021}{{34}{}{{}}{{}}}
+\providecommand\NAT@force@numbers{}\NAT@force@numbers
+\gdef \@abspage@last{32}

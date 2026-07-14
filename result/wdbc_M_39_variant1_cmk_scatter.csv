@@ -1,0 +1,6 @@
+dataset,latent_dim,lambda_scatter,auc_scatter,best_nu,elapsed_s
+wdbc_M_39_variant1,16,1000.0,0.938878,0.01,13.14
+wdbc_M_39_variant1,32,1000.0,0.924729,0.2,13.71
+wdbc_M_39_variant1,64,1000.0,0.933707,0.2,14.63
+wdbc_M_39_variant1,128,1000.0,0.927602,0.2,18.36
+wdbc_M_39_variant1,256,1000.0,0.928823,0.2,22.64

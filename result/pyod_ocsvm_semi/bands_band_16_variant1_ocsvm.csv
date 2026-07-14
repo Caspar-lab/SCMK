@@ -1,0 +1,7 @@
+dataset,nu,auc,n_support,fit_time_s
+bands_band_16_variant1,0.01,0.721955,19,0.01
+bands_band_16_variant1,0.05,0.772837,21,0.01
+bands_band_16_variant1,0.1,0.828726,37,0.01
+bands_band_16_variant1,0.2,0.841747,69,0.01
+bands_band_16_variant1,0.3,0.832732,98,0.02
+bands_band_16_variant1,0.5,0.823117,158,0.02

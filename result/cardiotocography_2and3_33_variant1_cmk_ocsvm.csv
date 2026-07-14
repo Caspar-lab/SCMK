@@ -1,0 +1,6 @@
+dataset,N,anomaly_rate,n_train,latent_dim,auc_ocsvm,best_nu,train_time_s
+cardiotocography_2and3_33_variant1,1688,0.0195,1655,16,0.828069,0.05,112.53
+cardiotocography_2and3_33_variant1,1688,0.0195,1655,32,0.851781,0.01,129.04
+cardiotocography_2and3_33_variant1,1688,0.0195,1655,64,0.862309,0.01,132.13
+cardiotocography_2and3_33_variant1,1688,0.0195,1655,128,0.841252,0.01,201.35
+cardiotocography_2and3_33_variant1,1688,0.0195,1655,256,0.913082,0.01,238.94

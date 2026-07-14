@@ -1,0 +1,7 @@
+dataset,nu,auc,n_support,fit_time_s
+monks_0_25_variant1,0.01,1.0,85,0.01
+monks_0_25_variant1,0.05,1.0,136,0.01
+monks_0_25_variant1,0.1,1.0,145,0.02
+monks_0_25_variant1,0.2,1.0,164,0.02
+monks_0_25_variant1,0.3,1.0,165,0.02
+monks_0_25_variant1,0.5,1.0,211,0.02

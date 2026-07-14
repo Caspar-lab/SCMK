@@ -1,0 +1,46 @@
+统计检验：SCMK vs 9 个对比算法，N=24 数据集，k=10 方法
+==================================================================
+Friedman 检验:  chi^2=68.801,  p=2.615e-11
+Iman-Davenport: F=10.750  (df1=9, df2=207)
+结论: p<0.05 → 存在显著差异 (拒绝 H0)
+
+Nemenyi 临界差:  CD(0.05)=2.765   CD(0.10)=2.552
+
+平均秩 (越小越好):
+  SCMK       1.417
+  LMKAD      4.583
+  KFGOD      5.083
+  DIF        5.083
+  ECOD       5.583
+  WFRDA      5.854
+  DisentAD   6.125
+  ILGNI      6.729
+  GBRAD      7.042
+  MFIOD      7.500
+
+SCMK 平均秩 = 1.417（SCMK 为最优秩）
+与 SCMK 平均秩之差 > CD(0.05) 即显著劣于 SCMK:
+  KFGOD      Δrank=3.667  [significant] 显著劣于 SCMK
+  GBRAD      Δrank=5.625  [significant] 显著劣于 SCMK
+  DisentAD   Δrank=4.708  [significant] 显著劣于 SCMK
+  MFIOD      Δrank=6.083  [significant] 显著劣于 SCMK
+  ILGNI      Δrank=5.312  [significant] 显著劣于 SCMK
+  WFRDA      Δrank=4.438  [significant] 显著劣于 SCMK
+  LMKAD      Δrank=3.167  [significant] 显著劣于 SCMK
+  DIF        Δrank=3.667  [significant] 显著劣于 SCMK
+  ECOD       Δrank=4.167  [significant] 显著劣于 SCMK
+
+成对 Wilcoxon signed-rank (SCMK > 算法, 单侧) + Holm 校正:
+  算法            AUC均值  avg_rank   SCMK胜           p      p_holm    
+  KFGOD         0.784     5.083    24/24    5.96e-08    5.36e-07  ***
+  GBRAD         0.738     7.042    22/24    1.13e-06    4.53e-06  ***
+  DisentAD      0.769     6.125    22/24    1.51e-05    3.02e-05  ***
+  MFIOD         0.702     7.500    24/24    5.96e-08    4.77e-07  ***
+  ILGNI         0.723     6.729    24/24    5.96e-08    4.17e-07  ***
+  WFRDA         0.777     5.854    24/24    9.10e-06    2.73e-05  ***
+  LMKAD         0.830     4.583    19/24    6.35e-05    6.35e-05  ***
+  DIF           0.778     5.083    23/24    4.17e-07    2.09e-06  ***
+  ECOD          0.770     5.583    24/24    5.96e-08    3.58e-07  ***
+
+SCMK: AUC均值=0.895  avg_rank=1.417
+显著性标记: *** p<0.001, ** p<0.01, * p<0.05, ns 不显著（Holm 校正后）

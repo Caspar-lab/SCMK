@@ -1,0 +1,6 @@
+dataset,N,D_raw,anomaly_rate,n_train,latent_dim,auc_ocsvm,best_nu,train_time_s
+chess_nowin_185_variant1,1855,106,0.1003,1669,16,0.446034,0.05,81.98
+chess_nowin_185_variant1,1855,106,0.1003,1669,32,0.432991,0.05,90.19
+chess_nowin_185_variant1,1855,106,0.1003,1669,64,0.298221,0.2,92.69
+chess_nowin_185_variant1,1855,106,0.1003,1669,128,0.364454,0.01,110.93
+chess_nowin_185_variant1,1855,106,0.1003,1669,256,0.266243,0.2,150.65

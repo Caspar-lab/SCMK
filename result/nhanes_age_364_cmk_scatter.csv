@@ -1,0 +1,6 @@
+dataset,latent_dim,lambda_scatter,auc_scatter,best_nu,elapsed_s
+nhanes_age_364,16,0,0.962223,0.1,120.8
+nhanes_age_364,32,0,0.965309,0.01,140.68
+nhanes_age_364,64,0,0.975125,0.01,175.64
+nhanes_age_364,128,0,0.958883,0.01,252.96
+nhanes_age_364,256,0,0.958995,0.01,395.82

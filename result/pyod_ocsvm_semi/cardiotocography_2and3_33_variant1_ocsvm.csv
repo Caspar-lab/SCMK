@@ -1,0 +1,7 @@
+dataset,nu,auc,n_support,fit_time_s
+cardiotocography_2and3_33_variant1,0.01,0.87703,22,0.02
+cardiotocography_2and3_33_variant1,0.05,0.889994,84,0.06
+cardiotocography_2and3_33_variant1,0.1,0.886295,167,0.11
+cardiotocography_2and3_33_variant1,0.2,0.885929,334,0.21
+cardiotocography_2and3_33_variant1,0.3,0.888712,500,0.31
+cardiotocography_2and3_33_variant1,0.5,0.88483,828,0.5

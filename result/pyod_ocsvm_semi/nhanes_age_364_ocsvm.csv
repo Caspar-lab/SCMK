@@ -1,0 +1,7 @@
+dataset,nu,auc,n_support,fit_time_s
+nhanes_age_364,0.01,0.878334,25,0.02
+nhanes_age_364,0.05,0.925666,99,0.07
+nhanes_age_364,0.1,0.948599,194,0.14
+nhanes_age_364,0.2,0.947508,385,0.27
+nhanes_age_364,0.3,0.9444,579,0.42
+nhanes_age_364,0.5,0.820997,958,0.63

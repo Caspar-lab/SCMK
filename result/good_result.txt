@@ -1,0 +1,6 @@
+cardio
+cardio33 d=256
+sonar d=6
+ionosphere d=16
+thyroid
+yeast_ERL_5_variant1.mat

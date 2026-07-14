@@ -1,0 +1,7 @@
+dataset,nu,auc,n_support,fit_time_s
+tic_tac_toe_negative_12_variant1,0.01,1.0,223,0.05
+tic_tac_toe_negative_12_variant1,0.05,1.0,282,0.07
+tic_tac_toe_negative_12_variant1,0.1,1.0,291,0.08
+tic_tac_toe_negative_12_variant1,0.2,1.0,295,0.09
+tic_tac_toe_negative_12_variant1,0.3,1.0,289,0.08
+tic_tac_toe_negative_12_variant1,0.5,1.0,370,0.09

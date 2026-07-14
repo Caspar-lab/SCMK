@@ -1,0 +1,7 @@
+dataset,nu,auc,n_support,fit_time_s
+heart270_2_16_variant1,0.01,1.0,18,0.0
+heart270_2_16_variant1,0.05,0.999583,18,0.0
+heart270_2_16_variant1,0.1,0.986667,23,0.0
+heart270_2_16_variant1,0.2,0.988333,35,0.0
+heart270_2_16_variant1,0.3,0.984583,51,0.01
+heart270_2_16_variant1,0.5,0.980417,77,0.01

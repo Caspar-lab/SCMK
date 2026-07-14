@@ -1,0 +1,7 @@
+dataset,nu,auc,n_support,fit_time_s
+chess_nowin_16_variant1,0.01,0.971165,28,0.02
+chess_nowin_16_variant1,0.05,0.979853,93,0.07
+chess_nowin_16_variant1,0.1,0.979778,174,0.14
+chess_nowin_16_variant1,0.2,0.976558,336,0.25
+chess_nowin_16_variant1,0.3,0.975959,505,0.4
+chess_nowin_16_variant1,0.5,0.975434,837,0.62

@@ -1,0 +1,7 @@
+dataset,nu,auc,n_support,fit_time_s
+wbc_malignant_39_variant1,0.01,0.955301,7,0.0
+wbc_malignant_39_variant1,0.05,0.996188,23,0.01
+wbc_malignant_39_variant1,0.1,0.996766,46,0.01
+wbc_malignant_39_variant1,0.2,0.996766,90,0.02
+wbc_malignant_39_variant1,0.3,0.996881,134,0.02
+wbc_malignant_39_variant1,0.5,0.996881,222,0.04

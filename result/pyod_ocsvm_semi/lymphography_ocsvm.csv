@@ -1,0 +1,7 @@
+dataset,nu,auc,n_support,fit_time_s
+lymphography,0.01,1.0,27,0.0
+lymphography,0.05,1.0,27,0.0
+lymphography,0.1,1.0,28,0.0
+lymphography,0.2,1.0,44,0.0
+lymphography,0.3,0.997653,51,0.01
+lymphography,0.5,0.995305,79,0.01

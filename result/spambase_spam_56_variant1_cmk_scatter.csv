@@ -1,0 +1,6 @@
+dataset,latent_dim,lambda_scatter,auc_scatter,best_nu,elapsed_s
+spambase_spam_56_variant1,16,1000.0,0.665063,0.2,164.06
+spambase_spam_56_variant1,32,1000.0,0.671853,0.01,167.5
+spambase_spam_56_variant1,64,1000.0,0.681153,0.2,180.36
+spambase_spam_56_variant1,128,1000.0,0.627485,0.2,214.52
+spambase_spam_56_variant1,256,1000.0,0.703237,0.2,251.61

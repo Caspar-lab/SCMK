@@ -1,0 +1,6 @@
+dataset,N,anomaly_rate,n_train,latent_dim,auc_ocsvm,best_nu,train_time_s
+iris_Irisvirginica_11_variant1,111,0.0991,100,16,0.456364,0.1,3.11
+iris_Irisvirginica_11_variant1,111,0.0991,100,32,0.596364,0.05,3.41
+iris_Irisvirginica_11_variant1,111,0.0991,100,64,0.558182,0.05,3.27
+iris_Irisvirginica_11_variant1,111,0.0991,100,128,0.531818,0.05,3.38
+iris_Irisvirginica_11_variant1,111,0.0991,100,256,0.602727,0.05,4.03

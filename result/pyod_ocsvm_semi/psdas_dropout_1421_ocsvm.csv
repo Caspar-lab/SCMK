@@ -1,0 +1,7 @@
+dataset,nu,auc,n_support,fit_time_s
+psdas_dropout_1421,0.01,0.721096,40,0.1
+psdas_dropout_1421,0.05,0.715228,160,0.36
+psdas_dropout_1421,0.1,0.721028,308,0.71
+psdas_dropout_1421,0.2,0.721686,610,1.32
+psdas_dropout_1421,0.3,0.727913,906,1.95
+psdas_dropout_1421,0.5,0.73672,1503,3.17

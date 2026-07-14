@@ -1,0 +1,7 @@
+dataset,nu,auc,n_support,fit_time_s
+sick_sick_35_variant1,0.01,0.928099,45,0.07
+sick_sick_35_variant1,0.05,0.917586,180,0.28
+sick_sick_35_variant1,0.1,0.911978,358,0.55
+sick_sick_35_variant1,0.2,0.914132,710,1.04
+sick_sick_35_variant1,0.3,0.893985,1065,1.57
+sick_sick_35_variant1,0.5,0.891362,1771,2.59

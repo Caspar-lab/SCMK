@@ -1,0 +1,6 @@
+dataset,N,anomaly_rate,n_train,latent_dim,auc_ocsvm,best_nu,train_time_s
+sonar_M_10_variant1,107,0.0935,97,16,0.778351,0.05,2.75
+sonar_M_10_variant1,107,0.0935,97,32,0.690722,0.1,2.67
+sonar_M_10_variant1,107,0.0935,97,64,0.549485,0.2,2.84
+sonar_M_10_variant1,107,0.0935,97,128,0.735052,0.01,3.16
+sonar_M_10_variant1,107,0.0935,97,256,0.703093,0.01,3.61

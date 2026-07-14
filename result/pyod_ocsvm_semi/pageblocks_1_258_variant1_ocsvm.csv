@@ -1,0 +1,7 @@
+dataset,nu,auc,n_support,fit_time_s
+pageblocks_1_258_variant1,0.01,0.859484,50,0.09
+pageblocks_1_258_variant1,0.05,0.895129,247,0.41
+pageblocks_1_258_variant1,0.1,0.927934,492,0.82
+pageblocks_1_258_variant1,0.2,0.946852,983,1.63
+pageblocks_1_258_variant1,0.3,0.953268,1474,2.42
+pageblocks_1_258_variant1,0.5,0.95591,2458,3.99

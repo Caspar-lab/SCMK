@@ -1,0 +1,6 @@
+dataset,N,anomaly_rate,n_train,latent_dim,auc_ocsvm,best_nu,train_time_s
+wbc_malignant_39_variant1,483,0.0807,444,16,0.477766,0.2,22.23
+wbc_malignant_39_variant1,483,0.0807,444,32,0.495611,0.2,22.95
+wbc_malignant_39_variant1,483,0.0807,444,64,0.489547,0.2,25.49
+wbc_malignant_39_variant1,483,0.0807,444,128,0.525295,0.2,29.1
+wbc_malignant_39_variant1,483,0.0807,444,256,0.518827,0.2,40.04

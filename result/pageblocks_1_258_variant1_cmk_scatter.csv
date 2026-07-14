@@ -1,0 +1,6 @@
+dataset,latent_dim,lambda_scatter,auc_scatter,best_nu,elapsed_s
+pageblocks_1_258_variant1,16,1000.0,0.985395,0.2,293.57
+pageblocks_1_258_variant1,32,1000.0,0.983511,0.2,302.26
+pageblocks_1_258_variant1,64,1000.0,0.983811,0.2,329.64
+pageblocks_1_258_variant1,128,1000.0,0.981795,0.2,389.47
+pageblocks_1_258_variant1,256,1000.0,0.981768,0.2,455.24

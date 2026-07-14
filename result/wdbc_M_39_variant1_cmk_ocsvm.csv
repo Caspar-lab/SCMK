@@ -1,0 +1,6 @@
+dataset,N,anomaly_rate,n_train,latent_dim,auc_ocsvm,best_nu,train_time_s
+wdbc_M_39_variant1,396,0.0985,357,16,0.687065,0.2,13.83
+wdbc_M_39_variant1,396,0.0985,357,32,0.787115,0.2,15.11
+wdbc_M_39_variant1,396,0.0985,357,64,0.702435,0.2,17.71
+wdbc_M_39_variant1,396,0.0985,357,128,0.630899,0.01,24.13
+wdbc_M_39_variant1,396,0.0985,357,256,0.771385,0.01,34.62

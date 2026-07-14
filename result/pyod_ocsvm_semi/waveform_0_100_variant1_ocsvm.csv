@@ -1,0 +1,7 @@
+dataset,nu,auc,n_support,fit_time_s
+waveform_0_100_variant1,0.01,0.357876,38,0.05
+waveform_0_100_variant1,0.05,0.376392,171,0.22
+waveform_0_100_variant1,0.1,0.402776,336,0.47
+waveform_0_100_variant1,0.2,0.436617,671,1.05
+waveform_0_100_variant1,0.3,0.477568,1007,1.35
+waveform_0_100_variant1,0.5,0.555537,1673,2.08

@@ -1,0 +1,6 @@
+dataset,latent_dim,auc_rw,elapsed_s
+iris_Irisvirginica_11_variant1,16,0.46,7.2
+iris_Irisvirginica_11_variant1,32,0.47,4.75
+iris_Irisvirginica_11_variant1,64,0.443636,4.99
+iris_Irisvirginica_11_variant1,128,0.456364,5.63
+iris_Irisvirginica_11_variant1,256,0.476364,7.14

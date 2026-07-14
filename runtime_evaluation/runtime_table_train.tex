@@ -1,0 +1,35 @@
+\begin{table*}[t]
+\centering
+\caption{Training time (seconds) on the seed-2 split (single configuration, same GPU). SCMK$_{K=1}$ is the single-kernel variant; DFNO is transductive (no training phase). Lower is better.}
+\label{tab:runtime-train}
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lccccccc}
+\toprule
+Dataset & SCMK & SCMK$_{K=1}$ & DeepSVDD & Disent-AD & NeuTraLAD & ICL & LMKAD \\
+\midrule
+Vertebral    & 2.49 & 0.100 & 0.234 & 1.36 & 1.20 & 7.55 & 0.138 \\
+Thyroid      & 7.40 & 0.547 & 3.65 & 8.01 & 16.88 & 86.74 & 0.742 \\
+Glass        & 1.49 & 0.105 & 0.253 & 1.08 & 1.32 & 6.65 & 0.125 \\
+Ecoli        & 1.51 & 0.133 & 0.369 & 1.15 & 1.62 & 9.23 & 0.121 \\
+WBC          & 1.48 & 0.128 & 0.471 & 1.51 & 2.26 & 10.20 & 0.143 \\
+PageBlocks   & 10.10 & 0.743 & 5.21 & 10.77 & 22.45 & 88.95 & 0.927 \\
+Wine         & 1.48 & 0.137 & 0.136 & 0.959 & 0.632 & 2.40 & 0.334 \\
+Cardio       & 4.01 & 0.301 & 1.53 & 3.66 & 7.66 & 18.93 & 0.842 \\
+Cardiotoco.  & 4.64 & 0.325 & 1.64 & 4.03 & 6.98 & 20.14 & 0.947 \\
+TicTacToe-69 & 1.76 & 0.132 & 0.651 & 1.61 & 3.00 & 7.66 & 0.051 \\
+TicTacToe-12 & 1.86 & 0.138 & 0.674 & 1.60 & 3.05 & 7.73 & 0.045 \\
+WPBC         & 1.56 & 0.150 & 0.266 & 1.05 & 1.23 & 2.46 & 0.078 \\
+Ionosphere   & 2.10 & 0.161 & 0.278 & 1.19 & 1.14 & 2.21 & 0.059 \\
+Zoo          & 1.48 & 0.118 & 0.118 & 0.963 & 0.622 & 1.16 & 0.142 \\
+Sick-72      & 7.73 & 0.593 & 3.36 & 8.21 & 16.88 & 22.05 & 0.575 \\
+Autos        & 1.94 & 0.132 & 0.258 & 1.01 & 1.22 & 1.59 & 0.098 \\
+Annealing    & 1.95 & 0.150 & 0.767 & 1.83 & 3.65 & 4.83 & 0.533 \\
+Lympho.      & 2.13 & 0.161 & 0.256 & 0.958 & 1.15 & 1.40 & 0.117 \\
+Bands-6      & 1.96 & 0.144 & 0.367 & 1.27 & 1.77 & 2.27 & 0.339 \\
+Audiology    & 2.26 & 0.167 & 0.266 & 1.07 & 1.23 & 0.854 & 0.719 \\
+\midrule
+\textbf{Average} & \textbf{3.07} & \textbf{0.228} & \textbf{1.04} & \textbf{2.66} & \textbf{4.80} & \textbf{15.25} & \textbf{0.354} \\
+\bottomrule
+\end{tabular}
+\end{table*}

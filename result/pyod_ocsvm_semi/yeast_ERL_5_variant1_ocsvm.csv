@@ -1,0 +1,7 @@
+dataset,nu,auc,n_support,fit_time_s
+yeast_ERL_5_variant1,0.01,0.998415,16,0.01
+yeast_ERL_5_variant1,0.05,1.0,59,0.03
+yeast_ERL_5_variant1,0.1,1.0,115,0.05
+yeast_ERL_5_variant1,0.2,1.0,228,0.09
+yeast_ERL_5_variant1,0.3,1.0,341,0.14
+yeast_ERL_5_variant1,0.5,1.0,568,0.25

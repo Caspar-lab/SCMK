@@ -1,0 +1,6 @@
+dataset,latent_dim,lambda_scatter,auc_scatter,best_nu,elapsed_s
+wbc_malignant_39_variant1,16,1000.0,0.491511,0.2,23.8
+wbc_malignant_39_variant1,32,1000.0,0.568723,0.2,24.45
+wbc_malignant_39_variant1,64,1000.0,0.542735,0.05,28.71
+wbc_malignant_39_variant1,128,1000.0,0.468642,0.05,30.34
+wbc_malignant_39_variant1,256,1000.0,0.43197,0.2,39.36

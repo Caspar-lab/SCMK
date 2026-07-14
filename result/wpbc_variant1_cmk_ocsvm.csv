@@ -1,0 +1,6 @@
+dataset,N,anomaly_rate,n_train,latent_dim,auc_ocsvm,best_nu,train_time_s
+wpbc_variant1,198,0.2374,151,16,0.577568,0.2,3.97
+wpbc_variant1,198,0.2374,151,32,0.537128,0.2,4.25
+wpbc_variant1,198,0.2374,151,64,0.553614,0.2,5.04
+wpbc_variant1,198,0.2374,151,128,0.575314,0.2,7.15
+wpbc_variant1,198,0.2374,151,256,0.550937,0.2,9.5

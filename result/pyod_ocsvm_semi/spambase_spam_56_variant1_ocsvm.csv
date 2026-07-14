@@ -1,0 +1,7 @@
+dataset,nu,auc,n_support,fit_time_s
+spambase_spam_56_variant1,0.01,0.670834,31,0.04
+spambase_spam_56_variant1,0.05,0.678078,141,0.18
+spambase_spam_56_variant1,0.1,0.68595,280,0.36
+spambase_spam_56_variant1,0.2,0.687602,559,0.7
+spambase_spam_56_variant1,0.3,0.682427,839,1.02
+spambase_spam_56_variant1,0.5,0.675183,1395,1.64
