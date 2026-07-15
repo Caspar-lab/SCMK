@@ -1,0 +1,1037 @@
+9552                                                IEEE TRANSACTIONS ON PATTERN ANALYSIS AND MACHINE INTELLIGENCE, VOL. 45, NO. 8, AUGUST 2023
+
+
+
+
+                   Contrastive Multi-View Kernel Learning
+                        Jiyuan Liu , Xinwang Liu , Senior Member, IEEE, Yuexiang Yang, Qing Liao,
+                                         and Yuanqing Xia , Senior Member, IEEE
+
+
+   Abstract—Kernel method is a proven technique in multi-view                     a clear decision boundary can be found [6]. Over the years,
+learning. It implicitly defines a Hilbert space where samples can                 many kernel-based learning methods have been developed. The
+be linearly separated. Most kernel-based multi-view learning algo-                representatives are Kernel Support Vector Machines [6], Gaus-
+rithms compute a kernel function aggregating and compressing the
+views into a single kernel. However, existing approaches compute                  sian Processes [7] and Kernel k-means Clustering [8].
+the kernels independently for each view. This ignores complemen-                     One obvious drawback of the methods mentioned above is
+tary information across views and thus may result in a bad kernel                 that they can only handle data with a single kernel. However,
+choice. In contrast, we propose the Contrastive Multi-view Kernel —               in most practical settings, the data are collected from different
+a novel kernel function based on the emerging contrastive learning                sources/views. It would not make sense (nor would it be possible
+framework. The Contrastive Multi-view Kernel implicitly embeds
+the views into a joint semantic space where all of them resemble                  in most cases) to perform prediction without using all available
+each other while promoting to learn diverse views. We validate the                information. For instance, lung patients are often diagnosed
+method’s effectiveness in a large empirical study. It is worth noting             with a combination of nucleic acid test, blood test, and CT
+that the proposed kernel functions share the types and parameters                 scan. In order to deal with these multi-view data problems,
+with traditional ones, making them fully compatible with existing
+                                                                                  plenty of methods have been proposed [9], [10], with multiple
+kernel theory and application. On this basis, we also propose a
+contrastive multi-view clustering framework and instantiate it with               kernel learning (MKL) being one of the most popular method-
+multiple kernel k-means, achieving a promising performance. To                    ologies [11], [12]. MKL first computes one or several kernel
+the best of our knowledge, this is the first attempt to explore                   matrices for each view and then aggregates the kernel matrices
+kernel generation in multi-view setting and the first approach to                 optimally for the learning task.
+use contrastive learning for a multi-view kernel learning.                           Current multiple kernel algorithms can be roughly grouped
+   Index Terms—Contrastive learning, kernel function, kernel
+                                                                                  into three categories. Algorithms in the first category (known as
+method, multi-view clustering, multiple kernel clustering.
+                                                                                  early-fusion methods) directly learn a consensus kernel or graph
+                                                                                  for the subsequent clustering or classification process [11], [13],
+                            I. INTRODUCTION                                       [14], [15], [16]. Frequently, both steps are unified into a single
+                                                                                  objective formulation, which can be solved using alternating
+       ERNEL technique is a fundamental paradigm in ma-
+K      chine learning that has received considerable attention
+in real-world applications, such as image processing [1], [2],
+                                                                                  optimization. For instance, Huang and Kloft et al. assume that
+                                                                                  the consensus kernel can be parameterized into a weighted linear
+                                                                                  combination of the pre-specified ones [13], [14], [17]. On this
+object detection [3], [4] and gene prediction [5]. To group the                   basis, Liu et al. propose a matrix-induced regularization to dy-
+nonlinear-separable data, it defines an implicit kernel mapping                   namically adjust the weights along with optimization, achieving
+which maps them into a high-dimensional Hilbert space where                       satisfactory performance improvement [15]. Then, Liu et al.
+                                                                                  claim that the optimal kernel can be found in the proximity
+   Manuscript received 10 May 2022; revised 14 December 2022; accepted 2          of the weighted kernel combination [16]. Meanwhile, some
+March 2023. Date of publication 6 March 2023; date of current version 30          researchers propose to push the consensus kernel close to each
+June 2023. This work was supported by in part by the National Key R&D
+Program of China under Grant 2020AAA0107100, in part by the Education             pre-specified kernel [18], [19]. Since kernel matrix stores the
+Ministry-China Mobile Research Funding under Grant MCM20170404, and               pairwise similarities of the samples, it makes sense to transform
+in part by the National Natural Science Foundation of China under Grants          the kernel matrix into a graph, in which a graph algorithm can be
+61922088, 61976196, and 62276271. Recommended for acceptance by X. Li.
+(Corresponding author: Xinwang Liu.)                                              employed subsequently [20], [21]. Upon this assumption, Ren
+   Jiyuan Liu is with the College of Systems Engineering, National Univer-        et al. compute candidate affinity graphs from pre-specified ker-
+sity of Defense Technology, Changsha, Hunan 410072, China (e-mail: liu-           nels and learn the consensus kernel and graph coherently [22].
+jiyuan13@nudt.edu.cn).
+   Xinwang Liu and Yuexiang Yang are with the College of Computer, National       Another category of MKL methods (called late-fusion) first
+University of Defense Technology, Changsha, Hunan 410072, China (e-mail:          imputes multiple base partitions from each kernel (e.g., using
+xinwangliu@nudt.edu.cn; yyx@nudt.edu.cn).                                         kernel k-means) and then integrates the partitions into a unified
+   Qing Liao is with the School of Computer Science and Technology, Harbin In-
+stitute of Technology, Shenzhen 518055, China (e-mail: liaoqing@hut.edu.cn).      one [23]. For instance, Wang et al. maximize the alignment
+   Yuanqing Xia is with the School of Automation, Beijing Institute of Technol-   between the consensus partition and the weighted combination
+ogy, Beijing 100081, China (e-mail: xia_yuanqing@bit.edu.cn).                     of base partitions [24]. In addition, we group the rest into the third
+   This article has supplementary downloadable material available at
+https://doi.org/10.1109/TPAMI.2023.3253211, provided by the authors.              category, in which a hierarchical method also achieves promising
+   Digital Object Identifier 10.1109/TPAMI.2023.3253211                           performance [25].
+
+
+                         0162-8828 © 2023 IEEE. Personal use is permitted, but republication/redistribution requires IEEE permission.
+                                       See https://www.ieee.org/publications/rights/index.html for more information.
+
+
+        Authorized licensed use limited to: SICHUAN UNIVERSITY. Downloaded on May 25,2026 at 06:59:21 UTC from IEEE Xplore. Restrictions apply.
+LIU et al.: CONTRASTIVE MULTI-VIEW KERNEL LEARNING                                                                                                           9553
+
+
+
+
+Fig. 1. Generation paradigm of the Contrastive Multi-view Kernel on images. For ease of expression, we consider only RGB and Depth images as the two data
+views. At the very beginning, the data xi and xi are encoded into a unified space with two mapping functions fW1 (·) and fW2 (·). Then, they are projected
+into a Hilbert space with an implicit kernel mapping ϕ(·). Here, two representations of each data sample are considered as ‘positive pairs’ (for which we want a
+high kernel similarity < φi , φi >) while disjointed data samples are considered as ‘negative pairs’ (for which we want low kernel similarity < φj , φi >, thus
+promoting the diversity of the learned mappings). Note that the correlations between the samples are partially plotted for simplicity of the picture. Finally, the
+kernel matrices of each view can be obtained as K1 and K2 .
+
+
+   All the above methods concentrate on how to fuse pre-                          new avenues in future research on using contrastive learning in
+specified kernels, but ignore that the kernel quality is a per-                   multi-view and kernel learning.
+formance bottleneck. In contrast, instead of using traditional                       The rest paper is organized as follows. Section II introduces
+kernel functions, we propose the Contrastive Multi-view Kernel                    two parts of closely related researches, including traditional
+(CMK), a novel unsupervised kernel generation paradigm to                         kernel generation and contrastive learning. Section III presents
+compute quality kernels by leveraging complementary infor-                        the proposed CMK generation paradigm, its implementation,
+mation from the data views. It is inspired by the paradigm                        instance, complexity analysis and large-scale solution. In Sec-
+of contrastive learning, and the key idea is to promote a high                    tion IV, we propose the Contrastive Multi-view Clustering
+similarity across views for a given data sample while learning                    framework and instantiate it with Multiple Kernel k-means.
+diverse and heterogeneous views. The approach is illustrated in                   Experiment details, such as parameter setting, performance
+Fig. 1. First, we separately encode the multi-view data into a                    comparison and insights of model building, are introduced and
+unified (semantic) space using their respective learned mapping                   analyzed in Section V. At last, we make the conclusion in
+functions. Second, the obtained data representations are further                  Section VII.
+projected into an implicit Hilbert space. Here, the represen-
+tations of any two views of one (and the same) data sample                                                   II. RELATED WORK
+are considered as positive pairs, so their kernel similarities
+                                                                                    Since the proposed CMK leverages contrastive learning on
+are maximized. Meanwhile, the representations associated with
+                                                                                  kernel generation, we briefly review the closely related re-
+two data samples are treated as negative pairs, so their kernel
+                                                                                  searches of the two domains.
+similarities are minimized. With updating the mapping func-
+tions, the proposed contrastive multi-view kernel function and
+                                                                                  A. Kernel Generation
+corresponding kernel matrix of each data view can be obtained
+finally.                                                                                                            i=1 drawn from a space X ⊆
+                                                                                     For a set of data samples {xi }N
+   In a large experimental study, we compare the CMK with                         R , a kernel method encodes them into a Reproducing Kernel
+                                                                                     dx
+
+multiple types of traditional kernels, observing a promising per-                 Hilbert Space H ⊆ RdH with an implicit kernel mapping ϕ(·).
+formance improvement. Note that the proposed kernel functions                     Since the dimension of Hilbert space H could be infinite, the
+share the types and parameters with traditional ones, making                      mapping function ϕ(·) is hard to define explicitly, making it
+them fully compatible with existing kernel theory and appli-                      impossible to compute corresponding embeddings. Thanks to
+cations. In other words, once the associated variables are opti-                  Mercer’s theorem [26], we can measure the product of vectors
+mized, the CMK is able to be applied in existing kernel methods,                  in space H with the kernel function k(·, ·) in space X as
+such as kernel SVM and kernel k-means, without any extra cost.
+                                                                                                  K [i, j] = ϕ(xi ) ϕ(xj ) = k(xi , xj ),                    (1)
+Nevertheless, we find it can largely improve the performance
+of Multiple Kernel Clustering (MKC) algorithms to jointly                         where [i, j] refers to the value in ith row and jth column of
+optimize the CMK loss and theirs. On this basis, we propose                       target kernel matrix K. As a supplement, the widely used kernel
+a Contrastive Multi-view Clustering framework and instantiate                     functions are partially listed in Table I.
+it with the widely used Multiple Kernel k-means (MKKM),                              To deal with multi-view data, current multiple kernel methods
+surpassing state-of-the-art methods in experiment. To the best of                 generate one or more kernels on each data view. They usually
+our knowledge, this is the first attempt at leveraging contrastive                focus on improving performance via exploring more effective
+learning for multi-view kernel learning and of exploring kernel                   way to fuse discriminative information from these kernels [11],
+generation in a multi-view setting. Our work opens the door to                    [13], [14], [15], [16], but overlook the fact that kernel quality is a
+          Authorized licensed use limited to: SICHUAN UNIVERSITY. Downloaded on May 25,2026 at 06:59:21 UTC from IEEE Xplore. Restrictions apply.
+9554                                            IEEE TRANSACTIONS ON PATTERN ANALYSIS AND MACHINE INTELLIGENCE, VOL. 45, NO. 8, AUGUST 2023
+
+
+
+                             TABLE I                                         A. Generation Paradigm
+         REPRESENTATIVES OF TRADITIONAL KERNEL FUNCTION
+                                                                                Given a set of multi-view data {xvi }N,V
+                                                                                                                     i,v=1 where xi ∈ R , we
+                                                                                                                                  v    dv
+
+                                                                             first eliminate the dimension differences by encoding them into
+                                                                             a unified latent space Xh ⊆ Rd with mapping functions fWv (·)
+                                                                             via
+                                                                                                    hvi = fWv (xvi ) = xvi Wv ,                            (4)
+                                                                                                     dv ×d
+                                                                             in which Wv ∈ R         . Denoting L2 (·) as the L2 -norm of a
+                                                                             vector, the normalized data representations can be obtained via
+bottleneck. There are also some researches about how to choose                                   zvi = fN (hvi ) = hvi / L2 (hvi ).                        (5)
+the parameters in kernel functions, such as [27]. However, they
+are out of our scope, since the proposed CMK provides a                      With ϕz (·) being an implicit but known kernel mapping, such as
+new kernel generation paradigm and shares the same types and                 Gaussian mapping, we project the representations {zvi }N,V
+                                                                                                                                    i,v=1 into
+parameters with traditional kernel functions.                                corresponding Hilbert space H. As a consequence, the overall
+                                                                             kernel mapping of the vth view is obtained as
+B. Contrastive Learning
+                                                                                          ϕvc (xvi ) = ϕz (zvi ) = ϕz (fN (fWv (xvi ))),                   (6)
+   Contrastive learning is first proposed in [28] to address deep
+visual representation learning problem. By substantially promot-             in which the resulting kernel function is
+ing the representation capability of neural networks, it attracts                    kcv (xvi , xvj ) = kz (zvi , zvj )
+lots of interest from industry and the research community [29],
+[30], [31], [32]. The idea beneath contrastive learning is to                                        = kz (fN (fWv (xvi )), fN (fWv (xvj ))),              (7)
+learn discriminative embeddings via maximizing the similarities
+                                                                             where kz (·, ·) refers to the kernel function defined by kernel
+between two random data augmentations.
+                                                                             mapping ϕz (·), shown as
+   For data {xi }N i=1 , two separate data augmentation operators
+are randomly selected from an augmentation family T . As a                                          kz (u, v) = ϕz (u) ϕz (v).                            (8)
+result, 2 N augmented samples are derived. Then, a base encoder
+                                                                             Also, it is obvious that the kernel matrix of vth view should be
+network f (·) is employed to map them into latent representa-
+tions {hi }2i=1
+             N
+                . Subsequently, a projection head g(·), which only                                     Kvc [i, j] = kcv (xvi , xvj ).                      (9)
+consists of multiple linear layers, is adopted to obtain {zi }2i=1
+                                                                N
+                                                                   .
+Denoting xj(i) as the augmentation of the ith data sample,                      As an arbitrary data view can be regarded as augmentation
+contrastive learning treats them as positive pair but the rest as            of the others semantically, we can naturally leverage contrastive
+negative pairs. By maximizing the similarities between positive              learning loss on multi-view theory [34], [35]. Similar to the
+pairs and minimizing those between negative pairs, it defines the            unsupervised setting in [28], {xvi }Vv=1 are regarded as a positive
+Normalized Temperature-scaled Cross Entropy Loss (NT-Xent)                   pair, leaving the remaining pairs as negative pairs. Thus, the loss
+as follows:                                                                  of the ith data sample in the vth view can be written as
+                            exp(sim(zi , zj(i) )/τ )                                      1          
+                                                                                                     V                                           
+                                                                                                                                  exp(kz (zvi , zvi ))
+        i,j(i) = − log 2 N                             ,            (2)      i,v =                             − log                                     ,
+                                                                                                                                                    v v 
+                         k=1 1k=i exp(sim(zi , zk )/τ )                                V −1
+                                                                                                 v  =1,v  =v             j,v  ∈Ai,v exp(kz (zi , zj ))
+
+where 1k=i ∈ {0, 1} is the indicator function, τ denotes a tem-                                                                                           (10)
+perature parameter and                                                       where
+
+                                         z                                       Ai,v = {1, 2, . . . , N } × {1, 2, . . . , V } \ {(i, v)}.             (11)
+                                           i zj
+                     sim(zi , zj ) =              .                   (3)
+                                       zi zj                             It can be observed that we measure the similarity of sample pairs
+Apart from NT-Xent, other types of loss function are tested but              with kernel function and directly maximize these of positive
+achieve worse performances. In addition, Yeh et al. propose to               pairs while minimize the rest. The overall loss is implemented
+remove the positive pair in the denominator of (2) and achieve               as
+better results [33]. By introducing supervisory signals, Khosla                                                1 
+                                                                                                                   N,V
+et al. refine the loss in (2) by labeling samples of the same class                                      c =           i,v .                           (12)
+                                                                                                              N V i,v=1
+and their augmentations as positive pairs [32].
+                                                                             By minimizing the loss in (12), only variables {Wv }Vi=1 will
+           III. CONTRASTIVE MULTI-VIEW KERNEL
+                                                                             be optimized, determining a unique kernel mapping ϕv (·) in
+  We leverage the contrastive learning paradigm to multi-view                (6) and kernel matrix Kv in (9) for the vth view. Besides, we
+kernel learning. In the beginning, the CMK generation paradigm               visualize the generation paradigm of CMK in Fig. 1.
+and its implementation are described. Then, we introduce five                   It is worth to note that the CMK refers to a unified kernel
+common instances of our general paradigm. Finally, CMK’s                     paradigm and differs from each other by adopting a different
+complexity and large-scale solution are analyzed in detail.                  kernel mapping ϕz (·) in (6) and kernel function kz (·, ·) in (7).
+       Authorized licensed use limited to: SICHUAN UNIVERSITY. Downloaded on May 25,2026 at 06:59:21 UTC from IEEE Xplore. Restrictions apply.
+LIU et al.: CONTRASTIVE MULTI-VIEW KERNEL LEARNING                                                                                                                    9555
+
+
+
+                                                                                     1) For ∂i0 ,v0 /∂zvi00 , it holds that
+ Algorithm 1: The Contrastive Multi-View Kernel Genera-
+ tion Paradigm.                                                                                                                    
+                                                                                                                                   V
+                                                                                             ∂i0 ,v0       1                              ∂kz (zvi00 , zvi0 )
+  Input: Data {xvi }N,V                                                                               = −
+                    i,v=1                                                                     ∂zvi00      V −1                                 ∂zvi00
+  Output: Kernel mapping ϕvc (·) and kernel function kcv (·, ·)                                                                v=1,v=v0
+
+  1: Initialize the mapping weights {Wv }Vv=1 randomly;                                                          exp(kz (zvi00 , zvi )) ∂kz (zvi00 , zvi )
+  2: t = 0;                                                                                     +                                       ·                             (17)
+                                                                                                                       Bi0 ,v0                ∂zvi
+  3: while t < epochs do                                                                            i,v∈Ai0 ,v0
+
+  4: # forward
+                                                                                     2) For ∂i0 ,v /∂zvi00 , we can get
+  5: Compute the loss value c in (12);
+  6: # back propagation                                                                              ∂i0 ,v       1    ∂kz (zvi0 , zvi00 )
+  7: Compute the loss gradients ∂c /∂Wv via (13);                                                           = −      ·
+                                                                                                     ∂zvi00      V −1       ∂zvi00
+  8: Update {Wv }Vv=1 via (23);
+  9: t = t + 1;                                                                                               exp(kz (zvi0 , zvi00 )) ∂kz (zvi0 , zvi00 )
+                                                                                                          +                          ·                                (18)
+ 10: end while                                                                                                     Bi0 ,v                 ∂zvi00
+ 11: Obtain the updated weights {Wv }Vv=1 ;
+                                                                                     3) For ∂i,v /∂zvi00 , it is obvious that
+
+                                                                                                    ∂i,v  exp(kz (zvi , zi00 )) ∂kz (zvi , zi00 )
+                                                                                                                                       v                       v
+For example, a Gaussian CMK can be obtained when instantiat-                                          v0 =                      ·                                     (19)
+ing ϕz (·) and kz (·, ·) with Gaussian kernel. More instantiation                                   ∂zi0        Bi,v                 ∂zvi00
+details are thoroughly described in Section III-D. Due to this                        Furthermore, denoting zj  and hi as the j  th and i th element
+pairwise correlation, the CMK is proposed to compete with                          of zvi and hvi , we can obtain
+traditional kernels correspondingly, such as Gaussian CMK                                         ⎡                                           ⎤
+versus Gaussian kernel. Therefore, it can be utilized into a large                       ∂ziv         d
+                                                                                                         ∂zj        d
+                                                                                                                        ∂zj         d
+                                                                                                                                        ∂zj  ⎦
+set of kernel methods to improve their performance, enjoying a                                =⎣               ,···           ,...,             ,   (20)
+                                                                                         ∂hvi        
+                                                                                                         ∂h 1       
+                                                                                                                        ∂h i
+                                                                                                                                    
+                                                                                                                                        ∂hd
+promising application prospect.                                                                     j =1                 j =1                  j =1
+
+                                                                                   where
+B. Implementing the Critic
+                                                                                                          d            −1/2                   d            −3/2
+   In order to optimize the proposed model, we adopt the Gra-                         ∂zj                                                     
+                                                                                            = 1i =j             h2k             + hi hj             h2k           (21)
+dient Descent (GD) algorithm and compute the gradients on                             ∂hi
+                                                                                                           k=1                                  k=1
+variables {Wv }Vv=1 with chain rule as
+                                                                                   Additionally, the gradient of hvi on Wv can be computed as
+                       N                    
+               ∂c           ∂c ∂zvi ∂hvi
+                    =            ·     ·        .        (13)                                                       ∂hvi
+              ∂Wv      i=1
+                             ∂zvi ∂hvi ∂Wv                                                                               = xv
+                                                                                                                            i                                         (22)
+                                                                                                                    ∂Wv
+By utilizing (12), the gradient of c with respect to zvi can be                   By setting the learning rate to α, the updating of Wv is written
+decomposed into                                                                    as
+                              1  ∂i, v
+                                N,V
+                      ∂c                                                                                                               ∂c
+                           =               .                                (14)                              Wv = Wv − α                   .                         (23)
+                      ∂zvi   NV   ∂zvi                                                                                               ∂Wv
+                                          i, v =1
+                                                                                   In summary, we present an overview of the CMK generation
+For any target i0 and v0 , we separate the sub-losses of
+                                                                                   paradigm in Algorithm 1.
+(12) into three groups, including i0 ,v0 , {i0 ,v }Vv=1,v=v0 and
+{i,v }N,V
+       i=1,v=1,i=i0 . Correspondingly, (14) can be rewritten as                   C. Complexity and Large-Scale Solution
+
+ ∂c                                                                                  In this section, we analyze the computation complexity of
+                                                                                   the proposed CMK. Since the weights {Wv }Vv=1 are optimized
+ ∂zvi00
+                                                                                   with the GD algorithm, the complexity is only dependent on
+      ⎛                                                                      ⎞
+                              
+                              V                            
+                                                           N,V                     the gradient computation. To compute the gradient ∂c /∂Wv ,
+    1 ⎝ ∂i0 ,v0                          ∂i0 ,v                     ∂i,v ⎠
+ =               +                                +                            .   one should compute (13), (15), (20) and (22). Note that, the
+   NV    ∂zvi00                           ∂zvi00                      ∂zvi00       computation complexity of (20) and (22) are only related to
+                          v=1,v=v0                   i=1,v=1,i=i0
+                                                                            (15)   the dimension d of latent representations, and therefore are
+                                                                                   ignored here. At the very beginning, we pre-compute and store
+Denoting                                                                           {Ci,v }N,V
+                                                                                         i,v=1 with each being
+                                                           
+                 Bi,v =                   exp(kz (zvi , zvi )),            (16)
+                                                                                                                   
+                                                                                                                   N,V
+                                                                                                                                                
+                          i, v  ∈Ai,v
+                                                                                                         Ci,v =                exp(kz (zvi , zvi )).                 (24)
+Each item of (15) can be computed as follows:                                                                     i, v  =1
+
+
+
+          Authorized licensed use limited to: SICHUAN UNIVERSITY. Downloaded on May 25,2026 at 06:59:21 UTC from IEEE Xplore. Restrictions apply.
+9556                                               IEEE TRANSACTIONS ON PATTERN ANALYSIS AND MACHINE INTELLIGENCE, VOL. 45, NO. 8, AUGUST 2023
+
+
+
+
+Corresponding complexity is O(V 2 N 2 ). It is obvious that                        3) Polynomial:
+                    Bi,v = Ci,v − exp(kz (zvi , zvi )),                (25)                        ∂kz (xi , xj )
+                                                                                                                  = a(ax
+                                                                                                                        i xj + c)
+                                                                                                                                  d−1
+                                                                                                                                      · xj          (30)
+                                                                                                       ∂xi
+which prevents from duplicated computation of Bi,v in (17),
+(18) and (19). In this way, the computation of (15) by uti-                        4) Sigmoid:
+lizing (17), (18) and (19) only requires O(V N ) complexity.                               ∂kz (xi , xj )
+Since ∂c /∂Wv of (13) is the sum of N items with each                                                    = a(1 − tanh2 (ax
+                                                                                                                           i xj + c)) · xj          (31)
+                                                                                               ∂xi
+consisting of (15), its complexity is O(V N 2 ). To optimize the
+whole model, one needs to compute {∂c /∂Wv }Vv=1 , resulting                      5) Cauchy:
+in the O(V 2 N 2 ) complexity. Considering the aforementioned                              ∂kz (xi , xj )            2
+pre-computation, the overall complexity is O(2 V 2 N 2 ) which                                            =                        · (xi − xj )
+                                                                                               ∂xi          σ(xi − xj 2 /σ + 1)2
+can be rewritten as O(V 2 N 2 ).                                                                                                             (32)
+   The aforementioned quadratic complexities prevent CMK
+from handling with large-scale data. A direct and effective
+                                                                                          IV. CONTRASTIVE MULTI-VIEW CLUSTERING
+solution is to employ the Stochastic Gradient Descent (SGD)
+strategy in the optimization where data are split into batches.                    Apart from the kernel generation paradigm, we propose to
+In specific, given a random batch of multi-view data {xvi }N b ,V
+                                                           i,v=1 ,
+                                                                                unify the CMK generation into downstream kernel tasks for the
+corresponding loss can be accumulated in (10) and (12) in which                 sake of improving their performance. Here, one considers the
+                                                                                Multiple Kernel Clustering (MKC) setting. At the beginning, the
+       Ai,v = {1, 2, . . . , Nb } × {1, 2, . . . , V } \ {(i, v)}.     (26)     proposed framework is introduced. Then, we instantiate it with
+In this way, the computation complexity for each data batch                     the widely used Multiple Kernel k-means. Finally, an alternate
+is O(V 2 Nb2 ). With t denoting the number of epochs, tN/Nb                     strategy is designed to optimize the resultant problem.
+data batches will be used in the model training. Therefore,
+the overall complexity is O(tV 2 Nb N ) = O(V 2 Nb2 · tN/Nb ).                  A. Framework
+Since Nb << N in most neural network researches, we can train                      Existing MKC methods assumes the kernel matrices are com-
+the CMK model within a linear time.                                             puted in advance and fixed during the clustering process. Denote
+   Moreover, two techniques will also help mitigate the large-                  m ready-made kernels {Kp }m  p=1 , they prefer to minimize a loss
+scale problem. First, several deep learning packages (including                 like
+PyTorch and TensorFlow) can accelerate the Gradient Descent
+algorithm using GPU computations. Second, we can separate                                                   p=1 , F), s.t. gΘ ∈ G,
+                                                                                              K = gΘ ({Kp }m                                       (33)
+data into two splits and use one part to train CMK’s parameters
+and the other part or all of them to compute the kernel matrices.               where G is a class of objective functions and Θ represents the
+                                                                                extra temporary variables. Meanwhile, F is the target hard label
+                                                                                (RN ×1 ) [36] or soft label (RN ×k with k being the number of
+D. Instantiation
+                                                                                class) [15], [19] and obtained via optimization. Here, we propose
+   It is obvious from (6) and (7) that the proposed CMK mapping                 to perform kernel clustering along with CMK generation by
+function ϕvc (·) and kernel function kcv (·, ·) are defined on the              defining the overall loss as
+given ϕz (·) and kz (·, ·) which can be instantiated with the
+widely-used traditional kernels. Here, five common ones are                                                  = c + λK .                          (34)
+concerned, including Gaussian, Linear, Polynomial, Sigmoid                      In (34), the two processes contribute to each other, i.e., the CMK
+and Cauchy. Due to the implicit property of mapping function,                   paradigm generates kernel matrices for the latter MKC model
+only the kernel function definitions are presented in Table I.                  to achieve a better performance; as a feedback, a better MKC
+Taking the Gaussian kernel as an example, the instantiated CMK                  model motivates the generation of more specific CMK matrices.
+kernel function of vth view is                                                  In the experiments, we will show this unified learning mode
+                                                              
+                       −fN (fWv (xvi )) − fN (fWv (xvj ))2                    outperforms the separated one.
+ kc (xi , xj ) = exp
+  v     v  v
+                                                                 .
+                                          2σ 2
+                                                              (27)              B. Instantiation
+   For the computation of (17), (18) and (19), we also list                       Without loss of generality, we instantiate the aforementioned
+gradients of the five kernel types in the following.                            contrastive multi-view clustering framework with Multiple
+   1) Gaussian:                                                                 Kernel k-means (MKKM) [37], whose objective function gΘ
+       ∂kz (xi , xj )   exp(−xi − xj 2 /2σ 2 )                                should be
+                      =                          · (xj − xi )                          
+           ∂xi                   σ2                                                    m
+                                                                                                                
+                                                          (28)                               βp Tr Kp (IN − FF ) , s.t. F F = Ik ,                (35)
+  2) Linear:                                                                           p=1
+
+                               ∂kz (xi , xj )                                   in which βp is the weight of pth kernel, Ik refers to the identity
+                                              = xj                     (29)     matrix of size k and F ∈ RN ×k is the target soft label. Therefore,
+                                   ∂xi
+
+          Authorized licensed use limited to: SICHUAN UNIVERSITY. Downloaded on May 25,2026 at 06:59:21 UTC from IEEE Xplore. Restrictions apply.
+LIU et al.: CONTRASTIVE MULTI-VIEW KERNEL LEARNING                                                                                                 9557
+
+
+
+
+ Algorithm 2: Contrastive Multiple Kernel k-Means.                           Once fixing {Wv }Vv=1 , the CMK matrices {Kvc }Vv=1 are avail-
+                                                                             able and the problem can be transformed to
+  Input: Data {xvi }N,V
+                     i,v=1                                                                       V           
+  Output: Data cluster assignment Y                                                              
+  1: Obtain the updated weights {Wv }Vv=1 via Algorithm 1;                             maxF Tr              
+                                                                                                      Kc FF , s.t. F F = Ik .
+                                                                                                        v
+                                                                                                                                      (39)
+  2: t = 0;                                                                                           v=1
+
+  3: while t < epochs do                                                     Suppose ui and σi be the ith pairwise eigen-vector and eigen-
+  4: # kernel clustering                                                     value of matrix Vv=1 Kvc , the solution of F, by following [25],
+  5: Compute the kernel matrix {Kvc }Vv=1 via (9);                           should be the horizontal concatenation of k eigen-vectors as
+  6: Update the soft label F via (40);
+  7: # kernel function learning                                                                F∗ = [ui1 ; ui2 ; · · · ; uik ]
+  8: Compute the loss value  in (36);
+                                                                                                    s.t. {it }kt=1 ⊂ {1, 2, . . . , N },          (40)
+  9: Compute the loss gradients ∂/∂Wv via (37);
+ 10: Update {Wv }Vv=1 via (38);                                              where the corresponding {σit }kt=1 are the k largest out of N
+ 11: t = t + 1;                                                              eigen-values. Moreover, we present the overall optimization
+ 12: end while                                                               strategy in Algorithm 2.
+ 13: Obtain the soft label F;
+ 14: Obtain Y by performing k-means on F;
+                                                                                                          V. EXPERIMENT
+                                                                               In the following, we first introduce the used datasets and then
+we can obtain the model, named Contrastive Multiple Kernel                   design experiments to validate effectiveness of the proposed
+k-means (CMKKM) for brevity, as                                              CMK generation paradigm and CMKKM algorithm.
+
+           1                1 
+               N,V              V
+                                                                           A. Datasets
+    =              i,v + λ       βv Tr Kvc (IN − FF )
+          N V i,v=1          N v=1                                              At the very beginning, we roughly define the two types of
+                                                                             multi-view data mentioned in the question as follows:
+     s.t. F F = Ik ,                                                (36)       1) Multi-feature: This kind of data originates from a sin-
+                                                                                    gle modality of target samples. In most cases, they are
+where i,v represents the loss of Gaussian CMK.1 Here, we con-
+                                                                                    extracted by designing multiple features. For example,
+sider the kernel function learning and Multiple Kernel k-means
+                                                                                    Scale-Invariant Feature Transform (SIFT) and Histogram
+task as two equally important parts and set λ = 1. Also, βv is
+                                                                                    of Oriented Gradient (HOG) features (two data views) can
+globally set to 1/V in order to balance the kernel information
+                                                                                    be extracted from a RGB image (one modality).
+from each data view. Note that, a large set of MKC algorithms,
+                                                                                2) Multi-modal: This kind of data consists of multiple modal-
+apart from Multiple Kernel k-means, can be unified in the
+                                                                                    ities of target samples. In most cases, they are collected
+proposed framework, showing its generality.
+                                                                                    from multiple sensors, sources, etc., such as the data
+                                                                                    comprised of x-rays plus blood tests which is mentioned
+C. Optimization                                                                     in this question.
+   In the optimization problem of (36), there are two independent               Note that, apart from multi-modal, multi-feature is an another
+sets of variables, i.e., the weights {Wv }Vv=1 in kernel functions           classical type of multi-view concept. This can be proved by
+{kcv (·, ·)}Vv=1 and the target soft label F. To solve them, we              the wide application of multi-feature datasets [10], [38], [39]
+design an alternate strategy in which one variable is computed               in multi-view literature.
+while the others are fixed.                                                     In the following, we briefly introduce the view meanings of
+   For {Wv }Vv=1 with fixed F, Gradient Descent (GD) algorithm               the used datasets:
+is adopted, where their gradients are computed with chain rule                   1) BBC2 [40] (multi-feature) is processed from documents
+as                                                                                    of the BBC news website corresponding to stories in five
+                                                                                      topics, i.e., business, entertainment, politics, sport and
+                  ∂   N
+                           ∂ ∂zvi ∂hvi                                               technology. Each data view corresponds to a segment of
+                     =         ·    ·    .                           (37)
+                 ∂Wv   i=1
+                           ∂zvi ∂hvi ∂Wv                                              the documents3 .
+                                                                                 2) BBCSport2 [40] (multi-feature) is processed from docu-
+Due to the space limit, we omit the detailed derivation here. With                    ments of the BBC Sport website corresponding to sport
+setting the learning rate to α, the updating is shown as                              news in five topics, i.e., athletics, cricket, football, rugby
+                                           ∂                                         and tennis. Each data view corresponds to a segment of
+                      Wv = Wv − α             .                      (38)             the documents3 .
+                                          ∂Wv
+
+                                                                                2.http://mlg.ucd.ie/datasets/bbc.html
+  1.In the following, we use Gaussian CMK in CMKKM by default.                  3.http://mlg.ucd.ie/datasets/segment.html
+
+
+         Authorized licensed use limited to: SICHUAN UNIVERSITY. Downloaded on May 25,2026 at 06:59:21 UTC from IEEE Xplore. Restrictions apply.
+9558                                             IEEE TRANSACTIONS ON PATTERN ANALYSIS AND MACHINE INTELLIGENCE, VOL. 45, NO. 8, AUGUST 2023
+
+
+
+                               TABLE II                                              (UAVSAR) system (Radar) over an agricultural region
+                     DETAILS OF THE USED DATASETS
+                                                                                     near Winnipeg, Manitoba, Canada on 2012. Correspond-
+                                                                                     ingly, two features are extracted.
+                                                                                 Overall, we summarize the dataset specifications in Table II.
+
+                                                                              B. CMK: Kernel Quality Improvement
+                                                                                 To evaluate the kernel quality, we adopt three common clus-
+                                                                              tering metrics by applying standard kernel k-means on the
+                                                                              generated kernels. The metrics are Accuracy (ACC), Normalized
+                                                                              Mutual Information (NMI) and Purity. Their definitions are
+                                                                              detailed in Appendix. We also generate traditional kernels and
+                                                                              CMK with the same set of parameters as shown in Table IV to
+                                                                              ensure the fairness of comparison. Additionally, the dimension
+                                                                              of latent representations d and the learning rate α are set to 128
+                                                                              and 1.0 globally.11
+                                                                                 For the small-scale datasets, including BBC, BBCSport, Cite-
+   3) CiteSeer4 [41] (multi-modal) contains four views, i.e.,
+                                                                              Seer, Cora and Movies, we adopt the GD optimization strategy,
+      content, inbound, outbound and cites, of the documents.
+                                                                              while SGD strategy with batch size 1024 is employed on AwA,
+      There are 3707 words in content view and 4732 links in
+                                                                              CCV, NusWide, YtVedio and Cropland. In experiment, we apply
+      the other views.
+                                                                              kernel k-means on both traditional kernel and CMK of the
+   4) Cora4 [41] (multi-modal) contains four views, i.e., con-
+                                                                              ten datasets. Note that, for YtVideo and CropLand, Nyström
+      tent, inbound, outbound and cites, of the documents.
+                                                                              technique [48] is employed to prevent from memory error. In
+      There are 1433 words in content view and 5492 links
+                                                                              specific, corresponding accuracy comparison is presented in
+      in the other views.
+                                                                              Table III, where the best results are marked in bold. We make
+   5) Movies4 [41] (multi-modal) is extracted form IMDb5 to
+                                                                              the following observations.
+      have two data matrices with the first describing the movie
+                                                                                 1) CMK generation paradigm improves the kernel quality to
+      keywords while the second describing the movie actors.
+                                                                                     a large extent. For example, it promotes about 5%, 6%,
+   6) AwA6 [42] (multi-feature) consists of animal images with
+                                                                                     20%, 23%, 3%, 1%, 3%, 5%, 15% and 10% accuracy of
+      pre-extracted feature representations. Note we only use
+                                                                                     Gaussian kernel on ten datasets, respectively.
+      the Color Histogram and Local Self-Similarity features
+                                                                                 2) The results on some datasets and settings decrease, es-
+      here.
+                                                                                     pecially for the small-scale datasets, i.e., BBCSport and
+   7) CCV7 [43] (multi-modal) consists of three popular
+                                                                                     Movies. This may be caused by the random initialization
+      data features, including SIFT, Spatial-Temporal Interest
+                                                                                     of mapping weights Wv in (4). In the optimization, we use
+      Points (STIP), and Mel-Frequency Cepstral Coefficients
+                                                                                     the Gradient Descent algorithm which may stop on bad
+      (MFCC), where the first two are extracted from visual
+                                                                                     local minimums. This problem can be eased by adopting
+      modality and the last is from audio modality.
+                                                                                     a more robust optimization strategy, such as Adam [49].
+   8) NusWide8 [44] (multi-feature) extracts five features,
+                                                                                     Moreover, this may also be affected by the over-fit prob-
+      including Color Histogram (CH), Color Correlogram
+                                                                                     lem as discussed in Section V-D. Some performance
+      (CORR), Edge Direction Histogram (EDH), Wavelet
+                                                                                     decreases are also observed on Cauchy CMKs on AwA
+      Texture (WT) and Color Moments (CM), from a large
+                                                                                     and NusWide. But it can be observed that they are much
+      set of web images.
+                                                                                     smaller than the improvements in other settings.
+   9) YtVideo9 [45] (multi-modal) extracts a set of visual, au-
+                                                                                 3) Accuracies of Gaussian and Linear CMKs consistently
+      dio and text features from Youtube game videos. Here,
+                                                                                     outperform those of traditional kernels, while the others
+      we use HOG (visual), MFCC (audio), Latent Dirichlet
+                                                                                     are not. We leave this in future research.
+      Allocation (LDA) [46] (text) features.
+                                                                                 4) The average kernel (average of several traditional kernels)
+  10) CropLand10 [47] (multi-modal) collects a large vol-
+                                                                                     has often been observed to be a simple yet tough base-
+      ume of images by RapidEye satellites (optical) and
+                                                                                     line in kernel learning [35]. The reason is that averaging
+      the Unmanned Aerial Vehicle Synthetic Aperture Radar
+                                                                                     kernels integrates cross-view information. Nevertheless,
+                                                                                     CMK outperforms the traditional average kernel in most
+  4.https://lig-membres.imag.fr/grimal/data.html
+  5.https://www.imdb.com
+                                                                                     cases.
+  6.https://cvml.ist.ac.at/AwA/                                                  Nevertheless, the NMI and Purity values follow a similar trend
+  7.https://www.ee.columbia.edu/ln/dvmm/CCV/                                  and are shown in Appendix. Overall, we can conclude that the
+  8.https://lms.comp.nus.edu.sg/wp-content/uploads/2019/research/nuswide/     proposed CMK generation paradigm can improve kernel quality
+NUS-WIDE.html
+  9.https://archive.ics.uci.edu/ml/datasets/YouTube+Multiview+Video+          compared with traditional kernel generation approaches.
+Games+Dataset
+  10.https://archive.ics.uci.edu/ml/datasets/Crop+mapping+using+fused+
+optical-radar+data+set                                                          11.We do not tune any parameter in experiment for practicality.
+
+
+        Authorized licensed use limited to: SICHUAN UNIVERSITY. Downloaded on May 25,2026 at 06:59:21 UTC from IEEE Xplore. Restrictions apply.
+LIU et al.: CONTRASTIVE MULTI-VIEW KERNEL LEARNING                                                                                                9559
+
+
+
+                                                                TABLE III
+                                  ACCURACY COMPARISON OF TRADITIONAL KERNEL AND CMK ON KERNEL k-MEANS
+
+
+
+
+C. CMK: Downstream Task                                                        3) RMKKM [50] performs robust k-means with an appro-
+                                                                                  priate consensus kernel which is learned from a linear
+  Since the proposed method is a kernel generation paradigm,
+we also validate its effectiveness via comparing the perfor-                      combination of input kernels. Meanwhile, all the variables
+mances of multiple kernel methods on CMKs and traditional                         are encapsulated by the non-smooth L2,1 -norm.
+                                                                               4) MKCMR [15] proposes a matrix-induced regularization to
+kernels. The competing methods are:
+  1) MKKM [13] extends the well-known fuzzy c-means algo-                         reduce the redundancies among kernels and improve the
+      rithm with multiple kernel learning framework, where the                    kernel diversity.
+                                                                               5) ONKC [51] finds that the representation capability of
+      weights among kernels are adjusted automatically.
+  2) RMKC [18] proposes to clean the noise of input kernels                       consensus kernel is limited by decomposing it into a linear
+      and then aggregates them into a robust and low-rank                         weighted kernel combination. Thus, it locates the optimal
+                                                                                  kernel in the neighborhood area.
+      consensus one.
+
+        Authorized licensed use limited to: SICHUAN UNIVERSITY. Downloaded on May 25,2026 at 06:59:21 UTC from IEEE Xplore. Restrictions apply.
+9560                                            IEEE TRANSACTIONS ON PATTERN ANALYSIS AND MACHINE INTELLIGENCE, VOL. 45, NO. 8, AUGUST 2023
+
+
+
+                           TABLE IV                                             We also visualize the differences among kernels and latent
+           PARAMETERS OF TRADITIONAL KERNEL AND CMK
+                                                                             representations at each epoch in the middle of Fig. 2. Similarly,
+                                                                             Gaussian CMK on BBC is taken for an instance. We can discover
+                                                                             that their differences dramatically drop from the top, then remain
+                                                                             stable at constants, which can be explained in two-folds:
+                                                                                1) The decrease illustrates that minimizing the CMK
+                                                                                    loss motivates mapping functions to push the la-
+                                                                                    tent representations of different data views towards a
+                                                                                    consensus.
+                                                                                2) The stability at constants demonstrates that the learned
+                                                                                    latent representations keep view-specific information.
+   6) LFAM [24] first computes the base partition of each data                  The decrease and stability are two consistent, instead of oppo-
+      view, then aligns them with a consensus partition, at last             site, concepts in multi-view learning. In the fusion of multi-view
+      applies k-means to obtain the labels.                                  data, we expect to not only enhance discriminative information
+   In addition, we use the codes which are publicly available                of the shared part, but also encourage each view to hold view-
+on authors’ websites. Also, corresponding parameters are grid-               specific information as a supplement for the shared. Results
+searched in the recommended ranges, and the best results are                 on BBC in Fig. 2 well achieve this expectation, indicating an
+reported. Moreover, we inherit the settings in Section V-B to                effective learning state.
+generate kernel matrices.                                                       One potential problem of CMK may be that CMK can overfit
+   Since the aforementioned multiple kernel methods are of                   on small-scale datasets. To further analyze this risk, we plot
+cubic complexity, we only test them with the traditional kernels             the kernel and representation differences of Gaussian CMK
+and CMKs of BBC, BBCSport, CiteSeer, Cora and Movies.                        on BBCSport (shown on the right of Fig. 2). We observe that
+Corresponding accuracies are presented in Table V. Three ob-                 the differences decrease to zero. This means that the mapping
+servations can be obtained as follows:                                       functions encode multiple data views into the same latent repre-
+   1) Multiple kernel methods on Gaussian, Linear and Cauchy                 sentations, failing to balance the learning of shared information
+      CMKs consistently outperform those on traditional ker-                 and the preservation of view-specific information, as discussed
+      nels. For Gaussian CMKs, about 2%, 4%, 21%, 26% and                    in Section V-D. But it is noteworthy that CMK outperforms
+      3% accuracy improvements are observed, demonstrating                   traditional kernels even in this setting, as shown in Tables III
+      its effectiveness.                                                     and V. We leave the more detailed study of this problem to
+   2) Although CMK shows weaker performances on a few                        future work.
+      settings (such as BBCSport + Polynomial), the gaps are                    We also visualize the Gaussian CMKs on the 1st view of BBC
+      relatively small. Meanwhile, CMK exceeds the traditional               dataset before 100 epochs in Fig. 3. Since the element of CMK
+      kernels in most Polynomial and Sigmoid settings.                       measures the similarity between latent data representations, we
+   3) The results of multiple kernel methods establish a simi-               can see that the cluster structure of data samples are gradually
+      lar tendency with kernel quality evaluation in Table III,              enhanced along with model learning, verifying the effectiveness
+      especially for the decreases of Linear CMK on Movies,                  of CMK design.
+      Polynomial CMK on BBCSport, and Sigmoid CMK on
+      BBCSport. This may be improved by adopting other op-
+      timization strategies.
+   Overall, CMK generation paradigm can effectively promote                  E. CMKKM: Performance Improvement
+the performance of downstream tasks. Furthermore, the NMI                       To validate the benefits of jointly conducting CMK generation
+and Purity values follow a similar trend and are presented in                and kernel clustering (c and K in (34)), we compare the
+Appendix due to space limit.                                                 accuracies between CMKKM and CMK+ in Table VI. Note
+                                                                             that CMK+ refers to conducting kernel k -means on average
+                                                                             Gaussian CMK, which differs from CMKKM only at whether
+D. CMK: Insights of Model Building                                           MKKM loss K are employed in optimization. It can be seen
+   In this section, we explore two extra properties of the CMK               that CMKKM outperforms CMK+ by 1.09%, 3.87%, 6.88%,
+generation paradigm in the kernel learning process. Specifically,            6.17% and 3.24% on five benchmark datasets, respectively.
+we apply kernel k-means on the generated kernels and record                  This ablation study well verifies our proposal of CMKKM and
+corresponding performances by epoch. For ease of expression,                 contrastive multi-view clustering framework.
+performance of the average Gaussian CMK on BBC, along with                      Nevertheless, we compare the experiment results of CMKKM
+the loss value, is shown on the left of Fig. 2. It can be observed           with that of six representative MKC methods. It can be observed
+that the loss value continuously decreases in the training process.          in Table VI that CMKKM exceeds the best of comparative
+Meanwhile, accuracy, NMI, and purity increase with an opposite               methods by 3.28%, 6.07%, 14.31%, 22.04% and 4.05%, demon-
+tendency. We can conclude that minimizing the loss function                  strating its effectiveness. By the way, CMK+ also achieves
+helps improve the kernel quality, demonstrating the consistency              promising results compared with the nine methods, which well
+between loss design and our motivation.                                      illustrates the quality improvement of CMK.
+
+       Authorized licensed use limited to: SICHUAN UNIVERSITY. Downloaded on May 25,2026 at 06:59:21 UTC from IEEE Xplore. Restrictions apply.
+LIU et al.: CONTRASTIVE MULTI-VIEW KERNEL LEARNING                                                                                                 9561
+
+
+
+
+Fig. 2. Temporary measurements in model building, including loss value, performances, kernel difference and representation difference, by the example of
+Gaussian CMK on BBC and BBCSport, respectively.
+
+
+                                                               TABLE V
+                        ACCURACY COMPARISON OF TRADITIONAL KERNEL AND CMK ON CLASSICAL MULTIPLE KERNEL METHODS
+
+
+
+
+F. CMKKM: Insights of Model Building                                         the ones on BBC and CiteSeer are shown in Fig. 5. The model
+   By exploring the phenomenons in CMKKM model building,                     building is separated into two stages, i.e., CMK generation of
+we, in the following, try to explain why unifying CMK gen-                   the first 100 epochs (minimizing only c in (34)) and CMKKM
+                                                                             model learning of the last 200 epochs (minimizing both c and
+eration with MKC task can help improve the clustering perfor-
+mance. In specific, two temporary measurements, including loss               K in (34)), corresponding to line 1 and line 2-12 in Algorithm
+                                                                             2, respectively.
+value and accuracy, are recorded in CMKKM optimization and
+
+
+         Authorized licensed use limited to: SICHUAN UNIVERSITY. Downloaded on May 25,2026 at 06:59:21 UTC from IEEE Xplore. Restrictions apply.
+9562                                                IEEE TRANSACTIONS ON PATTERN ANALYSIS AND MACHINE INTELLIGENCE, VOL. 45, NO. 8, AUGUST 2023
+
+
+
+
+Fig. 3.   Visualization of the Gaussian CMK on the 1st view of BBC dataset in the learning process before 100 epochs.
+
+
+                                                                 TABLE VI
+                                     ACCURACY COMPARISON AMONG CLASSICAL MKC METHODS, CMK+ AND CMKKM
+
+
+
+
+Fig. 4. Accuracy variations respect to the dimension d of latent representations. The solid line represents different CMK types, while the black dotted line refers
+to the best result of traditional kernels.
+
+
+   From the subplot of BBC, we can see CMK loss c decreases                       are two independent but supplementary processes to each other.
+dramatically at first, and then keep stable in the first 100 epochs.               Jointly optimizing them in a unified framework would achieve
+At the same time, the accuracy rises to the top at around 40th                     an ideal learning state, leading to promising performance.
+epoch. These validate our proposal that minimizing the CMK
+loss can help improve the quality of resultant kernels. Also,
+two more observations are obtained: 1) The accuracy decreases                      G. Parameter Analysis
+from 40th to 100th epoch; 2) The MKKM loss K first falls at a                        We conduct an ablation study on the dimension of the latent
+large scale but then increases gradually. The two points illustrate                representation zvi to explore its effect on kernel quality. Keeping
+that minimizing the CMK loss blindly would result in the kernel                    the learning rate constant (i.e., α = 1.0), we vary the dimension
+quality loss. When imposing MKKM loss on optimization in the                       from 22 to 29 . As a result, performances on five types of CMK are
+last 200 epochs, it drops quickly. Meanwhile, the CMK loss rises                   obtained and the average accuracies are plotted in Fig. 4. Note
+slowly and keeps stable at last. So does the accuracy, indicating                  that the black dotted line represents the best result achieved
+the MKKM loss can help improve kernel quality. Moreover, the                       by traditional kernels. It can be seen that the accuracy starts
+results on CiteSeer share similar observations with that on BBC,                   increasing from a relatively low position. Especially, Polynomial
+but one can observe the accuracy improvement resulting from                        CMK gets an error on Cora when the dimension is set to 4. This
+MKKM loss more clearly.                                                            is caused by kernel k-means only separating the data into less
+   Overall, it can be concluded that CMK generation (minimiz-                      than 7 clusters, contradictory to the ground truth. Meanwhile,
+ing CMK loss c ) and MKC task (minimizing MKKM loss K )                          all types of CMK increase dramatically and then stay relatively
+
+
+          Authorized licensed use limited to: SICHUAN UNIVERSITY. Downloaded on May 25,2026 at 06:59:21 UTC from IEEE Xplore. Restrictions apply.
+LIU et al.: CONTRASTIVE MULTI-VIEW KERNEL LEARNING                                                                                                  9563
+
+
+
+                                                               TABLE VII
+                        ACCURACY COMPARISON OF CMK (EVALUATING WITH KERNEL k-MEANS) ON THE 1ST VIEW OF BBC DATASET
+
+
+
+
+                                                                                                          TABLE VIII
+                                                                                  ACCURACY COMPARISON OF CMK (EVALUATING WITH KERNEL k-MEANS)
+                                                                                                  AND CMKKM ON BBC DATASET
+
+
+
+
+Fig. 5. Temporary measurements in model building, including loss value and
+performances, by the example of Contrastive Multiple Kernel k-means with
+Gaussian CMK on BBC and CiteSeer, respectively. The dashed line indicates           Connection. Disregarding of the generation method of la-
+corresponding loss is plotted for better understanding but not employed in the
+optimization.                                                                    tent representation zvi , the contrastive loss in the Normalized
+                                                                                 Temperature-scaled Cross Entropy (NT-Xent) form is a spe-
+stable at wide ranges. Nevertheless, we observe that CMK                         cial case of the proposed Linear CMK loss, where both of
+outperforms the best traditional kernel when the dimension is                    them intend to maximize the similarities between positive pairs
+larger than 32. Therefore, it can be concluded that the proposed                 and minimize those between negative pairs. When limiting the
+paradigm is able to generate kernels of high quality even with a                 view number V of the proposed CMK loss in (10) to 2, it is
+large dimension of the latent representation hvi . We recommend                  obvious that
+setting the dimension to 128 or larger. At the same time, CMK                                                                         
+                                                                                                                  exp(kz (zvi , zvi ))
+establishes a stable quality improvement on traditional kernels,                         Eq. (10) = − log                          v v 
+verifying its effectiveness again.                                                                          j,v  ∈Ai,v exp(kz (zi , zj ))
+   By grid-searching the epoch number and learning rate, we                                                    exp(kz (zi , zj(i) ))
+present the accuracy results in Table VIII. It can be seen that both                               = − log 2 N                          ,          (41)
+the CMK and CMKKM models achieve better performances                                                        k=1 1k=i exp(kz (zi , zk ))
+with a larger training epoch number. Meanwhile, a large or                                                                   
+small learning rate results in a visible performance decrease. The               where the first column adopts zvi and zvi to represent the positive
+NMI and Purity results follow a similar trend and are shown in                   sample pair, while the second uses zi and zj(i) to do so. Never-
+Appendix. Therefore, we recommend setting the learning rate,                     theless, from Table I of the manuscript, kz (xi , xj ) = ax
+                                                                                                                                            i xj + c
+the epoch number of CMK and CMKKM models to 1.0, 150                             for the linear CMK, resulting in
+and 450.
+                                                                                                                    exp(az
+                                                                                                                          i zj(i) + c)
+                                                                                        Eq. (41) = − log 2 N
+                                                                                                                                
+                                                                                                                k=1 1k=i exp(azi zj(i) + c)
+                            VI. DISCUSSION
+   In this section, we first discuss the connection and differences                                                 exp(az
+                                                                                                                          i zj(i) )
+between the proposed CMK loss and the widely-used contrastive                                     = − log 2 N                               .      (42)
+                                                                                                                                
+loss [28], [35] as follows.                                                                                     k=1 1k=i exp(azi zj(i) )
+
+
+          Authorized licensed use limited to: SICHUAN UNIVERSITY. Downloaded on May 25,2026 at 06:59:21 UTC from IEEE Xplore. Restrictions apply.
+9564                                            IEEE TRANSACTIONS ON PATTERN ANALYSIS AND MACHINE INTELLIGENCE, VOL. 45, NO. 8, AUGUST 2023
+
+
+
+By setting a = 1/τ , we can get                                              achieving promising performance. To our best knowledge, this
+                                                                             is the first attempt to explore kernel generation and contrastive
+                                   exp(z
+                                        i zj(i)/ τ )                         learning in multi-view setting, providing a new direction for
+       Eq. (42) = − log 2 N
+                                              
+                               k=1 1k=i exp(zi zj(i) /τ )                   future research.
+                             exp(sim(zi , zj(i) )/τ )
+                 = − log 2 N                             (43)
+                          k=1 1k=i exp(sim(zi , zk )/τ )                                                      REFERENCES
+where sim(xi , xj ) = x  i xj /xi xj , and the last step holds
+                                                                              [1] K. I. Kim, M. O. Franz, and B. Schölkopf, “Iterative kernel prin-
+                                                                                  cipal component analysis for image modeling,” IEEE Trans. Pat-
+for zi is normalized in the proposed CMK. We can see (43) is                      tern Anal. Mach. Intell., vol. 27, no. 9, pp. 1351–1366, Sep. 2005,
+exactly the contrastive loss of [28], [35].                                       doi: 10.1109/TPAMI.2005.181.
+   Difference. We identify the novelty of the proposed CMK loss               [2] N. Perveen, D. Roy, and C. K. Mohan, “Facial expression recognition
+                                                                                  in videos using dynamic kernels,” IEEE Trans. Image Process., vol. 29,
+from three aspects:                                                               pp. 8316–8325, 2020, doi: 10.1109/TIP.2020.3011846.
+   1) Motivation. The contrastive loss of [28], [35] is designed              [3] H. Wang, Q. Wang, M. Gao, P. Li, and W. Zuo, “Multi-scale
+       to learn discriminative representations of images, while                   location-aware kernel representation for object detection,” in Proc.
+                                                                                  IEEE Conf. Comput. Vis. Pattern Recognit., Salt Lake City, UT,
+       CMK tends to improve the kernel quality of multi-view                      USA, Jun. 18–22, 2018, pp. 1248–1257. [Online]. Available:
+       data (the output is corresponding kernel matrices), which                  http://openaccess.thecvf.com/content_cvpr_2018/html/Wang_Multi-
+       is novel in kernel learning but ignored by existing re-                    Scale_Location-Aware_Kernel_CVPR_2018_paper.html
+                                                                              [4] Y. Chai et al., “To the point: Efficient 3D object detection in the range
+       searches.                                                                  image with graph convolution kernels,” in Proc. IEEE Conf. Comput. Vis.
+   2) Loss design. The method [28], [35] is partially limited by                  Pattern Recognit., Jun. 19–25, 2021, pp. 16000–16009. [Online].
+       the finite loss functions, such as NT-Xent, Margin Triplet,                Available:https://openaccess.thecvf.com/content/CVPR2021/html/
+                                                                                  Chai_To_the_Point_Efficient_3D_Object_Detection_in_the_Range_
+       etc. Meanwhile, the proposed CMK loss is more flexible,                    CVPR_2021_paper.html
+       where all types of kernel functions can be integrated by               [5] C. S. Leslie, E. Eskin, and W. S. Noble, “The spectrum kernel: A
+       simply instancing kz (·, ·). This also makes it compatible                 string kernel for SVM protein classification,” in Proc. 7th Pacific Symp.
+                                                                                  Biocomputing, Lihue, Hawaii, USA, R. B.A. K. Altman, L. Dunker-
+       with the literature of kernel theory, such as kernel learning,             Hunter, and T. E. Klein, Eds., Jan. 3–7, 2002, pp. 566–575. [On-
+       kernel approximation, etc.                                                 line]. Available: http://psb.stanford.edu/psb-online/proceedings/psb02/
+   3) Encoding structure. Contrastive learning proposes to en-                    leslie.pdf
+                                                                              [6] B. Schölkopf and A. J. Smola, Learning With Kernels: Support Vec-
+       coding images with an encoder f (·) and subsequent pro-                    tor Machines, Regularization, Optimization, and Beyond, ser. Adap-
+       jection head g(·). However, it is based on images and not                  tive Computation and Machine Learning Series. Cambridge, MA,
+       practical for data of vectors. Therefore, CMK simplifies                   USA: MIT Press, 2002. [Online]. Available: https://www.worldcat.org/
+                                                                                  oclc/48970254
+       the encoding design and projects multi-view data with V                [7] C. E. Rasmussen and C. K. I. Williams, Gaussian Processes for Machine
+       independent weights {Wv }Vv=1 .                                            Learning, ser. Adaptive Computation and Machine Learning. Cambridge,
+   Nevertheless, we explore the necessity of the normalization                    MA, USA: MIT Press, 2006.
+                                                                              [8] S. Y. Kung, Kernel Methods for Cluster Analysis. New York, NY, USA:
+of latent representations in (5). By removing the normalization,                  Cambridge Univ. Press, 2014, pp. 178–218.
+we obtain the experiment results in Table VII. It can be observed             [9] Z. Han, C. Zhang, H. Fu, and J. T. Zhou, “Trusted multi-view classifica-
+that the CMK generation paradigm without normalization often                      tion,” in Proc. 9th Int. Conf. Learn. Representations, Austria, May 2021.
+                                                                                  [Online]. Available: https://openreview.net/forum?id=OOsR8BzCnl5
+reports an error, especially when learning rate is bigger than               [10] C. Zhang et al., “Generalized latent multi-view subspace clustering,” IEEE
+0.01 or Polynomial and Cauchy kernel functions are adopted.                       Trans. Pattern Anal. Mach. Intell., vol. 42, no. 1, pp. 86–99, Jan. 2020,
+In such cases, we find the CMK’s values are always “NaN” or                       doi: 10.1109/TPAMI.2018.2877660.
+                                                                             [11] S. Sonnenburg, G. Rätsch, C. Schäfer, and B. Schölkopf, “Large
+“Inf,” illustrating a trivial solution. Meanwhile, for Gaussian,                  scale multiple kernel learning,” J. Mach. Learn. Res., vol. 7,
+Linear and Sigmoid CMK generation paradigms with learning                         pp. 1531–1565, 2006. [Online]. Available: http://jmlr.org/papers/v7/
+rate smaller than 0.01, the accuracies decrease rapidly once the                  sonnenburg06a.html
+                                                                             [12] X. Liu et al., “Multiple kernel KK-means with incomplete kernels,”
+normalization is removed. In sum, the normalization is essential                  IEEE Trans. Pattern Anal. Mach. Intell., vol. 42, no. 5, pp. 1191–1204,
+in the proposed CMK.                                                              May 2020, doi: 10.1109/TPAMI.2019.2892416.
+                                                                             [13] H. Huang, Y. Chuang, and C. Chen, “Multiple kernel fuzzy cluster-
+                                                                                  ing,” IEEE Trans. Fuzzy Syst., vol. 20, no. 1, pp. 120–134, Feb. 2012,
+                                                                                  doi: 10.1109/TFUZZ.2011.2170175.
+                        VII. CONCLUSION                                      [14] U. KloftRückert and P. L. Bartlett, “A unifying view of multi-
+                                                                                  ple kernel learning,” in Proc. Knowl. Discov. Databases Eur. Conf.
+   Current multiple kernel learning methods compute kernels                       Mach. Learn., part II, ser. Lecture Notes in Computer Science
+independently for each data view, ignoring the complementary                      Barcelona, J.L. F. Balcázar, A. BonchiGionis, and M. Sebag, Eds.,
+                                                                                  vol. 6322, Spain. Springer, Sep. 20–24, 2010, pp. 66–81, doi:
+information across views. We propose the Contrastive Multi-                       10.1007/978-3-642-15883-4_5.
+view Kernel generation paradigm, which integrates the views                  [15] X. Liu, Y. Dou, J. Yin, L. Wang, and E. Zhu, “Multiple kernel K-means
+into a quality kernel with a high concordance across views while                  clustering with matrix-induced regularization,” in Proc. 13th AAAI Conf.
+                                                                                  Artif. Intell., Phoenix, Arizona, USA, D. Schuurmans and M. P. Wellman,
+ensuring their diversity and heterogeneity. The experiments                       Eds., Feb. 12–17, 2016, pp. 1888–1894. [Online]. Available: http://www.
+show that CMK generates more quality kernels than traditional                     aaai.org/ocs/index.php/AAAI/AAAI16/paper/view/12115
+methods. We also propose a Contrastive Multi-view Clustering                 [16] J. Liu et al., “Optimal neighborhood multiple kernel clustering with
+                                                                                  adaptive local kernels,” IEEE Trans. Knowl. Data Eng., vol. 34, no. 6,
+framework and instantiate it with Multiple Kernel k-means,                        pp. 2872–2885, Jun. 2022, doi: 10.1109/TKDE.2020.3014104.
+
+
+
+       Authorized licensed use limited to: SICHUAN UNIVERSITY. Downloaded on May 25,2026 at 06:59:21 UTC from IEEE Xplore. Restrictions apply.
+LIU et al.: CONTRASTIVE MULTI-VIEW KERNEL LEARNING                                                                                                                     9565
+
+
+
+[17] Z. Ren and Q. Sun, “Simultaneous global and local graph struc-                     [34] Y. Tian, D. Krishnan, and P. Isola, “Contrastive multiview coding,” in
+     ture preserving for multiple kernel clustering,” IEEE Trans. Neu-                       Proc. Eur. Conf. Comput. Vis. 16th Eur. Conf., part XI, Ser. Lecture Notes
+     ral Netw. Learn. Syst., vol. 32, no. 5, pp. 1839–1851, May 2021,                        in Computer Science, vol. 12356, Glasgow, U.K., A. Vedaldi, H. Bischof,
+     doi: 10.1109/TNNLS.2020.2991366.                                                        T. Brox, and J. Frahm, Eds., Springer, Aug. 23–28, 2020, pp. 776–794,
+[18] P. Zhou, L. Du, L. Shi, H. Wang, and Y. Shen, “Recovery of corrupted                    doi: 10.1007/978-3-030-58621-8_45.
+     multiple kernels for clustering,” in Proc. 24th Int. Joint Conf. Artif. Intell.,   [35] J. Xu, H. Tang, Y. Ren, X. Zhu, and L. He, “Contrastive multi-modal
+     Buenos Aires, Argentina, Q. Yang and M. J. Wooldridge, Eds., Jul. 25–                   clustering,” 2021, arXiv:2106.11193.
+     31, 2015, pp. 4105–4111. [Online]. Available: http://ijcai.org/Abstract/           [36] X. Cai, F. Nie, and H. Huang, “Multi-view K-means clustering on Big
+     15/576                                                                                  Data,” in Proc. 23rd Int. Joint Conf. Artif. Intell., Beijing, China, F. Rossi,
+[19] A. Kumar, P. Rai, and H. D. III, “Co-regularized multi-view spectral                    Ed., Aug. 3–9, 2013, pp. 2598–2604. [Online]. Available: http://www.aaai.
+     clustering,” in Proc. Adv. Neural Inf. Process. Syst.: 25th Annu. Conf.                 org/ocs/index.php/IJCAI/IJCAI13/paper/view/6979
+     Neural Inf. Process. Syst., Granada, Spain, J. Shawe-Taylor, R. S.                 [37] L. Chen, C. L. P. Chen, and M. Lu, “A multiple-kernel fuzzy
+     Zemel, P.L. Bartlett, F. C.N. Pereira, and K. Q. Weinberger, Eds., Dec.                 C-means algorithm for image segmentation,” IEEE Trans. Syst.
+     12–14, 2011, pp. 1413–1421. [Online]. Available: https://proceedings.                   Man Cybern. Part B, vol. 41, no. 5, pp. 1263–1274, Oct. 2011,
+     neurips.cc/paper/2011/hash/31839b036f63806cba3f47b93af8ccb5-                            doi: 10.1109/TSMCB.2011.2124455.
+     Abstract.html                                                                      [38] M. Yin, J. Gao, S. Xie, and Y. Guo, “Multiview subspace clus-
+[20] J. Wen, H. Sun, L. Fei, J. Li, Z. Zhang, and B. Zhang, “Consensus                       tering via tensorial T-product representation,” IEEE Trans. Neu-
+     guided incomplete multi-view spectral clustering,” Neural Netw., vol. 133,              ral Netw. Learn. Syst., vol. 30, no. 3, pp. 851–864, Mar. 2019,
+     pp. 207–219, 2021, doi: 10.1016/j.neunet.2020.10.014.                                   doi: 10.1109/TNNLS.2018.2851444.
+[21] J. Wen, Z. Zhang, Y. Xu, and Z. Zhong, “Incomplete multi-view                      [39] H. Wang, Y. Yang, and B. Liu, “GMC: Graph-based multi-view clustering,”
+     clustering via graph regularized matrix factorization,” in Proc. Eur.                   IEEE Trans. Knowl. Data Eng., vol. 32, no. 6, pp. 1116–1129, Jun. 2020,
+     Conf. Comput. Vis. Workshops, Part IV, ser. Lecture Notes in Com-                       doi: 10.1109/TKDE.2019.2903810.
+     puter Science Munich, Germany, vol. 11132, Sep. 8–14, 2018, L.                     [40] D. Greene and P. Cunningham, “Practical solutions to the problem
+     Leal-Taixé and S. Roth, Eds., Springer, 2018, pp. 593–608, doi:                         of diagonal dominance in kernel document clustering,” in Proc. 23rd
+     10.1007/978-3-030-11018-5_47.                                                           Int. Conf. Mach. Learn., ser. ACM International Conference Proceed-
+[22] Z. Ren, S. X. Yang, Q. Sun, and T. Wang, “Consensus affinity                            ing Series, vol. 148, Pittsburgh, Pennsylvania, USA, W. W. Cohen and
+     graph learning for multiple kernel clustering,” IEEE Trans. Cybern.,                    A. W. Moore, Eds., Jun. 25–29, 2006, pp. 377–384, doi: 10.1145/
+     vol. 51, no. 6, pp. 3273–3284, Jun. 2021, doi: 10.1109/TCYB.2020.                       1143844.1143892.
+     3000947.                                                                           [41] Bisson and C. Grimal, “Co-clustering of multi-view datasets: A paral-
+[23] E. Bruno and S. Marchand-Maillet, “Multiview clustering: A late fusion                  lelizable approach,” in Proc. 12th IEEE Int. Conf. Data Mining, Brussels,
+     approach using latent models,” in Proc. 32nd Annu. Int. ACM SIGIR Conf.                 Belgium, M. J.A. Zaki, J. X. Siebes, B. Yu, G Goethals, I. Webb, and X.
+     Res. Develop. Inf. Retrieval, Boston, MA, USA, Jul. 19–23, 2009, pp. 736–               Wu, Eds., Dec. 10–13, 2012, pp. 828–833, doi: 10.1109/ICDM.2012.93.
+     737, doi: 10.1145/1571941.1572103.                                                 [42] C. H. Lampert, H. Nickisch, and S. Harmeling, “Learning to detect
+[24] S. Wang et al., “Multi-view clustering via late fusion alignment maxi-                  unseen object classes by between-class attribute transfer,” in Proc.
+     mization,” in Proc. 28th Int. Joint Conf. Artif. Intell., Macao, China, Aug.            IEEE Comput. Soc. Conf. Comput. Vis. Pattern Recognit., Miami,
+     10–16, 2019, pp. 3778–3784, doi: 10.24963/ijcai.2019/524.                               Florida, USA, Jun. 20–25, 2009, pp. 951–958, doi: 10.1109/CVPR.2009.
+[25] J. Liu, X. Liu, Y. Yang, S. Wang, and S. Zhou, “Hierarchical multiple kernel            5206594.
+     clustering,” in Proc. 35th AAAI Conf. Artif. Intell., Feb. 2021, pp. 8671–         [43] Y. Jiang, G. Ye, S. Chang, D. P. W. Ellis, and A. C. Loui, “Consumer
+     8679.                                                                                   video understanding: A benchmark database and an evaluation of human
+[26] H. Q. Minh, P. Niyogi, and Y. Yao, “Mercer’s theorem, feature maps, and                 and machine performance,” in Proc. 1st Int. Conf. Multimedia Retrieval,
+     smoothing,” in Proc. Learn. Theory 19th Annu. Conf. Learn. Theory, ser.                 Trento, Italy, F. G. B. D. Natale, A. D. Bimbo, A. Hanjalic, B. S.
+     Lecture Notes in Computer Science, vol. 4005, Pittsburgh, PA, USA, G.                   Manjunath, and S. Satoh, Eds., Apr. 2011, pp. 29–36, doi: 10.1145/
+     Lugosi and H. U. Simon, Eds., Springer, Jun. 22–25, 2006, pp. 154–168,                  1991996.1992025.
+     doi: 10.1007/11776420_14.                                                          [44] T. Chua, J. Tang, R. Hong, H. Li, Z. Luo, and Y. Zheng, “NUS-WIDE: A
+[27] M. Bouafia, D. Benterki, and A. Yassine, “An efficient parameterized                    real-world web image database from national university of singapore,”
+     logarithmic kernel function for linear optimization,” Optim. Lett., vol. 12,            in Proc. 8th ACM Int. Conf. Image Video Retrieval, Santorini Island,
+     no. 5, pp. 1079–1097, 2018, doi: 10.1007/s11590-017-1170-5.                             Greece, S. Marchand-Maillet and Y. Kompatsiaris, Eds., Jul. 8–10, 2009,
+[28] T. Chen, S. Kornblith, M. Norouzi, and G. E. Hinton, “A simple framework                doi: 10.1145/1646396.1646452.
+     for contrastive learning of visual representations,” in Proc. 37th Int. Conf.      [45] O. Madani, M. Georg, and D. A. Ross, “On using nearly-independent
+     Mach. Learn., ser. Proceedings of Machine Learning Research, vol. 119,                  feature families for high precision and confidence,” Mach. Learn., vol. 92,
+     Jul. 13–18, 2020, pp. 1597–1607. [Online]. Available: http://proceedings.               no. 2/3, pp. 457–477, 2013, doi: 10.1007/s10994-013-5377-0.
+     mlr.press/v119/chen20j.html                                                        [46] D. M. Blei, A. Y. Ng, and M. I. Jordan, “Latent dirichlet allocation,” J.
+[29] Y. Lin, Y. Gou, Z. Liu, B. Li, J. Lv, and X. Peng, “COMPLETER:                          Mach. Learn. Res., vol. 3, pp. 993–1022, Mar. 2003.
+     Incomplete multi-view clustering via contrastive prediction,” in                   [47] I. Khosravi and S. K. Alavipanah, “A random forest-based framework
+     Proc. IEEE Conf. Comput. Vis. Pattern Recognit, Jun. 19–25, 2021,                       for crop mapping using temporal, spectral, textural and polarimetric ob-
+     pp. 11174–11183. [Online]. Available: https://openaccess.thecvf.                        servations,” Int. J. Remote Sens., vol. 40, no. 18, pp. 7221–7251, 2019,
+     com/content/CVPR2021/html/Lin_COMPLETER_Incomplete_Multi-                               doi: 10.1080/01431161.2019.1601285.
+     View_Clustering_via_Contrastive_Prediction_CVPR_2021_paper.                        [48] Oglic and T. Gärtner, “Nyström method with kernel K-means samples as
+     html                                                                                    landmarks,” in Proc. 34th Int. Conf. Mach. Learn., ser. Proceedings of
+[30] Y. Li, P. Hu, J. Z. Liu, D. Peng, J. T. Zhou, and X. Peng, “Contrastive                 Machine Learning Research, vol. 70, Sydney, NSW, Australia, D. Precup
+     clustering,” in Proc. 31st AAAI Conf. Artif. Intell., 33rd Conf. Innov.                 and Y. W. Teh, Eds., Aug. 6–11, 2017, pp. 2652–2660. [Online]. Available:
+     Appl. Artif. Intell., 11th Symp. Educ. Adv. Artif. Intell., Feb. 2–9, 2021,             http://proceedings.mlr.press/v70/oglic17a.html
+     pp. 8547–8555. [Online]. Available: https://ojs.aaai.org/index.php/AAAI/           [49] D. P. Kingma and J. Ba, “Adam: A method for stochastic optimization,”
+     article/view/17037                                                                      in Proc. 3rd Int. Conf. Learn. Representations, ser. Conference Track
+[31] B. Du, X. Gao, W. Hu, and X. Li, “Self-contrastive learning with hard                   Proceedings, San Diego, CA, USA, Y. Bengio and Y. LeCun, Eds., May
+     negative sampling for self-supervised point cloud learning,” in Proc. 29th              7–9, 2015.
+     ACM Int. Conf. Multimedia, 2021, pp. 3133–3142.                                    [50] L. Du et al., “Robust multiple kernel K-means using L21-norm,” in Proc.
+[32] P. Khosla et al., “Supervised contrastive learning,” in Proc. Adv.                      24th Int. Joint Conf. Artif. Intell., Buenos Aires, Argentina, Q. Yang and M.
+     Neural Inf. Process. Syst. 33: Annu. Conf. Neural Inf. Process. Syst.,                  J. Wooldridge, Eds., Jul. 25–31, 2015, pp. 3476–3482. [Online]. Available:
+     H. Larochelle, M. Ranzato, R. Hadsell, M. Balcan, and H. Lin, Eds.,                     http://ijcai.org/Abstract/15/489
+     Dec. 6–12, 2020. [Online]. Available: https://proceedings.neurips.                 [51] X. Liu et al., “Optimal neighborhood kernel clustering with multiple
+     cc/paper/2020/hash/d89a66c7c80a29b1bdbab0f2a1a94af8-Abstract.                           kernels,” in Proc. 31st AAAI Conf. Artif. Intell., San Francisco, California,
+     html                                                                                    USA, S. P. Singh and S. Markovitch, Eds., Feb. 4–9, 2017, pp. 2266–2272.
+[33] C. Yeh, C. Hong, Y. Hsu, T. Liu, Y. Chen, and Y. LeCun, “Decoupled                      [Online]. Available: http://aaai.org/ocs/index.php/AAAI/AAAI17/paper/
+     contrastive learning,” 2021, arXiv:2110.06848.                                          view/14761
+
+
+
+           Authorized licensed use limited to: SICHUAN UNIVERSITY. Downloaded on May 25,2026 at 06:59:21 UTC from IEEE Xplore. Restrictions apply.
+9566                                                 IEEE TRANSACTIONS ON PATTERN ANALYSIS AND MACHINE INTELLIGENCE, VOL. 45, NO. 8, AUGUST 2023
+
+
+
+                         Jiyuan Liu received the PhD degree from the Na-                                      Qing Liao received the PhD degree in computer
+                         tional University of Defense Technology (NUDT),                                      science and engineering, in 2016 supervised by Prof.
+                         China, in 2022. He is now a lecturer with the Col-                                   Qian Zhang from the Department of Computer Sci-
+                         lege of Systems Engineering, NUDT. His current                                       ence and Engineering of the Hong Kong University of
+                         research interests include multi-view clustering, fed-                               Science and Technology. She is currently a professor
+                         erated learning and anomaly detection. He has pub-                                   with School of Computer Science and Technology,
+                         lished papers in journals and conferences such as                                    Harbin Institute of Technology (Shenzhen), China.
+                         IEEE Transactions on Knowledge and Data Engi-                                        Her research interests include artificial intelligence
+                         neering, IEEE Transactions on Neural Networks and                                    and data mining.
+                         Learning Systems, ICML, NeurIPS, CVPR, ICCV,
+                         ACMMM, AAAI, IJCAI, etc. He serves as program
+committee member and reviewer on IEEE Transactions on Knowledge and Data
+Engineering, IEEE Transactions on Neural Networks and Learning Systems,
+ICML, NeurIPS, CVPR, ICCV, ACMMM, AAAI, and IJCAI, etc. More infor-
+mation can be found with https://liujiyuan13.github.io/.
+                                                                                                              Yuanqing Xia (Senior Member, IEEE) received the
+                                                                                                              PhD degree in control theory and control engineering
+                           Xinwang Liu (Senior Member, IEEE) received the                                     from the Beijing University of Aeronautics and As-
+                           PhD degree from the National University of Defense                                 tronautics, Beijing, China, in 2001. He is currently the
+                           Technology (NUDT), China, in 2013. He is now                                       dean of the School of Automation, Beijing Institute
+                           a professor with the College of Computer, NUDT.                                    of Technology. He has published eight monographs
+                           His current research interests include kernel learn-                               in Springer, Wiley, and CRC, and more than 100
+                           ing, multi-view clustering and unsupervised feature                                papers in international scientific journals. His current
+                           learning. He has published 80+ peer-reviewed pa-                                   research interests include networked control systems,
+                           pers, including those in highly regarded journals and                              robust control and signal processing, active distur-
+                           conferences such as IEEE Transactions on Pattern                                   bance rejection control and flight control. He was a
+                           Analysis and Machine Intelligence, IEEE Transac-        recipient of the National Science Foundation for Distinguished Young Scholars
+                           tions on Knowledge and Data Engineering, IEEE           of China, in 2012, the Second Award of the Beijing Municipal Science and
+Transactions on Image Processing, IEEE Transactions on Neural Networks             Technology (No. 1) in 2010 and 2015, the Second National Award for Science
+and Learning Systems, IEEE Transactions on Multimedia, IEEE Transactions           and Technology (No. 2), in 2011, and the Second Natural Science Award of the
+on Information Forensics and Security, ICML, NeurIPS, CVPR, ICCV, AAAI,            Ministry of Education (No. 1), in 2012. He is a deputy editor of the Journal
+IJCAI, etc. He is an associate editor of IEEE Transactions on Neural Networks      of Beijing Institute of Technology, an associate editor of Acta Automatica
+and Learning Systems and Information Fusion Journal.                               Sinica, Control Theory and Applications, the International Journal of Innovative
+                                                                                   Computing, Information and Control, and the International Journal of Automa-
+                                                                                   tion and Computing. In 2016, he was honored as the Yangtze River Scholar
+                                                                                   Distinguished Professor and was supported by National High Level Talents
+                                                                                   Special Support Plan (Million People Plan) by the Organization Department of
+                        Yuexiang Yang received the BS degree in mathe-             the CPC Central Committee.
+                        matics from Xiangtan University, Xiangtan, China,
+                        in 1986, the MS degree in computer application, and
+                        the PhD degree in computer science and technology
+                        from the National University of Defense Technology,
+                        Changsha, China, in 1989 and 2008, respectively.
+                        His research interests include information retrieval,
+                        network security and data analysis. He is the executive
+                        Director of the Information Branch of China Higher
+                        Education Association. He has co-authored more than
+                        100 papers in international journals and conference or
+workshop proceedings. He has been serving as reviewer and program committee
+member of various conferences and journals.
+
+
+
+
+         Authorized licensed use limited to: SICHUAN UNIVERSITY. Downloaded on May 25,2026 at 06:59:21 UTC from IEEE Xplore. Restrictions apply.
+

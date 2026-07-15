@@ -74,6 +74,66 @@ Learning for One-Class Anomaly Detection}
 %% Abstract
 \begin{abstract}
 
+% 单类异常检测旨在仅利用正常样本学习数据的正常模式，并识别测试阶段出现的未知偏离样本，在工业故障诊断、
+% 网络安全和医学筛查等场景中具有重要应用价值。近年来，对比学习因其强大的表示学习能力被广泛引入异常检测任务。
+% 然而，现有方法通常依赖跨视图一致性来建模正常数据分布，主要强调同一样本不同视图之间的对齐，却难以显式保证
+% 异常识别所需的类内紧凑性。同时，多数方法通常在单一几何空间中刻画样本关系，难以充分利用正常数据在不同尺度下
+% 的相似性信息，导致其对不同数据拓扑和异常模式的适应能力受限。
+
+% One-class anomaly detection aims to learn the normal pattern of data using only normal samples and 
+% to identify previously unseen deviations at test time, which is of practical importance in applications 
+% such as industrial fault diagnosis, cybersecurity, and medical screening. Recently, contrastive learning 
+% has been widely introduced into anomaly detection due to its strong representation learning capability. 
+% However, existing methods typically model the normal distribution through cross-view consistency, mainly 
+% emphasizing the alignment between different views of the same sample, while lacking an explicit guarantee 
+% of the intra-class compactness required for reliable anomaly identification. Moreover, most methods 
+% characterize sample relations in a single geometric space, making it difficult to fully exploit the multi-scale 
+% similarity information of normal data and thus limiting their adaptability to diverse data topologies and 
+% anomaly patterns.
+
+
+% 为解决上述问题，本文提出一种用于单类异常检测的散度正则化跨多核（Scatter-regularized Cross-Multi-Kernel, SCMK）
+% 对比学习框架。该方法首先基于正常样本距离中位数构建多尺度高斯核库，用于刻画正常样本从局部邻域到全局分布的相似性信息；
+% 随后，将不同尺度的核函数视为天然视图，并采用轻量级多头线性投影网络学习核相关表示，通过跨核对比损失实现同一样本跨核
+% 表示的一致对齐。进一步地，本文面向单类异常检测设计多核散度正则项，通过最大化各核视图中正常样本嵌入中心的模长，
+% 显式压缩正常样本的类内分布，从而将跨视图一致性扩展为跨核一致且类内紧凑的正常表示。在检测阶段，本文从学习表示中同时提取
+% 方向信号和幅值信号，分别利用线性 OC-SVM 与 RBF OC-SVM 建模角度异常和径向异常，并通过逐样本最大化策略融合两类异常分数。
+% 20 个基准数据集上的实验结果表明，所提出方法相较于现有先进方法取得了更优的检测性能，并能够适应不同拓扑结构和异常分布的数据集，
+% 表现出良好的鲁棒性
+
+% To address these issues, we propose a Scatter-regularized Cross-Multi-Kernel (SCMK) contrastive learning framework 
+% for one-class anomaly detection. Specifically, SCMK first constructs a multi-scale Gaussian kernel bank calibrated 
+% by the median pairwise distance of normal samples, so as to characterize similarity information from local neighborhoods 
+% to global distributions. It then treats Gaussian kernels at different scales as natural views and employs a lightweight 
+% multi-head linear projection network to learn kernel-associated representations, where a cross-kernel contrastive loss 
+% is designed to align the representations of the same sample across different kernel views. Furthermore, we introduce a 
+% multi-kernel scatter regularizer tailored to one-class anomaly detection. By maximizing the norm of the normal embedding 
+% centroid in each kernel view, the regularizer explicitly compacts the intra-class distribution of normal samples, thereby 
+% extending cross-view consistency to cross-kernel consistent and intra-class compact normal representations. At the 
+% detection stage, SCMK extracts two complementary signals from the learned representations: a directional signal and a 
+% magnitude signal. A linear OC-SVM and an RBF OC-SVM are respectively used to model angular and radial anomalies, and the 
+% two anomaly scores are fused by a per-sample maximum strategy. Experiments on 20 benchmark datasets demonstrate that 
+% SCMK achieves superior detection performance over state-of-the-art methods and exhibits strong robustness across diverse 
+% data topologies and anomaly distributions.
+
+
+% 贡献
+% 贡献点 1：核视图驱动的跨多核对比学习框架
+% 将不同尺度的高斯核视为天然视图，替代传统对比学习中依赖随机增强构造视图的方式；通过跨核 InfoNCE 目标对齐同一样本在不同核视图下
+% 的表示，实现多尺度表示的一致学习。
+
+% 贡献点 2：多尺度相似信息建模与轻量表示网络
+% 基于正常样本的距离中位数构造多尺度高斯核库，用于刻画正常样本从局部邻域到全局分布的相似性信息；同时采用多头线性投影结构 CMKNet，
+% 每个核对应一个轻量投影头，在保持低复杂度的同时学习核相关表示。
+
+% 贡献点 3：面向单类异常检测的一致性-紧凑性联合优化目标
+% 针对对比学习仅强调跨视图一致、难以保证正常类绝对紧凑的问题，引入多核散度正则项；通过最大化各核视图中正常样本嵌入中心的模长，
+% 等价地压缩正常样本类内散度，从而学习跨核一致且类内紧凑的正常表示。
+
+% 贡献点 4：方向-幅值双信号最大融合检测机制
+% 从学习表示中同时提取 L2 归一化嵌入的方向信号和原始投影范数的幅值信号，分别利用线性 OC-SVM 与 RBF OC-SVM 捕获角度异常和径向异常；
+% 通过逐样本最大化策略融合两类分数，提高对不同异常模式和数据拓扑的适应性。
+
 One-class anomaly detection has attracted extensive research due to 
 its broad application in identifying unforeseeable deviations. The idea 
 of contrastive learning is one of the widely used methods 
@@ -124,80 +184,247 @@ anomaly detection \sep multiple kernel learning \sep contrastive learning
 \section{Introduction}
 \label{sec:intro}
 
-Anomaly detection---the task of identifying observations that deviate markedly
-from the prevailing pattern of the data---underpins a broad range of
-applications, including financial fraud detection, industrial fault diagnosis,
-network-intrusion monitoring, and medical screening~\cite{pang2021review,
-ruff2021unifying}. The defining difficulty of the problem is statistical:
-anomalies are rare, heterogeneous, and largely unforeseeable, so the abnormal
-class can be neither sampled exhaustively nor characterised in advance. This
-rules out a conventional supervised formulation and motivates the
-\emph{one-class} (semi-supervised) paradigm, in which a model is trained on
-normal data alone and flags as anomalous any test instance that departs from the
-learned notion of normality~\cite{scholkopf2001ocsvm,tax2004svdd}.
 
-Classical one-class detectors realise this idea in a \emph{single, fixed}
-similarity space. The one-class support vector machine
-(OC-SVM)~\cite{scholkopf2001ocsvm} and support vector data description
-(SVDD)~\cite{tax2004svdd} separate the normal data from the origin, or enclose
-them in a minimal sphere, within one reproducing-kernel Hilbert space; density-
-and distance-based methods such as LOF~\cite{breunig2000lof} and isolation
-forests~\cite{liu2008iforest} likewise commit to one geometric prior. Their
-accuracy therefore hinges critically on the choice of kernel and bandwidth, a
-choice that does not transfer well across datasets and degrades in
-high-dimensional, heterogeneous feature spaces. Deep one-class models alleviate
-the fixed-geometry issue by \emph{learning} a representation: autoencoder-based
-detectors~\cite{zhou2017rda} score samples by reconstruction error, while Deep
-SVDD~\cite{ruff2018svdd} maps normal data into a compact hypersphere. Yet
-reconstruction objectives are not inherently discriminative, hypersphere
-objectives are prone to representational collapse, and---crucially---each of
-these methods still summarises similarity through a \emph{single} learned
-geometry.
+% 第一段 异常检测背景和方法谱系
+Anomaly detection is a fundamental task in data mining and pattern recognition, with broad 
+applications in industrial fault diagnosis~\cite{chen2024coarse}, network intrusion detection~\cite{xie2021network}, 
+healthcare monitoring~\cite{du2025fraud}, financial risk control, and cyber-physical system surveillance. 
+Its goal is to identify observations that deviate significantly from the predominant normal patterns. This 
+problem is intrinsically challenging because anomalies are typically rare, heterogeneous, and difficult to 
+enumerate in advance. 
+% 深度重构模型虽然表达能力强，但其检测依据通常是重构误差，重构误差并不直接约束正常样本在表示空间中的边界或紧凑区域；
+% 因此需要一种既能建模非线性结构，又能保留清晰几何检测准则的方法；kernel-based one-class methods 正好提供这种几何化的非线性建模方式。
+Existing approaches can be broadly categorized into statistical, proximity-based, reconstruction-based, and boundary-based methods. 
+Statistical models identify samples that deviate from an assumed data distribution, whereas proximity-based detectors rely on 
+distance or density estimates to expose isolated observations. Although these methods are effective for low-dimensional or 
+well-structured data, their performance often degrades when the normal class exhibits nonlinear, heterogeneous, or multi-scale 
+dependencies. Deep reconstruction models, such as autoencoders, enhance representation capacity through nonlinear mappings, 
+but their anomaly scores are typically derived from reconstruction errors rather than from an explicit geometric description of 
+the normal region. Consequently, they may reconstruct anomalies with small errors and provide limited control over the compactness 
+or boundary of normal data. Kernel-based one-class methods offer a complementary route by modeling nonlinear similarities while 
+preserving explicit geometric detection objectives in the induced feature space.
 
-Multiple kernel learning (MKL) offers a principled remedy to the single-geometry
-limitation by combining a bank of kernels that encode complementary notions of
-similarity at different scales~\cite{gonen2011mkl,lanckriet2004sdp}. Fusing such
-views improves robustness and removes the burden of selecting one ``correct''
-kernel, and the idea extends naturally to clustering through multiple-kernel
-$k$-means and its centroid variants~\cite{liu2016mkkm,huang2012mkkm}. However,
-classical MKL and MKKM are \emph{shallow}: they operate directly on the raw input
-features and merely learn a set of scalar kernel weights, without inducing a
-representation that a downstream detector can exploit. The expressive power of
-modern representation learning is thus left untapped.
+% 第二段 核一类方法及单核局限
+% Kernel-based one-class methods are useful
+% → OC-SVM/SVDD provide explicit geometric boundaries
+% → But they rely on one fixed kernel space
+% → A single bandwidth captures only one similarity scale
+% → Traditional kernel methods are shallow and do not learn representations
+% → Therefore, robust one-class detection needs multi-scale similarity modeling and representation learning
+% 基于核的单类方法具有实用价值
+% → OC-SVM/SVDD 可提供明确的几何边界
+% → 但它们依赖单一的固定核空间
+% → 单一带宽仅能捕捉一种相似度尺度
+% → 传统核方法属于浅层模型，无法学习表征
+% → 因此，鲁棒的单类检测亟需多尺度相似度建模与表征学习
+Kernel-based one-class methods are particularly appealing when anomalies are unavailable or unreliable during training. 
+Representative methods such as OC-SVM and SVDD learn a compact description of normal data in a reproducing kernel Hilbert space: 
+OC-SVM separates normal samples from the origin by a maximum-margin hyperplane, whereas SVDD encloses them within a minimum-volume 
+hypersphere. These formulations provide explicit geometric detection objectives and can model nonlinear normal regions through the 
+kernel trick. Their strength, however, also reveals a central limitation: the learned normal region is entirely determined by a 
+preselected kernel geometry. In particular, a Gaussian kernel with a small bandwidth emphasizes local neighborhood relations, while 
+a large bandwidth captures broader distributional structure; committing to a single bandwidth may therefore miss complementary 
+similarity information. Moreover, classical kernel detectors operate on fixed kernels or raw features and do not learn representations 
+adapted to the downstream one-class objective. These limitations motivate a framework that combines multi-scale similarity information 
+with learnable representation modeling for one-class anomaly detection.
 
-Contrastive representation learning provides exactly such expressive power. By
-pulling together different ``views'' of the same instance and pushing apart views
-of different instances, objectives such as InfoNCE~\cite{oord2018infonce} and
-SimCLR~\cite{chen2020simclr} learn embeddings that transfer remarkably well, and
-they have recently been adapted to anomaly detection~\cite{tack2020csi,
-qiu2021neutral}. This suggests a natural marriage with MKL: treat the
-\emph{kernel index itself as a contrastive view}, so that the embeddings produced
-by different kernels for the same sample are aligned, while embeddings of
-different samples remain separable. Such a cross-kernel contrastive encoder
-reconciles multi-scale similarity within a learned representation. Nevertheless,
-a subtle but consequential gap remains. The InfoNCE objective enforces only
-\emph{cross-view consistency} (alignment of a sample's kernel views) and
-\emph{instance discriminability} (uniformity over the sphere); it does not make
-the normal class \emph{absolutely compact}. Indeed, the loss is invariant to
-configurations that scatter normal embeddings widely across the representation
-space as long as each sample's views agree. For one-class detection, however,
-the compactness of the normal region is precisely the property that a downstream
-detector relies upon. We identify this mismatch---\emph{consistency is not
-compactness}---as the central obstacle to coupling contrastive learning with
-one-class detection.
+% 第三段 多核异常检测到无显式核权重的跨核对比学习
+% 传统多核方法解决了“如何融合多个核”的问题
+% → 但主要关注最终核或决策函数层面的融合
+% → 不显式约束同一样本在不同核尺度下的表示是否一致
+% → 因此跨核关系只是在目标函数中被间接利用
+% → 对比学习恰好提供了直接建模跨视图一致性的机制
+% 为缓解单一核空间的局限，已有多核异常检测方法通常通过组合多个核函数来刻画互补的相似性信息，并进一步自适应地学习核组合权重，以增强组合核空间对复杂数据结构
+% 的表达能力。这类方法在一定程度上提高了核模型对不同数据分布和相似性尺度的适应能力。然而，其核心关注点仍主要停留在预定义核的选择、加权与融合上，即通过构造
+% 更合适的组合核空间来服务下游一类检测目标。虽然这种策略能够利用不同核尺度提供的互补信息，但同一样本在不同核尺度下是否形成一致的表示结构，通常并未被作为
+% 显式优化目标。因此，传统多核学习虽然缓解了单核选择的敏感性，却仍缺少一种直接建模跨核一致性的表示学习机制。
+% 对比学习恰好为这一问题提供了自然工具，因为它能够通过构造正负样本对显式对齐不同视图下的同一样本表示。受对比式多视图核学习思想的启发，本文将不同尺度的核
+% 函数视为天然视图，并提出一种无需显式核组合权重的多核对比表示学习方式。具体而言，本文并不显式构造多个 RKHS 表示并学习其加权组合，而是为每个核尺度配置一个
+% 独立线性投影头，使原始样本首先被映射为多个同维度的核相关嵌入；随后，在这些嵌入上利用对应核函数计算多尺度相似度，并通过跨核 InfoNCE 目标反向优化各投影头。
+% 由此，同一样本在不同核相关分支中的嵌入构成正样本对，不同样本的嵌入构成负样本对，使多核信息不再仅依赖显式权重加权融合，而是在跨核对比学习过程中通过优化
+% 各核相关投影头，隐式形成跨尺度一致的多核表示空间。
 
-We resolve it with \emph{scatter-regularized cross-multi-kernel} contrastive
-learning (SCMK). On top of a cross-kernel contrastive encoder built over a
-multi-scale Gaussian kernel bank, we introduce a \emph{multi-kernel scatter
-regularizer} that explicitly compacts the normal class within every
-kernel-induced embedding space. The regularizer is derived from the one-class
-specialisation of centroid multiple-kernel $k$-means, and we prove that it equals
----up to an additive constant---the average within-class scatter of the
-unit-norm embeddings, thereby giving the heuristic a firm theoretical footing.
-Combined with the uniformity pressure of the contrastive term, the scatter
-penalty tightens the normal class without inducing collapse, yielding a
-representation on which a simple and efficient \emph{linear} one-class SVM
-suffices to score anomalies.
+To alleviate the limitation of a single kernel space, existing multi-kernel anomaly detection methods usually combine multiple kernels to 
+characterize complementary similarity information. They further learn kernel weights adaptively, so as to enhance the expressive 
+capacity of the combined kernel space for complex data structures. These methods improve the adaptability of kernel models to different 
+data distributions and similarity scales to some extent. However, their core focus still lies in the selection, weighting, and fusion of 
+predefined kernels. In other words, they aim to construct a more suitable combined kernel space for the downstream one-class detection 
+objective. Although such strategies can exploit complementary information from different kernel scales, they usually do not explicitly 
+optimize whether the same sample forms consistent representations across these kernels. Therefore, traditional multi-kernel learning alleviates 
+the sensitivity to single-kernel selection, but still lacks a representation learning mechanism that directly models cross-kernel consistency.
+
+Contrastive learning provides a natural tool to address this issue. It explicitly aligns the representations of the same sample under 
+different views by constructing positive and negative pairs. Inspired by contrastive learning, we regard kernel functions 
+at different scales as natural views. We then propose a multi-kernel contrastive learning scheme without explicit kernel-combination 
+weights. Specifically, instead of explicitly constructing multiple RKHS representations and learning their weighted combination, we assign 
+an independent linear projection head to each kernel scale. In this way, raw samples are first mapped into multiple same-dimensional 
+kernel-associated embeddings. Kernel similarities are then computed on these embeddings using the corresponding kernel functions. The 
+projection heads are optimized through a cross-kernel InfoNCE objective. Accordingly, embeddings of the same sample from different 
+kernel-associated branches form positive pairs, whereas embeddings of different samples serve as negative pairs. Multi-kernel information 
+is therefore no longer integrated merely through explicit weighted fusion. Instead, the cross-kernel contrastive objective optimizes the 
+kernel-associated projection heads and implicitly forms a cross-scale consistent multi-kernel representation space.
+
+% 第四段：consistency is not compactness，引入 scatter 
+% 承接第三段：跨核对比学习可以学习一致的多尺度表示。
+% 提出核心缺陷：一致性只约束“同一样本跨视图表示是否接近”，不保证“所有正常样本整体是否紧凑”。
+% 解释为什么这对 anomaly detection 致命：OC-SVM/SVDD 等一类检测器依赖正常区域紧凑、边界清晰。
+% 指出 InfoNCE 的实例区分/负样本机制甚至会鼓励样本之间保持分散。
+% 引出本文的 scatter regularizer：最大化正常样本嵌入中心模长，等价压缩类内散度。
+% 收束成：本文联合建模“跨核一致性”和“正常类紧凑性”。
+% 尽管跨核对比学习能够对齐同一样本在不同核尺度下的表示，但这种跨视图一致性并不等价于单类异常检测所需的正常类紧凑性。具体而言，对比目标主要保证同一样本的
+% 不同视图彼此接近，同时通过负样本项维持不同样本之间的可区分性；因此，即使每个正常样本在不同核视图下高度一致，所有正常样本仍可能在表示空间中分布得较为分散。
+% 对于一类异常检测而言，这种分散性会削弱后续 OC-SVM 或 SVDD 等检测器对正常区域的刻画能力，因为一类检测器通常依赖正常样本形成紧凑、边界清晰的区域。
+% 为弥补这一缺口，本文进一步引入多核散度正则项，通过最大化各核视图中正常样本嵌入中心的模长，显式压缩正常样本的类内分布。
+% 该正则项使模型不仅学习同一样本的跨核一致表示，而且促使正常样本整体在每个核相关空间中形成更紧凑的结构，从而更适合后续一类检测。
+Although cross-kernel contrastive learning can align the representations of the same sample across different kernel scales, such cross-view 
+consistency is not equivalent to the normal-class compactness required by one-class anomaly detection. Specifically, the contrastive 
+objective mainly encourages different views of the same sample to be close to each other. It also maintains instance-level discriminability 
+through negative pairs. Therefore, even if each normal sample is highly consistent across kernel views, all normal samples may still be 
+widely scattered in the representation space.
+For one-class anomaly detection, such dispersion can weaken the ability of subsequent detectors, such as OC-SVM or SVDD, to characterize 
+the normal region. This is because one-class detectors typically rely on normal samples forming a compact region with a clear boundary. 
+To bridge this gap, we further introduce a multi-kernel scatter regularizer. It explicitly 
+compacts the intra-class distribution of normal samples by maximizing the norm of the normal embedding centroid in each kernel view. This 
+regularizer enables the model not only to learn cross-kernel consistent representations of the same sample, but also to encourage all 
+normal samples to form a more compact structure in each kernel-associated space. As a result, the learned representation becomes more 
+suitable for downstream one-class detection.
+
+% 第五段 方法总述和贡献
+% 基于上述分析，本文提出散度正则化跨多核对比学习框架（SCMK），以同时解决单一核尺度、多核跨视图一致性不足以及正常类紧凑性缺失的问题。SCMK 首先利用多尺度
+% 高斯核刻画正常样本从局部邻域到全局分布的相似性信息，并将不同核尺度视为天然视图；随后，通过轻量级多头线性投影网络生成核相关嵌入，并利用跨核 InfoNCE 
+% 目标显式对齐同一样本在不同核视图下的表示。不同于仅依赖跨视图一致性的对比学习，SCMK针对单类异常检测任务进一步引入多核散度正则项，通过压缩正常样本在各核
+% 相关表示空间中的类内分布，使学习到的正常表示同时具有跨核一致性和类内紧凑性。最后，SCMK在检测阶段利用方向信号与幅值信号的互补性，以适应不同类型的异常模式。
+% 本文的主要贡献如下：
+Based on the above analysis, we propose a Scatter-regularized Cross-Multi-Kernel contrastive learning framework, termed SCMK. It is 
+designed to address the limitations of a single kernel scale, insufficient cross-kernel view consistency, and the lack of 
+normal-class compactness. SCMK first uses multi-scale Gaussian kernels to characterize the similarity information of normal samples 
+from local neighborhoods to global distributions. Then treats different kernel scales as natural views. A lightweight multi-head 
+linear projection network is used to generate kernel-associated embeddings, and a cross-kernel InfoNCE objective explicitly aligns 
+the representations of the same sample under different kernel views. Unlike contrastive learning methods that rely only on cross-view 
+consistency, SCMK further introduces a multi-kernel scatter regularizer tailored to one-class anomaly detection. By compacting the 
+intra-class distribution of normal samples in each kernel-associated representation space, SCMK learns normal representations that 
+are both cross-kernel consistent and intra-class compact. Finally, at the detection stage, SCMK exploits the complementarity between 
+directional and magnitude signals to adapt to different types of anomaly patterns. The main contributions of this paper are summarized 
+as follows:
+
+\begin{enumerate}
+  \item A kernel-view-driven cross-multi-kernel contrastive learning framework is proposed. Gaussian kernels at different scales 
+  are treated as natural views, which avoids the reliance on random augmentations for view construction in conventional contrastive 
+  learning. A cross-kernel InfoNCE objective is designed to align the representations of the same sample across different kernel views, 
+  enabling consistent multi-scale representation learning.
+  
+  \item To characterize multi-scale similarity information, we construct a Gaussian kernel bank calibrated by the median pairwise 
+  distance of normal samples. This kernel bank captures similarity information from local neighborhoods to global distributions. 
+  Meanwhile, a lightweight multi-head linear projection network, termed CMKNet, is adopted, where each kernel corresponds to a lightweight 
+  projection head. This design learns kernel-associated representations while keeping the model complexity low.
+  
+  \item For one-class anomaly detection, a consistency-compactness learning objective and a dual-signal detection mechanism are developed. 
+  A multi-kernel scatter regularizer is introduced to explicitly compact the normal class by maximizing the centroid norm of normal 
+  embeddings in each kernel view. This compensates for the limitation that contrastive learning emphasizes cross-view consistency but lacks 
+  intra-class compactness constraints. In addition, directional and magnitude signals are extracted for anomaly scoring. A linear OC-SVM 
+  and an RBF OC-SVM are used to model angular and radial anomalies, respectively, and their scores are fused through a per-sample maximum 
+  strategy to adapt to diverse anomaly patterns.
+  
+  \item Extensive experiments are conducted on 20 benchmark datasets against multiple state-of-the-art anomaly detection methods. The 
+  results show that SCMK achieves superior average detection performance and stability. Statistical significance tests verify the 
+  reliability of the improvement. Ablation studies demonstrate the contributions of cross-kernel contrastive learning, multi-kernel scatter 
+  regularization, and dual-signal fusion. Parameter sensitivity and runtime analyses further show the robustness and practical 
+  applicability of the proposed method across different data settings.
+\end{enumerate}
+
+
+% 贡献点 1：核视图驱动的跨多核对比学习框架
+% 将不同尺度的高斯核视为天然视图，替代传统对比学习中依赖随机增强构造视图的方式；通过跨核 InfoNCE 目标对齐同一样本在不同核视图下的表示，
+% 实现多尺度表示的一致学习。
+
+% 贡献点 2：多尺度相似信息建模与轻量表示网络
+% 基于正常样本的距离中位数构造多尺度高斯核库，用于刻画正常样本从局部邻域到全局分布的相似性信息；同时采用多头线性投影结构 CMKNet，每个核
+% 对应一个轻量投影头，在保持低复杂度的同时学习核相关表示。
+
+% 贡献点 3：面向单类异常检测的一致性-紧凑性学习与双信号检测机制
+% 引入多核散度正则项，通过最大化正常样本在各核视图中的嵌入中心模长，显式压缩正常类分布，弥补对比学习仅强调跨视图一致而缺乏类内紧凑性约束的不足；
+% 同时设计方向-幅值双信号检测机制，分别利用线性OC-SVM与RBF OC-SVM建模角度异常和径向异常，并通过逐样本最大化策略融合异常分数，以适应多种异常模式。
+
+% 贡献点 4：系统实验验证与鲁棒性分析
+% 本文在 20 个基准数据集上与多种先进异常检测方法进行比较，实验结果表明 SCMK 在平均检测性能和稳定性方面均取得优势。进一步地，统计显著性检验
+% 验证了性能提升的可靠性，消融实验揭示了跨核对比学习、多核散度正则和双信号融合等关键组件的贡献，参数敏感性与运行时间分析表明该方法在不同数据
+% 设置下具有良好的鲁棒性和实用性。
+
+
+% Anomaly detection---the task of identifying observations that deviate markedly
+% from the prevailing pattern of the data---underpins a broad range of
+% applications, including financial fraud detection, industrial fault diagnosis,
+% network-intrusion monitoring, and medical screening~\cite{pang2021review,
+% ruff2021unifying}. The defining difficulty of the problem is statistical:
+% anomalies are rare, heterogeneous, and largely unforeseeable, so the abnormal
+% class can be neither sampled exhaustively nor characterised in advance. This
+% rules out a conventional supervised formulation and motivates the
+% \emph{one-class} (semi-supervised) paradigm, in which a model is trained on
+% normal data alone and flags as anomalous any test instance that departs from the
+% learned notion of normality~\cite{scholkopf2001ocsvm,tax2004svdd}.
+
+% Classical one-class detectors realise this idea in a \emph{single, fixed}
+% similarity space. The one-class support vector machine
+% (OC-SVM)~\cite{scholkopf2001ocsvm} and support vector data description
+% (SVDD)~\cite{tax2004svdd} separate the normal data from the origin, or enclose
+% them in a minimal sphere, within one reproducing-kernel Hilbert space; density-
+% and distance-based methods such as LOF~\cite{breunig2000lof} and isolation
+% forests~\cite{liu2008iforest} likewise commit to one geometric prior. Their
+% accuracy therefore hinges critically on the choice of kernel and bandwidth, a
+% choice that does not transfer well across datasets and degrades in
+% high-dimensional, heterogeneous feature spaces. Deep one-class models alleviate
+% the fixed-geometry issue by \emph{learning} a representation: autoencoder-based
+% detectors~\cite{zhou2017rda} score samples by reconstruction error, while Deep
+% SVDD~\cite{ruff2018svdd} maps normal data into a compact hypersphere. Yet
+% reconstruction objectives are not inherently discriminative, hypersphere
+% objectives are prone to representational collapse, and---crucially---each of
+% these methods still summarises similarity through a \emph{single} learned
+% geometry.
+
+% Multiple kernel learning (MKL) offers a principled remedy to the single-geometry
+% limitation by combining a bank of kernels that encode complementary notions of
+% similarity at different scales~\cite{gonen2011mkl,lanckriet2004sdp}. Fusing such
+% views improves robustness and removes the burden of selecting one ``correct''
+% kernel, and the idea extends naturally to clustering through multiple-kernel
+% $k$-means and its centroid variants~\cite{liu2016mkkm,huang2012mkkm}. However,
+% classical MKL and MKKM are \emph{shallow}: they operate directly on the raw input
+% features and merely learn a set of scalar kernel weights, without inducing a
+% representation that a downstream detector can exploit. The expressive power of
+% modern representation learning is thus left untapped.
+
+% Contrastive representation learning provides exactly such expressive power. By
+% pulling together different ``views'' of the same instance and pushing apart views
+% of different instances, objectives such as InfoNCE~\cite{oord2018infonce} and
+% SimCLR~\cite{chen2020simclr} learn embeddings that transfer remarkably well, and
+% they have recently been adapted to anomaly detection~\cite{tack2020csi,
+% qiu2021neutral}. This suggests a natural marriage with MKL: treat the
+% \emph{kernel index itself as a contrastive view}, so that the embeddings produced
+% by different kernels for the same sample are aligned, while embeddings of
+% different samples remain separable. Such a cross-kernel contrastive encoder
+% reconciles multi-scale similarity within a learned representation. Nevertheless,
+% a subtle but consequential gap remains. The InfoNCE objective enforces only
+% \emph{cross-view consistency} (alignment of a sample's kernel views) and
+% \emph{instance discriminability} (uniformity over the sphere); it does not make
+% the normal class \emph{absolutely compact}. Indeed, the loss is invariant to
+% configurations that scatter normal embeddings widely across the representation
+% space as long as each sample's views agree. For one-class detection, however,
+% the compactness of the normal region is precisely the property that a downstream
+% detector relies upon. We identify this mismatch---\emph{consistency is not
+% compactness}---as the central obstacle to coupling contrastive learning with
+% one-class detection.
+
+% We resolve it with \emph{scatter-regularized cross-multi-kernel} contrastive
+% learning (SCMK). On top of a cross-kernel contrastive encoder built over a
+% multi-scale Gaussian kernel bank, we introduce a \emph{multi-kernel scatter
+% regularizer} that explicitly compacts the normal class within every
+% kernel-induced embedding space. The regularizer is derived from the one-class
+% specialisation of centroid multiple-kernel $k$-means, and we prove that it equals
+% ---up to an additive constant---the average within-class scatter of the
+% unit-norm embeddings, thereby giving the heuristic a firm theoretical footing.
+% Combined with the uniformity pressure of the contrastive term, the scatter
+% penalty tightens the normal class without inducing collapse, yielding a
+% representation on which a simple and efficient \emph{linear} one-class SVM
+% suffices to score anomalies.
 
 The main contributions of this work are summarised as follows.
 \begin{enumerate}[\indent(1)]

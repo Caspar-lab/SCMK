@@ -62,13 +62,14 @@ anomaly detection \sep multiple kernel learning \sep contrastive learning
 \end{frontmatter}
 
 %% ======================================================================
-\section{Methodology}
+%% ======================================================================
+\section{The proposed SCMK method}
 \label{sec:method}
 
 \subsection{Problem formulation and notation}
 \label{subsec:problem}
 
-We address \emph{one-class} (semi-supervised) anomaly detection. Let
+Let
 $\mathcal{X}=\{\xx_i\}_{i=1}^{N}$ with $\xx_i\in\R^{D}$ denote the data after
 preprocessing,\footnote{Nominal attributes are one-hot encoded and numerical
 attributes are min--max scaled to $[0,1]$, so that all feature dimensions share
@@ -89,8 +90,8 @@ resolutions (Section~\ref{subsec:kernels});
 different kernels (Section~\ref{subsec:contrastive});
 (iii) a multi-kernel scatter regularizer that explicitly compacts the normal
 class in every kernel-induced embedding (Section~\ref{subsec:scatter}); and
-(iv) a linear one-class support vector machine (OC-SVM) that scores anomalies
-in the concatenated representation (Section~\ref{subsec:detection}).
+(iv) a dual-signal one-class detector that fuses an angular and a radial OC-SVM
+score to flag anomalies (Section~\ref{subsec:detection}).
 
 \subsection{Multi-scale kernel bank}
 \label{subsec:kernels}
@@ -289,18 +290,28 @@ from degenerating to a point and keeps different samples separable, and
 $\lambda$ governs the equilibrium. The unit-sphere constraint additionally
 bounds $\norm{\mmu_k}_2\le 1$, so the penalty cannot diverge.
 
-\subsection{Anomaly scoring via linear one-class SVM}
+\subsection{Dual-signal anomaly scoring}
 \label{subsec:detection}
 
-After training, we discard the contrastive heads' interaction and retain the
-\emph{concatenated} representation
+After training, the projection heads are frozen and each sample $\xx_i$ is
+described by \emph{two complementary signals} read off the raw projections
+$\WW_k\xx_i$: the \emph{angular} position of its unit-norm embeddings and the
+\emph{radial} magnitude of those projections. These signals carry
+non-redundant discriminative information, and which of them separates the
+normal and anomalous classes is dataset-dependent. We therefore build a
+detector for each and fuse their scores.
+
+\paragraph{Directional signal: linear OC-SVM on the angular embedding.}
+The unit-norm embeddings $\hh_{k,i}$ retain only the angular position of a
+sample on each kernel sphere---exactly the geometry that the scatter
+regularizer~\eqref{eq:lscat} compacts. Concatenating the $K$ views,
 \begin{equation}
 \zz_i=\big[\hh_{1,i}^{\!\top},\hh_{2,i}^{\!\top},\dots,
 \hh_{K,i}^{\!\top}\big]^{\!\top}\in\R^{Kd},
 \label{eq:concat}
 \end{equation}
-which fuses all $K$ kernel views into a single descriptor. A linear-kernel
-OC-SVM is fitted on the normal embeddings $\{\zz_i : y_i=0\}$ by solving
+fuses them into a single descriptor, and a linear-kernel OC-SVM fitted on the
+normal embeddings $\{\zz_i : y_i=0\}$ by solving
 \begin{equation}
 \min_{\ww,\rho,\bm{\xi}}\ \
 \tfrac{1}{2}\norm{\ww}_2^{2}-\rho
@@ -309,19 +320,82 @@ OC-SVM is fitted on the normal embeddings $\{\zz_i : y_i=0\}$ by solving
 \inner{\ww}{\zz_i}\ge\rho-\xi_i,\ \ \xi_i\ge 0,
 \label{eq:ocsvm}
 \end{equation}
-where $\nu\in(0,1]$ upper-bounds the fraction of normal training points allowed
-to fall outside the decision region. The anomaly score is the negative signed
-distance to the learned hyperplane,
+yields the \emph{directional score}
+$s^{\mathrm{dir}}_i=\rho-\inner{\ww}{\zz_i}$, where $\nu\in(0,1]$ upper-bounds
+the fraction of normal training points allowed outside the decision region. A
+linear separator suffices here because the contrastive and scatter objectives
+jointly mould the normal class into a compact, nearly linearly separable cone
+on the product of spheres $(\Sph^{d-1})^{K}$; this score is informative
+whenever the normal/anomaly contrast is \emph{angular}.
+
+\paragraph{Magnitude signal: RBF OC-SVM on the projection norms.}
+The $\ell_2$ normalization in Eq.~\eqref{eq:embedding} deliberately discards the
+projection norms $r_{k,i}=\norm{\WW_k\xx_i}_2$. Yet these norms are themselves
+discriminative: trained on normal data alone, each head maps normal samples into
+a characteristic energy band, whereas anomalies---lying off the learned
+manifold---are projected to markedly different, typically larger, norms. We
+collect the per-kernel norms into a magnitude vector
 \begin{equation}
-a(\xx_i)=\rho-\inner{\ww}{\zz_i},
-\label{eq:score}
+\bm{r}_i=\big[r_{1,i},r_{2,i},\dots,r_{K,i}\big]^{\!\top}\in\R^{K},
+\label{eq:rmag}
 \end{equation}
-so that points lying on the far (origin) side of the hyperplane receive high
-scores. We retain the \emph{linear} kernel deliberately: the contrastive and
-scatter objectives jointly mould the normal class into a compact, nearly
-linearly separable cone on the product of spheres $(\Sph^{d-1})^{K}$, for which a
-linear separator is both sufficient and substantially cheaper than an RBF
-OC-SVM.
+and fit an \emph{RBF}-kernel OC-SVM on the normal norms $\{\bm{r}_i : y_i=0\}$,
+producing the \emph{magnitude score} $s^{\mathrm{mag}}_i$. The RBF kernel is
+essential: a \emph{linear} OC-SVM on norms admits a sign-reversed optimum---when
+the normal norms are small, the separating direction turns negative and labels
+large-norm anomalies as inliers---whereas the RBF density model, centred on the
+compact small-norm normal cluster, correctly assigns high scores to the
+large-norm outliers lying outside it. This score is informative whenever the
+contrast is \emph{radial}.
+
+\paragraph{Score fusion.}
+On a given dataset one signal may be essentially uninformative---most strikingly,
+the directional score collapses to near-chance when normal and anomalous samples
+are angularly indistinguishable but differ in projection energy. Without assuming
+\emph{a priori} which regime holds, we fuse the two detectors by a per-sample
+maximum of min--max-normalised scores,
+\begin{equation}
+a(\xx_i)=\max\!\Big(\widetilde{s}^{\mathrm{dir}}_i,\ \widetilde{s}^{\mathrm{mag}}_i\Big),
+\qquad
+\widetilde{s}^{\,\bullet}_i=
+\frac{s^{\bullet}_i-\min_j s^{\bullet}_j}{\max_j s^{\bullet}_j-\min_j s^{\bullet}_j},
+\label{eq:fuse}
+\end{equation}
+so that a sample flagged by \emph{either} detector receives a high anomaly
+score. The fusion needs no prior knowledge of which signal is informative and,
+as the ablation in Section~\ref{subsec:exp-ablation} confirms, remains robust on
+datasets where either single signal collapses while never trailing the stronger
+signal by a meaningful margin. Fig.~\ref{fig:sphere} makes this complementarity
+geometric: on a direction-dominant dataset the anomalies stay on the sphere but
+cluster to one angular region, whereas on a magnitude-dominant dataset they are
+angularly mixed with the normal class yet bulge far outside the sphere---so a
+single detector necessarily fails on one regime, while the max-fusion captures
+both.
+
+\begin{figure}[t]
+\centering
+\begin{minipage}{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{fig_sphere_autos.pdf}\\[-2pt]
+{\small (a) Autos --- direction-dominant}
+\end{minipage}\hfill
+\begin{minipage}{0.49\linewidth}\centering
+\includegraphics[width=\linewidth]{fig_sphere_wbc.pdf}\\[-2pt]
+{\small (b) WBC --- magnitude-dominant}
+\end{minipage}
+\caption{Geometric view of the two complementary signals on the learned
+representation. The grey sphere is the unit-norm (direction) manifold; a sample's
+radius is $1+\log$ of its projection magnitude, so normal points ($\approx\!1$)
+lie on the shell. \textbf{(a)} On Autos the anomalies remain on the shell but
+concentrate in one angular region---separable by \emph{direction}, while their
+magnitude is uninformative. \textbf{(b)} On WBC the anomalies are angularly
+intermixed with the normal class yet bulge far outside the shell---separable only
+by \emph{magnitude}. The angular (linear OC-SVM) detector handles~(a), the radial
+(RBF OC-SVM) detector handles~(b), and the max-fusion is robust on both without
+knowing the regime in advance. For visualization only, the principal in-sphere
+axis is the normal/anomaly mean-difference direction (labels are used solely for
+this projection, never for training or scoring).}
+\label{fig:sphere}
+\end{figure}
 
 \subsection{Overall algorithm and complexity}
 \label{subsec:algorithm}
@@ -330,10 +404,13 @@ Algorithm~\ref{alg:scmk} summarises the complete training and scoring pipeline.
 The dominant per-mini-batch cost is the cross-kernel contrastive term,
 $O\!\big(K^2 B^2 d\big)$ for the $\binom{K}{2}$ pairwise affinity matrices, while
 the scatter regularizer contributes only $O(KBd)$. Embedding extraction over the
-full data set is $O(NKdD)$, and fitting the linear OC-SVM scales with the number
-of support vectors. With a fixed small kernel bank ($K=5$), the method retains
-the same asymptotic complexity as the contrastive backbone, so the accuracy gains
-reported in the experiments come at no additional order-of-growth cost.
+full data set is $O(NKdD)$. Scoring fits two OC-SVMs on the normal set: a linear
+one on the $Kd$-dimensional embeddings and an RBF one on the $K$-dimensional
+magnitude vectors; both scale with the number of support vectors, and the radial
+detector is negligible since $K=5$. With a fixed small kernel bank, the method
+retains the same asymptotic complexity as the contrastive backbone, so the
+accuracy gains reported in the experiments come at no additional order-of-growth
+cost.
 
 \begin{algorithm}[t]
 \caption{SCMK for one-class anomaly detection}
@@ -361,15 +438,18 @@ epochs $T$, OC-SVM parameter $\nu$
     \Comment{Eq.~\eqref{eq:total}}
   \EndFor
 \EndFor
-\State $\zz_i\gets[\hh_{1,i};\dots;\hh_{K,i}]$ for all $\xx_i\in\mathcal{X}$
-\Comment{Eq.~\eqref{eq:concat}}
-\State fit linear OC-SVM on $\{\zz_i:y_i=0\}$ with parameter $\nu$
+\State $\zz_i\gets[\hh_{1,i};\dots;\hh_{K,i}]$,\ \
+$\bm{r}_i\gets[\norm{\WW_1\xx_i};\dots;\norm{\WW_K\xx_i}]$ for all $\xx_i\in\mathcal{X}$
+\Comment{Eqs.~\eqref{eq:concat},\eqref{eq:rmag}}
+\State $s^{\mathrm{dir}}\gets$ linear OC-SVM on $\{\zz_i:y_i=0\}$;\ \
+$s^{\mathrm{mag}}\gets$ RBF OC-SVM on $\{\bm{r}_i:y_i=0\}$
 \Comment{Eq.~\eqref{eq:ocsvm}}
-\State \Return $a(\xx_i)=\rho-\inner{\ww}{\zz_i}$
-\Comment{Eq.~\eqref{eq:score}}
+\State \Return $a(\xx_i)=\max\big(\widetilde{s}^{\mathrm{dir}}_i,\widetilde{s}^{\mathrm{mag}}_i\big)$
+\Comment{Eq.~\eqref{eq:fuse}}
 \end{algorithmic}
 \end{algorithm}
 
+%% ======================================================================
 %% ======================================================================
 %% Bibliography (placeholder entries for the Method section citations).
 \begin{thebibliography}{00}

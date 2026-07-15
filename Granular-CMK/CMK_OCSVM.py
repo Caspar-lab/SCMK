@@ -202,6 +202,11 @@ def _kernel_mat(F, ktype, kopts):
 
 # ─── 跨核对比损失 ──────────────────────────────────────────────────────────────
 
+# 投影头产生多视图 embedding
+# → 核函数在 embedding 上计算相似度
+# → InfoNCE 用这些相似度拉近同一样本跨核表示、推开不同样本表示
+# → 梯度反向更新各投影头 W_k
+
 def cross_kernel_loss(hs, kernels):
     """
     对所有 C(K,2) 核对 (k,l) 计算跨核 InfoNCE 损失，取均值。

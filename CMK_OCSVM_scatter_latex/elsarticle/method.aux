@@ -1,0 +1,54 @@
+\relax 
+\@writefile{toc}{\contentsline {section}{\numberline {1}The proposed SCMK method}{1}{}\protected@file@percent }
+\newlabel{sec:method}{{1}{1}{}{section.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.1}Problem formulation and notation}{1}{}\protected@file@percent }
+\newlabel{subsec:problem}{{1.1}{1}{}{subsection.1.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.2}Multi-scale kernel bank}{2}{}\protected@file@percent }
+\newlabel{subsec:kernels}{{1.2}{2}{}{subsection.1.2}{}}
+\newlabel{eq:median}{{1}{2}{}{equation.1}{}}
+\newlabel{eq:gaussian}{{2}{2}{}{equation.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.3}Cross-kernel contrastive representation learning}{2}{}\protected@file@percent }
+\newlabel{subsec:contrastive}{{1.3}{2}{}{subsection.1.3}{}}
+\@writefile{toc}{\contentsline {paragraph}{Per-kernel embeddings.}{2}{}\protected@file@percent }
+\newlabel{eq:embedding}{{3}{2}{}{equation.3}{}}
+\@writefile{toc}{\contentsline {paragraph}{Cross-kernel positive pairs.}{2}{}\protected@file@percent }
+\newlabel{eq:affinity}{{4}{3}{}{equation.4}{}}
+\@writefile{toc}{\contentsline {paragraph}{Cross-kernel InfoNCE.}{3}{}\protected@file@percent }
+\newlabel{eq:infonce}{{5}{3}{}{equation.5}{}}
+\newlabel{eq:lcross}{{6}{3}{}{equation.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.4}Multi-kernel scatter regularization}{3}{}\protected@file@percent }
+\newlabel{subsec:scatter}{{1.4}{3}{}{subsection.1.4}{}}
+\@writefile{toc}{\contentsline {paragraph}{Motivation.}{3}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Definition.}{4}{}\protected@file@percent }
+\newlabel{eq:lscat}{{7}{4}{}{equation.7}{}}
+\@writefile{toc}{\contentsline {paragraph}{Exact equivalence to within-class scatter.}{4}{}\protected@file@percent }
+\newlabel{prop:scatter}{{1}{4}{}{proposition.1}{}}
+\newlabel{eq:equiv}{{8}{4}{}{equation.8}{}}
+\newlabel{eq:proofstep}{{9}{4}{}{equation.9}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.5}Joint objective and collapse avoidance}{5}{}\protected@file@percent }
+\newlabel{subsec:joint}{{1.5}{5}{}{subsection.1.5}{}}
+\newlabel{eq:total}{{10}{5}{}{equation.10}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.6}Dual-signal anomaly scoring}{5}{}\protected@file@percent }
+\newlabel{subsec:detection}{{1.6}{5}{}{subsection.1.6}{}}
+\@writefile{toc}{\contentsline {paragraph}{Directional signal: linear OC-SVM on the angular embedding.}{5}{}\protected@file@percent }
+\newlabel{eq:concat}{{11}{5}{}{equation.11}{}}
+\newlabel{eq:ocsvm}{{12}{5}{}{equation.12}{}}
+\@writefile{toc}{\contentsline {paragraph}{Magnitude signal: RBF OC-SVM on the projection norms.}{6}{}\protected@file@percent }
+\newlabel{eq:rmag}{{13}{6}{}{equation.13}{}}
+\@writefile{toc}{\contentsline {paragraph}{Score fusion.}{6}{}\protected@file@percent }
+\newlabel{eq:fuse}{{14}{6}{}{equation.14}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Geometric view of the two complementary signals on the learned representation. The grey sphere is the unit-norm (direction) manifold; a sample's radius is $1+\log $ of its projection magnitude, so normal points ($\approx \!1$) lie on the shell. \textbf  {(a)} On Autos the anomalies remain on the shell but concentrate in one angular region---separable by \emph  {direction}, while their magnitude is uninformative. \textbf  {(b)} On WBC the anomalies are angularly intermixed with the normal class yet bulge far outside the shell---separable only by \emph  {magnitude}. The angular (linear OC-SVM) detector handles~(a), the radial (RBF OC-SVM) detector handles~(b), and the max-fusion is robust on both without knowing the regime in advance. For visualization only, the principal in-sphere axis is the normal/anomaly mean-difference direction (labels are used solely for this projection, never for training or scoring).}}{7}{}\protected@file@percent }
+\newlabel{fig:sphere}{{1}{7}{}{figure.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.7}Overall algorithm and complexity}{7}{}\protected@file@percent }
+\newlabel{subsec:algorithm}{{1.7}{7}{}{subsection.1.7}{}}
+\bibcite{oord2018infonce}{{1}{}{{}}{{}}}
+\bibcite{chen2020simclr}{{2}{}{{}}{{}}}
+\bibcite{wang2020uniformity}{{3}{}{{}}{{}}}
+\bibcite{gonen2011mkl}{{4}{}{{}}{{}}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces SCMK for one-class anomaly detection}}{8}{}\protected@file@percent }
+\newlabel{alg:scmk}{{1}{8}{}{algorithm.1}{}}
+\bibcite{huang2012mkkm}{{5}{}{{}}{{}}}
+\bibcite{scholkopf2001ocsvm}{{6}{}{{}}{{}}}
+\bibcite{ruff2018svdd}{{7}{}{{}}{{}}}
+\providecommand\NAT@force@numbers{}\NAT@force@numbers
+\gdef \@abspage@last{9}
