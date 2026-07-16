@@ -1,0 +1,40 @@
+\begin{table}[t]
+\centering
+\caption{Ablation of the learnable projection head (test AUC, mean$_{\pm\text{std}}$ over
+seeds $0,1,2$ on the same 50/50 splits as the main experiments). \emph{Full} is the proposed
+model; \emph{Raw-MK} replaces the learnable projection with the multi-kernel similarity
+computed directly on the raw features (same bandwidths, same dual-signal OC-SVM head);
+\emph{Direct-OCSVM} is a plain RBF OC-SVM on the raw features. Best mean in each row is in
+\textbf{bold}.}
+\label{tab:projhead}
+\small
+\setlength{\tabcolsep}{6pt}
+\begin{tabular}{lccc}
+\toprule
+Dataset & Full & Raw-MK & Direct-OCSVM\\
+\midrule
+Vertebral     & $\mathbf{0.735}_{\pm0.092}$ & $0.412_{\pm0.011}$ & $0.548_{\pm0.078}$ \\
+Thyroid       & $\mathbf{0.981}_{\pm0.003}$ & $0.920_{\pm0.006}$ & $0.958_{\pm0.002}$ \\
+WBC           & $0.992_{\pm0.007}$ & $\mathbf{0.997}_{\pm0.001}$ & $0.995_{\pm0.004}$ \\
+Glass         & $\mathbf{0.853}_{\pm0.058}$ & $0.821_{\pm0.048}$ & $0.444_{\pm0.063}$ \\
+Ecoli         & $\mathbf{0.931}_{\pm0.010}$ & $0.825_{\pm0.034}$ & $0.880_{\pm0.014}$ \\
+PageBlocks    & $\mathbf{0.976}_{\pm0.004}$ & $0.958_{\pm0.003}$ & $0.964_{\pm0.002}$ \\
+Wine          & $\mathbf{0.920}_{\pm0.037}$ & $0.558_{\pm0.088}$ & $0.855_{\pm0.023}$ \\
+Cardio        & $\mathbf{0.969}_{\pm0.002}$ & $0.884_{\pm0.010}$ & $0.959_{\pm0.003}$ \\
+Cardiotoco.   & $\mathbf{0.914}_{\pm0.008}$ & $0.871_{\pm0.008}$ & $0.898_{\pm0.008}$ \\
+TicTacToe-12  & $0.990_{\pm0.003}$ & $0.418_{\pm0.117}$ & $\mathbf{0.999}_{\pm0.001}$ \\
+TicTacToe-69  & $0.981_{\pm0.018}$ & $0.189_{\pm0.036}$ & $\mathbf{0.992}_{\pm0.003}$ \\
+WPBC          & $\mathbf{0.653}_{\pm0.090}$ & $0.389_{\pm0.050}$ & $0.496_{\pm0.026}$ \\
+Ionosphere    & $\mathbf{1.000}_{\pm0.000}$ & $0.945_{\pm0.021}$ & $\mathbf{1.000}_{\pm0.000}$ \\
+Zoo           & $\mathbf{0.969}_{\pm0.020}$ & $0.145_{\pm0.026}$ & $0.800_{\pm0.063}$ \\
+Sick-72       & $0.828_{\pm0.016}$ & $0.769_{\pm0.053}$ & $\mathbf{0.847}_{\pm0.012}$ \\
+Autos         & $\mathbf{0.822}_{\pm0.019}$ & $0.329_{\pm0.037}$ & $0.508_{\pm0.076}$ \\
+Annealing     & $\mathbf{0.877}_{\pm0.008}$ & $0.615_{\pm0.005}$ & $0.811_{\pm0.028}$ \\
+Lympho.       & $0.999_{\pm0.001}$ & $0.754_{\pm0.029}$ & $\mathbf{1.000}_{\pm0.000}$ \\
+Bands-6       & $0.914_{\pm0.044}$ & $0.514_{\pm0.023}$ & $\mathbf{0.950}_{\pm0.006}$ \\
+Audiology     & $\mathbf{0.982}_{\pm0.008}$ & $0.636_{\pm0.083}$ & $0.953_{\pm0.007}$ \\
+\midrule
+\textbf{Average} & $\mathbf{0.914}_{\pm0.022}$ & $0.647_{\pm0.034}$ & $0.843_{\pm0.021}$ \\
+\bottomrule
+\end{tabular}
+\end{table}

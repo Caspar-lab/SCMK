@@ -135,11 +135,10 @@
 \@writefile{toc}{\contentsline {paragraph}{$d$ and $\nu $ are robust.}{25}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.6}Ablation study}{25}{}\protected@file@percent }
 \newlabel{subsec:exp-ablation}{{4.6}{25}{}{subsection.4.6}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Ablation of the four core components (AUC). Best result in each row is in \textbf  {bold}. The average row shows that the full model is the most robust overall, even though a single-signal variant occasionally peaks on a dataset of its favoured regime.}}{26}{}\protected@file@percent }
-\newlabel{tab:ablation}{{5}{26}{}{table.5}{}}
 \@writefile{toc}{\contentsline {paragraph}{Scatter loss is the dominant component.}{26}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{Dual-signal fusion is what makes the detector robust.}{26}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Multi-kernel and contrastive terms.}{27}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Multi-kernel and contrastive terms.}{26}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{The learnable projection head is essential.}{27}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {5}Conclusion and future work}{27}{}\protected@file@percent }
 \newlabel{sec:conclusion}{{5}{27}{}{section.5}{}}
 \bibcite{scholkopf2001ocsvm}{{1}{}{{}}{{}}}
@@ -177,4 +176,8 @@
 \bibcite{icl2022}{{33}{}{{}}{{}}}
 \bibcite{neutralad2021}{{34}{}{{}}{{}}}
 \providecommand\NAT@force@numbers{}\NAT@force@numbers
-\gdef \@abspage@last{33}
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Ablation of the four core components (test AUC, seed-2 split, twenty datasets). Best result in each row is in \textbf  {bold}. The full model attains the highest average and is thus the most robust overall, even though a single-signal variant frequently edges it on individual datasets of its favoured regime.}}{32}{}\protected@file@percent }
+\newlabel{tab:ablation}{{5}{32}{}{table.5}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces Ablation of the learnable projection head (test AUC, mean$_{\pm \text  {std}}$ over seeds $0,1,2$ on the same 50/50 splits as the main experiments). \emph  {Full} is the proposed model; \emph  {Raw-MK} replaces the learnable projection with the multi-kernel similarity computed directly on the raw features (same bandwidths, same dual-signal OC-SVM head); \emph  {Direct-OCSVM} is a plain RBF OC-SVM on the raw features. Best mean in each row is in \textbf  {bold}.}}{33}{}\protected@file@percent }
+\newlabel{tab:projhead}{{6}{33}{}{table.6}{}}
+\gdef \@abspage@last{35}

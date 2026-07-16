@@ -44,16 +44,13 @@ SPLIT_SEED = 2
 #                                参 数 配 置
 # ════════════════════════════════════════════════════════════════════════════
 
-# 消融用代表性数据集（覆盖方向主导/幅值主导/不同维度）；可增删
+# 全部 20 个主实验数据集（与 Table 2 / 3 / 6 一致），按特征维度排序
 DATASETS = [
-    'autos_variant1',              # mixed, 幅值主导, scatter 碾压
-    'cardio',                      # numerical, 方向信号强
-    'bands_band_6_variant1',       # mixed, scatter=1.0
-    'ionosphere_b_24_variant1',    # numerical, 方向主导, =1.0
-    'vowels',                      # 扩展, 高 AUC
-    'ecoli',                       # 扩展
-    'sonar_M_10_variant1',         # 高维, =1.0
-    'wbc_malignant_39_variant1',   # 幅值主导典型(方向信号失效)
+    'vertebral', 'thyroid', 'wbc_malignant_39_variant1', 'glass', 'ecoli',
+    'pageblocks_1_258_variant1', 'wine', 'cardio', 'cardiotocography_2and3_33_variant1',
+    'tic_tac_toe_negative_12_variant1', 'tic_tac_toe_negative_69_variant1', 'wpbc_variant1',
+    'ionosphere_b_24_variant1', 'zoo_variant1', 'sick_sick_72_variant1', 'autos_variant1',
+    'annealing_variant1', 'lymphography', 'bands_band_6_variant1', 'audiology_variant1',
 ]
 
 SEARCH_DIRS = [

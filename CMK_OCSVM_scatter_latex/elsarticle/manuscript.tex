@@ -1313,7 +1313,7 @@ that drives detection, plateauing over $[10,1000]$.}
 \label{subsec:exp-ablation}
 
 To isolate the contribution of each component we ablate four design choices on
-eight representative datasets that deliberately span both detection regimes
+all twenty datasets, which span both detection regimes
 (angularly separable, e.g.\ Cardio and Ionosphere; magnitude-separable, e.g.\
 WBC and Autos). The variants are: removing the scatter loss
 (\emph{w/o $\Lscat$}, i.e.\ $\lambda=0$); removing the cross-kernel contrastive
@@ -1325,10 +1325,10 @@ mean impact of each removal.
 
 \begin{table}[t]
 \centering
-\caption{Ablation of the four core components (AUC). Best result in each row is
-in \textbf{bold}. The average row shows that the full model is the most robust
-overall, even though a single-signal variant occasionally peaks on a dataset of
-its favoured regime.}
+\caption{Ablation of the four core components (test AUC, seed-2 split, twenty
+datasets). Best result in each row is in \textbf{bold}. The full model attains the
+highest average and is thus the most robust overall, even though a single-signal
+variant frequently edges it on individual datasets of its favoured regime.}
 \label{tab:ablation}
 \small
 \setlength{\tabcolsep}{4.5pt}
@@ -1337,50 +1337,125 @@ its favoured regime.}
 Dataset & Full & w/o $\Lscat$ & w/o $\Lcross$ & single-kernel
         & dir.\ only & mag.\ only\\
 \midrule
-Ecoli      & 0.933 & 0.874 & 0.931 & 0.858 & 0.902 & \textbf{0.969}\\
-WBC        & 0.985 & 0.981 & 0.984 & 0.986 & 0.586 & \textbf{0.998}\\
-Vowels     & \textbf{0.978} & 0.330 & 0.977 & 0.963 & 0.909 & 0.906\\
-Cardio     & 0.967 & 0.901 & 0.844 & 0.703 & \textbf{0.967} & 0.918\\
-Autos      & 0.805 & 0.696 & 0.802 & \textbf{0.837} & 0.830 & 0.763\\
-Ionosphere & \textbf{1.000} & 0.866 & \textbf{1.000} & \textbf{1.000} & \textbf{1.000} & 0.976\\
-Bands-6    & 0.957 & 0.517 & 0.954 & 0.920 & \textbf{0.967} & 0.917\\
-Sonar      & \textbf{0.984} & 0.794 & 0.978 & \textbf{0.984} & 0.978 & 0.951\\
+Vertebral    & \textbf{0.836} & 0.560 & 0.819 & 0.806 & \textbf{0.836} & 0.678 \\
+Thyroid      & 0.984 & 0.954 & 0.950 & 0.675 & \textbf{0.986} & 0.950 \\
+WBC          & 0.985 & 0.981 & 0.984 & 0.986 & 0.586 & \textbf{0.998} \\
+Glass        & \textbf{0.918} & 0.564 & \textbf{0.918} & 0.899 & 0.914 & 0.916 \\
+Ecoli        & 0.933 & 0.874 & 0.931 & 0.858 & 0.902 & \textbf{0.969} \\
+PageBlocks   & 0.980 & 0.811 & 0.935 & 0.924 & \textbf{0.988} & 0.956 \\
+Wine         & 0.958 & 0.958 & 0.927 & 0.929 & \textbf{0.988} & 0.937 \\
+Cardio       & \textbf{0.967} & 0.901 & 0.844 & 0.703 & \textbf{0.967} & 0.918 \\
+Cardiotoco.  & 0.909 & 0.856 & 0.910 & 0.639 & \textbf{0.920} & 0.909 \\
+TicTacToe-12 & 0.989 & 0.989 & 0.970 & 0.995 & \textbf{0.999} & 0.968 \\
+TicTacToe-69 & 0.991 & 0.991 & 0.893 & 0.973 & \textbf{0.995} & 0.908 \\
+WPBC         & 0.757 & 0.757 & 0.581 & 0.615 & \textbf{0.759} & 0.609 \\
+Ionosphere   & \textbf{1.000} & 0.866 & \textbf{1.000} & \textbf{1.000} & \textbf{1.000} & 0.976 \\
+Zoo          & \textbf{0.980} & \textbf{0.980} & 0.979 & 0.976 & 0.976 & 0.969 \\
+Sick-72      & 0.845 & 0.616 & 0.733 & \textbf{0.854} & 0.848 & 0.804 \\
+Autos        & 0.805 & 0.696 & 0.802 & \textbf{0.837} & 0.830 & 0.763 \\
+Annealing    & 0.873 & 0.593 & 0.768 & 0.879 & \textbf{0.897} & 0.741 \\
+Lympho.      & \textbf{1.000} & 0.744 & \textbf{1.000} & \textbf{1.000} & 0.995 & \textbf{1.000} \\
+Bands-6      & 0.957 & 0.517 & 0.954 & 0.920 & \textbf{0.967} & 0.917 \\
+Audiology    & 0.976 & 0.659 & 0.971 & 0.971 & \textbf{0.980} & 0.945 \\
 \midrule
-\textbf{Average} & \textbf{0.951} & 0.745 & 0.934 & 0.906 & 0.892 & 0.925\\
+\textbf{Average} & \textbf{0.932} & 0.793 & 0.893 & 0.872 & 0.917 & 0.892 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \paragraph{Scatter loss is the dominant component.}
 Removing the scatter regularizer ($\lambda=0$) causes by far the largest
-degradation, $-0.206$ on average, collapsing Vowels from $0.978$ to $0.330$ and
-Bands-6 from $0.957$ to $0.517$. This confirms the central thesis of the paper:
+degradation, $-0.139$ on average, collapsing Bands-6 from $0.957$ to $0.517$,
+Glass from $0.918$ to $0.564$ and Audiology from $0.976$ to $0.659$. This confirms the central thesis of the paper:
 cross-kernel \emph{consistency} alone does not deliver the intra-class
 \emph{compactness} that one-class detection requires, and the scatter penalty is
 what supplies it.
 
 \paragraph{Dual-signal fusion is what makes the detector robust.}
 The two single-signal variants each excel on one regime but \emph{collapse} on
-the other. The angular detector (\emph{dir.\ only}) matches the full model on
-angularly separable data (Cardio $0.967$, Ionosphere $1.000$, Sonar $0.978$) yet
-falls to $0.586$ on WBC, where normal and malignant cells are nearly
-indistinguishable in angle; conversely the radial detector (\emph{mag.\ only})
-handles WBC ($0.998$) but drops to $0.763$ on Autos. The fused detector never
-collapses and attains the highest mean ($0.951$) \emph{without} any prior
-knowledge of which signal is informative. The occasional cases where a single
-signal slightly exceeds the full model on its own favoured dataset (e.g.\
-\emph{dir.\ only} on Cardio) are precisely offset by its collapse elsewhere ---
-direct evidence that the fusion, not either signal alone, is the robust choice.
+the other. On angularly separable data the angular detector (\emph{dir.\ only})
+often edges the full model by a hair (Cardio $0.967$, Ionosphere $1.000$, Wine
+$0.988$, PageBlocks $0.988$), yet it falls to $0.586$ on WBC, where normal and
+malignant cells are nearly indistinguishable in angle; conversely the radial
+detector (\emph{mag.\ only}) handles WBC ($0.998$) but drops to $0.763$ on Autos
+and $0.678$ on Vertebral. The fused detector never collapses and attains the
+highest mean ($0.932$), $0.015$ above the better single signal, \emph{without} any
+prior knowledge of which signal is informative. The many small margins by which a
+single signal exceeds the full model on its favoured datasets are more than offset
+by its collapse on the other regime --- direct evidence that the fusion, not
+either signal alone, is the robust choice.
 
 \paragraph{Multi-kernel and contrastive terms.}
-Reducing the bank to a single kernel costs $-0.045$ on average but is strongly
-dataset-dependent: it removes $0.26$ AUC on Cardio, where multi-scale structure
-is essential, while leaving datasets with a single dominant scale almost
-unaffected. Removing the cross-kernel contrastive loss costs the least on
-average ($-0.017$); once the scatter penalty is present, the additional
+Reducing the bank to a single kernel costs $-0.060$ on average but is strongly
+dataset-dependent: it removes $0.26$ AUC on Cardio and $0.31$ on Thyroid, where
+multi-scale structure is essential, while leaving datasets with a single dominant
+scale almost unaffected. Removing the cross-kernel contrastive loss costs
+$-0.039$ on average---the least among the three component removals; once the
+scatter penalty is present, the additional
 consistency constraint contributes only modestly to accuracy, yet it remains
 important as the uniformity counterweight that prevents representational collapse
 (Section~\ref{subsec:joint}).
+
+\paragraph{The learnable projection head is essential.}
+Beyond the loss and fusion components above, we validate the multi-kernel projection
+head itself---the $K$ linear maps that lift the raw features into the per-kernel
+embedding spaces on which the entire method operates. On all twenty datasets, averaged
+over the three seeds $\{0,1,2\}$ and under the identical protocol as the main
+experiments, we compare the full model against two projection-free alternatives:
+\emph{Raw-MK}, which discards the learnable projection and instead feeds the multi-kernel
+similarity computed \emph{directly on the raw features} (the empirical Gaussian kernel
+maps $\phi_k(\xx)=[\exp(-\norm{\xx-\bm{r}}^2/2t_k^2)]_{\bm{r}}$, with the same bandwidths
+$t_k$) into the same dual-signal detector; and \emph{Direct-OCSVM}, a plain RBF one-class
+SVM on the raw features. Table~\ref{tab:projhead} shows that removing the learnable
+projection costs $0.267$ AUC for Raw-MK and $0.071$ for Direct-OCSVM, with the full model
+best on $14$ of the $20$ datasets. The collapse of Raw-MK is severe where the raw
+similarity is uninformative (Zoo $0.969\!\to\!0.145$, TicTacToe-69 $0.981\!\to\!0.189$,
+Autos $0.822\!\to\!0.329$), and raw multi-kernel similarity ($0.647$) is in fact
+\emph{worse} than an off-the-shelf OC-SVM ($0.843$): the multiple kernels become
+discriminative only after the learned projection reconciles them. This confirms that the
+performance stems from the learned representation, not merely from the kernel bank or the
+detection head.
+
+\begin{table}[t]
+\centering
+\caption{Ablation of the learnable projection head (test AUC, mean$_{\pm\text{std}}$ over
+seeds $0,1,2$ on the same 50/50 splits as the main experiments). \emph{Full} is the proposed
+model; \emph{Raw-MK} replaces the learnable projection with the multi-kernel similarity
+computed directly on the raw features (same bandwidths, same dual-signal OC-SVM head);
+\emph{Direct-OCSVM} is a plain RBF OC-SVM on the raw features. Best mean in each row is in
+\textbf{bold}.}
+\label{tab:projhead}
+\small
+\setlength{\tabcolsep}{6pt}
+\begin{tabular}{lccc}
+\toprule
+Dataset & Full & Raw-MK & Direct-OCSVM\\
+\midrule
+Vertebral     & $\mathbf{0.735}_{\pm0.092}$ & $0.412_{\pm0.011}$ & $0.548_{\pm0.078}$ \\
+Thyroid       & $\mathbf{0.981}_{\pm0.003}$ & $0.920_{\pm0.006}$ & $0.958_{\pm0.002}$ \\
+WBC           & $0.992_{\pm0.007}$ & $\mathbf{0.997}_{\pm0.001}$ & $0.995_{\pm0.004}$ \\
+Glass         & $\mathbf{0.853}_{\pm0.058}$ & $0.821_{\pm0.048}$ & $0.444_{\pm0.063}$ \\
+Ecoli         & $\mathbf{0.931}_{\pm0.010}$ & $0.825_{\pm0.034}$ & $0.880_{\pm0.014}$ \\
+PageBlocks    & $\mathbf{0.976}_{\pm0.004}$ & $0.958_{\pm0.003}$ & $0.964_{\pm0.002}$ \\
+Wine          & $\mathbf{0.920}_{\pm0.037}$ & $0.558_{\pm0.088}$ & $0.855_{\pm0.023}$ \\
+Cardio        & $\mathbf{0.969}_{\pm0.002}$ & $0.884_{\pm0.010}$ & $0.959_{\pm0.003}$ \\
+Cardiotoco.   & $\mathbf{0.914}_{\pm0.008}$ & $0.871_{\pm0.008}$ & $0.898_{\pm0.008}$ \\
+TicTacToe-12  & $0.990_{\pm0.003}$ & $0.418_{\pm0.117}$ & $\mathbf{0.999}_{\pm0.001}$ \\
+TicTacToe-69  & $0.981_{\pm0.018}$ & $0.189_{\pm0.036}$ & $\mathbf{0.992}_{\pm0.003}$ \\
+WPBC          & $\mathbf{0.653}_{\pm0.090}$ & $0.389_{\pm0.050}$ & $0.496_{\pm0.026}$ \\
+Ionosphere    & $\mathbf{1.000}_{\pm0.000}$ & $0.945_{\pm0.021}$ & $\mathbf{1.000}_{\pm0.000}$ \\
+Zoo           & $\mathbf{0.969}_{\pm0.020}$ & $0.145_{\pm0.026}$ & $0.800_{\pm0.063}$ \\
+Sick-72       & $0.828_{\pm0.016}$ & $0.769_{\pm0.053}$ & $\mathbf{0.847}_{\pm0.012}$ \\
+Autos         & $\mathbf{0.822}_{\pm0.019}$ & $0.329_{\pm0.037}$ & $0.508_{\pm0.076}$ \\
+Annealing     & $\mathbf{0.877}_{\pm0.008}$ & $0.615_{\pm0.005}$ & $0.811_{\pm0.028}$ \\
+Lympho.       & $0.999_{\pm0.001}$ & $0.754_{\pm0.029}$ & $\mathbf{1.000}_{\pm0.000}$ \\
+Bands-6       & $0.914_{\pm0.044}$ & $0.514_{\pm0.023}$ & $\mathbf{0.950}_{\pm0.006}$ \\
+Audiology     & $\mathbf{0.982}_{\pm0.008}$ & $0.636_{\pm0.083}$ & $0.953_{\pm0.007}$ \\
+\midrule
+\textbf{Average} & $\mathbf{0.914}_{\pm0.022}$ & $0.647_{\pm0.034}$ & $0.843_{\pm0.021}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 %% ======================================================================
 \section{Conclusion and future work}
