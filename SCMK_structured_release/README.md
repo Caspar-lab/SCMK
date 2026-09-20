@@ -35,27 +35,12 @@ Mean AUC across datasets: 0.948848742176
 All manuscript rows match: True
 ```
 
-## 2. Verify archived checkpoint-associated outputs
+The `scores.csv` files stored beside the projection weights are retained as
+provenance records. Developers can audit their completeness with
+`python verify_checkpoint_outputs.py`; this optional check is not checkpoint
+inference.
 
-Each `checkpoints/<dataset>/seed<seed>/` directory contains:
-
-```text
-projection_heads.pt   learned PyTorch projection-head weights
-scores.csv            sample indices, labels, and anomaly scores
-scores.json           configuration, environment, and AUC metadata
-```
-
-Verify all checkpoint-associated results with:
-
-```powershell
-python evaluate_pretrained.py
-```
-
-The expected overall mean is `0.948848742176`. This command reads the archived
-`scores.csv` files associated with the released projection weights. It audits
-their reported outputs but does not regenerate anomaly scores from the weights.
-
-## 3. End-to-end inference from pretrained checkpoints
+## 2. End-to-end inference from pretrained checkpoints
 
 Glass, Ecoli, and WBC include compact, complete inference checkpoints that do
 not contain final per-sample anomaly scores. For example:
@@ -75,7 +60,7 @@ datasets by three seeds) reproduce their expected AUC exactly.
 The complete example files and further instructions are under
 `examples/pretrained_pipeline/`.
 
-## 4. Run SCMK from scratch
+## 3. Run SCMK from scratch
 
 Run one dataset and split:
 
@@ -94,7 +79,7 @@ New scores are written to `outputs/<dataset>/seed<seed>/`. Existing results are
 skipped unless `--force` is supplied. Use `--device cpu`, `--device cuda`, or
 `--device cuda:0` to override automatic device selection.
 
-## 5. Regenerate the released checkpoints
+## 4. Regenerate the released checkpoints
 
 Retrain every final dataset-specific configuration and export new projection
 weights and paired scores with:
@@ -131,7 +116,7 @@ SCMK_structured_release/
 |-- main.py                   single-run entry point
 |-- run_experiments.py        multi-run training entry point
 |-- export_checkpoints.py     checkpoint regeneration
-|-- evaluate_pretrained.py    checkpoint-result AUC verification
+|-- verify_checkpoint_outputs.py optional archived-output integrity check
 |-- evaluate_full_checkpoint.py end-to-end checkpoint inference
 |-- export_full_examples.py   regenerate compact inference examples
 |-- verify_auc.py             exact manuscript AUC verification

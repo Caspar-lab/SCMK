@@ -1,4 +1,4 @@
-"""Reproduce AUC values from exported checkpoint score files without training."""
+"""Check the archived score outputs paired with projection checkpoints."""
 import argparse
 from pathlib import Path
 
