@@ -1,0 +1,39 @@
+{
+  "dataset": "audiology_variant1",
+  "seed": 1,
+  "config": {
+    "mode": "legacy",
+    "table_mean": 0.983,
+    "table_std": 0.007,
+    "seeds": {
+      "0": {
+        "dim": 32,
+        "lambda": 1000.0,
+        "tau": 1.0
+      },
+      "1": {
+        "dim": 32,
+        "lambda": 1000.0,
+        "tau": 1.0
+      },
+      "2": {
+        "dim": 32,
+        "lambda": 1000.0,
+        "tau": 1.0
+      }
+    }
+  },
+  "auc": 0.9793601651186792,
+  "reference_auc": 0.9793601651186792,
+  "auc_difference": 0.0,
+  "environment": {
+    "python": "3.11.15",
+    "numpy": "2.4.6",
+    "pandas": "3.0.3",
+    "scipy": "1.17.1",
+    "sklearn": "1.8.0",
+    "torch": "2.11.0+cu128",
+    "cuda": "12.8",
+    "gpu": "NVIDIA GeForce RTX 5060"
+  }
+}

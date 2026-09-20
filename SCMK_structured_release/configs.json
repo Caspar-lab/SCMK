@@ -1,0 +1,442 @@
+{
+  "mammography": {
+    "mode": "legacy",
+    "table_mean": 0.86,
+    "table_std": 0.003,
+    "seeds": {
+      "0": {
+        "dim": 32,
+        "lambda": 1.0,
+        "tau": 0.1
+      },
+      "1": {
+        "dim": 32,
+        "lambda": 1.0,
+        "tau": 0.1
+      },
+      "2": {
+        "dim": 32,
+        "lambda": 1.0,
+        "tau": 0.1
+      }
+    }
+  },
+  "thyroid": {
+    "mode": "legacy",
+    "table_mean": 0.992,
+    "table_std": 0.001,
+    "seeds": {
+      "0": {
+        "dim": 64,
+        "lambda": 1.0,
+        "tau": 0.2
+      },
+      "1": {
+        "dim": 64,
+        "lambda": 1.0,
+        "tau": 0.2
+      },
+      "2": {
+        "dim": 64,
+        "lambda": 1.0,
+        "tau": 0.2
+      }
+    }
+  },
+  "wbc_malignant_39_variant1": {
+    "mode": "legacy",
+    "table_mean": 0.989,
+    "table_std": 0.004,
+    "seeds": {
+      "0": {
+        "dim": 16,
+        "lambda": 1.0,
+        "tau": 0.1
+      },
+      "1": {
+        "dim": 16,
+        "lambda": 1.0,
+        "tau": 0.1
+      },
+      "2": {
+        "dim": 16,
+        "lambda": 1.0,
+        "tau": 0.1
+      }
+    }
+  },
+  "glass": {
+    "mode": "legacy",
+    "table_mean": 0.909,
+    "table_std": 0.005,
+    "seeds": {
+      "0": {
+        "dim": 64,
+        "lambda": 0.0,
+        "tau": 0.2
+      },
+      "1": {
+        "dim": 64,
+        "lambda": 0.0,
+        "tau": 0.2
+      },
+      "2": {
+        "dim": 64,
+        "lambda": 0.0,
+        "tau": 0.2
+      }
+    }
+  },
+  "ecoli": {
+    "mode": "legacy",
+    "table_mean": 0.917,
+    "table_std": 0.006,
+    "seeds": {
+      "0": {
+        "dim": 64,
+        "lambda": 1.0,
+        "tau": 0.5
+      },
+      "1": {
+        "dim": 64,
+        "lambda": 1.0,
+        "tau": 0.5
+      },
+      "2": {
+        "dim": 64,
+        "lambda": 1.0,
+        "tau": 0.5
+      }
+    }
+  },
+  "pageblocks_1_258_variant1": {
+    "mode": "legacy",
+    "table_mean": 0.996,
+    "table_std": 0.001,
+    "seeds": {
+      "0": {
+        "dim": 128,
+        "lambda": 1.0,
+        "tau": 0.05
+      },
+      "1": {
+        "dim": 128,
+        "lambda": 1.0,
+        "tau": 0.05
+      },
+      "2": {
+        "dim": 128,
+        "lambda": 1.0,
+        "tau": 0.05
+      }
+    }
+  },
+  "shuttle": {
+    "mode": "bounded",
+    "table_mean": 0.995,
+    "table_std": 0.0,
+    "seeds": {
+      "0": {
+        "dim": 16,
+        "lambda": 0.001,
+        "tau": 0.2
+      },
+      "1": {
+        "dim": 16,
+        "lambda": 0.001,
+        "tau": 0.2
+      },
+      "2": {
+        "dim": 16,
+        "lambda": 0.1,
+        "tau": 0.2
+      }
+    }
+  },
+  "cardio": {
+    "mode": "legacy",
+    "table_mean": 0.971,
+    "table_std": 0.005,
+    "seeds": {
+      "0": {
+        "dim": 16,
+        "lambda": 10.0,
+        "tau": 0.2
+      },
+      "1": {
+        "dim": 16,
+        "lambda": 10.0,
+        "tau": 0.2
+      },
+      "2": {
+        "dim": 16,
+        "lambda": 10.0,
+        "tau": 0.2
+      }
+    }
+  },
+  "cardiotocography_2and3_33_variant1": {
+    "mode": "legacy",
+    "table_mean": 0.918,
+    "table_std": 0.01,
+    "seeds": {
+      "0": {
+        "dim": 64,
+        "lambda": 1.0,
+        "tau": 0.3
+      },
+      "1": {
+        "dim": 64,
+        "lambda": 1.0,
+        "tau": 0.3
+      },
+      "2": {
+        "dim": 64,
+        "lambda": 1.0,
+        "tau": 0.3
+      }
+    }
+  },
+  "smtp": {
+    "mode": "bounded",
+    "table_mean": 0.959,
+    "table_std": 0.006,
+    "seeds": {
+      "0": {
+        "dim": 128,
+        "lambda": 10.0,
+        "tau": 0.3
+      },
+      "1": {
+        "dim": 128,
+        "lambda": 10.0,
+        "tau": 0.3
+      },
+      "2": {
+        "dim": 128,
+        "lambda": 10.0,
+        "tau": 0.3
+      }
+    }
+  },
+  "tic_tac_toe_negative_69_variant1": {
+    "mode": "legacy",
+    "table_mean": 0.986,
+    "table_std": 0.008,
+    "seeds": {
+      "0": {
+        "dim": 256,
+        "lambda": 1000.0,
+        "tau": 1.0
+      },
+      "1": {
+        "dim": 256,
+        "lambda": 1000.0,
+        "tau": 1.0
+      },
+      "2": {
+        "dim": 256,
+        "lambda": 1000.0,
+        "tau": 1.0
+      }
+    }
+  },
+  "nursery_variant1": {
+    "mode": "split",
+    "table_mean": 0.985,
+    "table_std": 0.002,
+    "seeds": {
+      "0": {
+        "dim": 32,
+        "lambda": 1.0,
+        "tau": 0.2
+      },
+      "1": {
+        "dim": 32,
+        "lambda": 1.0,
+        "tau": 0.2
+      },
+      "2": {
+        "dim": 32,
+        "lambda": 1.0,
+        "tau": 0.2
+      }
+    }
+  },
+  "ionosphere_b_24_variant1": {
+    "mode": "legacy",
+    "table_mean": 1.0,
+    "table_std": 0.0,
+    "seeds": {
+      "0": {
+        "dim": 16,
+        "lambda": 100.0,
+        "tau": 0.2
+      },
+      "1": {
+        "dim": 16,
+        "lambda": 100.0,
+        "tau": 0.2
+      },
+      "2": {
+        "dim": 16,
+        "lambda": 100.0,
+        "tau": 0.2
+      }
+    }
+  },
+  "zoo_variant1": {
+    "mode": "legacy",
+    "table_mean": 0.963,
+    "table_std": 0.024,
+    "seeds": {
+      "0": {
+        "dim": 256,
+        "lambda": 100.0,
+        "tau": 0.2
+      },
+      "1": {
+        "dim": 256,
+        "lambda": 100.0,
+        "tau": 0.2
+      },
+      "2": {
+        "dim": 256,
+        "lambda": 100.0,
+        "tau": 0.2
+      }
+    }
+  },
+  "sick_sick_72_variant1": {
+    "mode": "legacy",
+    "table_mean": 0.901,
+    "table_std": 0.005,
+    "seeds": {
+      "0": {
+        "dim": 128,
+        "lambda": 1.0,
+        "tau": 0.1
+      },
+      "1": {
+        "dim": 128,
+        "lambda": 1.0,
+        "tau": 0.1
+      },
+      "2": {
+        "dim": 128,
+        "lambda": 1.0,
+        "tau": 0.1
+      }
+    }
+  },
+  "autos_variant1": {
+    "mode": "legacy",
+    "table_mean": 0.804,
+    "table_std": 0.009,
+    "seeds": {
+      "0": {
+        "dim": 16,
+        "lambda": 100.0,
+        "tau": 0.3
+      },
+      "1": {
+        "dim": 16,
+        "lambda": 100.0,
+        "tau": 0.3
+      },
+      "2": {
+        "dim": 16,
+        "lambda": 100.0,
+        "tau": 0.3
+      }
+    }
+  },
+  "annealing_variant1": {
+    "mode": "legacy",
+    "table_mean": 0.91,
+    "table_std": 0.01,
+    "seeds": {
+      "0": {
+        "dim": 256,
+        "lambda": 1000.0,
+        "tau": 1.0
+      },
+      "1": {
+        "dim": 256,
+        "lambda": 1000.0,
+        "tau": 1.0
+      },
+      "2": {
+        "dim": 256,
+        "lambda": 1000.0,
+        "tau": 1.0
+      }
+    }
+  },
+  "lymphography": {
+    "mode": "legacy",
+    "table_mean": 1.0,
+    "table_std": 0.0,
+    "seeds": {
+      "0": {
+        "dim": 256,
+        "lambda": 100.0,
+        "tau": 0.1
+      },
+      "1": {
+        "dim": 256,
+        "lambda": 100.0,
+        "tau": 0.1
+      },
+      "2": {
+        "dim": 256,
+        "lambda": 100.0,
+        "tau": 0.1
+      }
+    }
+  },
+  "bands_band_6_variant1": {
+    "mode": "legacy",
+    "table_mean": 0.937,
+    "table_std": 0.022,
+    "seeds": {
+      "0": {
+        "dim": 128,
+        "lambda": 100.0,
+        "tau": 0.3
+      },
+      "1": {
+        "dim": 128,
+        "lambda": 100.0,
+        "tau": 0.3
+      },
+      "2": {
+        "dim": 128,
+        "lambda": 100.0,
+        "tau": 0.3
+      }
+    }
+  },
+  "audiology_variant1": {
+    "mode": "legacy",
+    "table_mean": 0.983,
+    "table_std": 0.007,
+    "seeds": {
+      "0": {
+        "dim": 32,
+        "lambda": 1000.0,
+        "tau": 1.0
+      },
+      "1": {
+        "dim": 32,
+        "lambda": 1000.0,
+        "tau": 1.0
+      },
+      "2": {
+        "dim": 32,
+        "lambda": 1000.0,
+        "tau": 1.0
+      }
+    }
+  }
+}

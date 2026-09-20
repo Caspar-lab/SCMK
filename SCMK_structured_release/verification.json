@@ -1,0 +1,488 @@
+{
+  "all_20_match": true,
+  "mean_auc": 0.9488487421763573,
+  "mean_dataset_std": 0.006384367303000254,
+  "average_row_match": true,
+  "records": [
+    {
+      "dataset": "mammography",
+      "auc_per_seed": [
+        0.8570933049737298,
+        0.8619001169129351,
+        0.8609292465454341
+      ],
+      "mean": 0.8599742228106996,
+      "std": 0.0025417342514809094,
+      "table_mean": 0.86,
+      "table_std": 0.003,
+      "table_match": true,
+      "auc_deltas": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_score_differences": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "errors": []
+    },
+    {
+      "dataset": "thyroid",
+      "auc_per_seed": [
+        0.9927906120086303,
+        0.9914984183783847,
+        0.9908610921082637
+      ],
+      "mean": 0.9917167074984263,
+      "std": 0.0009831069964271757,
+      "table_mean": 0.992,
+      "table_std": 0.001,
+      "table_match": true,
+      "auc_deltas": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_score_differences": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "errors": []
+    },
+    {
+      "dataset": "wbc_malignant_39_variant1",
+      "auc_per_seed": [
+        0.9893739893739893,
+        0.9851004851004852,
+        0.993993993993994
+      ],
+      "mean": 0.9894894894894896,
+      "std": 0.00444787930560627,
+      "table_mean": 0.989,
+      "table_std": 0.004,
+      "table_match": true,
+      "auc_deltas": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_score_differences": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "errors": []
+    },
+    {
+      "dataset": "glass",
+      "auc_per_seed": [
+        0.9083063646170442,
+        0.9147788565264293,
+        0.9050701186623517
+      ],
+      "mean": 0.9093851132686085,
+      "std": 0.004943447351624425,
+      "table_mean": 0.909,
+      "table_std": 0.005,
+      "table_match": true,
+      "auc_deltas": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_score_differences": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "errors": []
+    },
+    {
+      "dataset": "ecoli",
+      "auc_per_seed": [
+        0.9107021131561008,
+        0.9236537150647579,
+        0.9168370824812543
+      ],
+      "mean": 0.917064303567371,
+      "std": 0.006478790015625174,
+      "table_mean": 0.917,
+      "table_std": 0.006,
+      "table_match": true,
+      "auc_deltas": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_score_differences": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "errors": []
+    },
+    {
+      "dataset": "pageblocks_1_258_variant1",
+      "auc_per_seed": [
+        0.9959520812233991,
+        0.996180821762217,
+        0.9944045331642231
+      ],
+      "mean": 0.9955124787166131,
+      "std": 0.0009663012308903687,
+      "table_mean": 0.996,
+      "table_std": 0.001,
+      "table_match": true,
+      "auc_deltas": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_score_differences": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "errors": []
+    },
+    {
+      "dataset": "shuttle",
+      "auc_per_seed": [
+        0.9945673432569723,
+        0.9945276437699678,
+        0.9949555535065051
+      ],
+      "mean": 0.9946835135111485,
+      "std": 0.00023642828008163804,
+      "table_mean": 0.995,
+      "table_std": 0.0,
+      "table_match": true,
+      "auc_deltas": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_score_differences": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "errors": []
+    },
+    {
+      "dataset": "cardio",
+      "auc_per_seed": [
+        0.9769085962405188,
+        0.9710344069473452,
+        0.9664381114653182
+      ],
+      "mean": 0.9714603715510609,
+      "std": 0.005248223245979628,
+      "table_mean": 0.971,
+      "table_std": 0.005,
+      "table_match": true,
+      "auc_deltas": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_score_differences": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "errors": []
+    },
+    {
+      "dataset": "cardiotocography_2and3_33_variant1",
+      "auc_per_seed": [
+        0.9084679931112821,
+        0.919130848997838,
+        0.9277051042468213
+      ],
+      "mean": 0.9184346487853139,
+      "std": 0.009637433904427584,
+      "table_mean": 0.918,
+      "table_std": 0.01,
+      "table_match": true,
+      "auc_deltas": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_score_differences": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "errors": []
+    },
+    {
+      "dataset": "smtp",
+      "auc_per_seed": [
+        0.9528274779415371,
+        0.9657633034081112,
+        0.9585034585707377
+      ],
+      "mean": 0.9590314133067954,
+      "std": 0.006484053306220669,
+      "table_mean": 0.959,
+      "table_std": 0.006,
+      "table_match": true,
+      "auc_deltas": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_score_differences": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "errors": []
+    },
+    {
+      "dataset": "tic_tac_toe_negative_69_variant1",
+      "auc_per_seed": [
+        0.979765708200213,
+        0.9946288836412465,
+        0.9833310181969719
+      ],
+      "mean": 0.9859085366794771,
+      "std": 0.007759587437066289,
+      "table_mean": 0.986,
+      "table_std": 0.008,
+      "table_match": true,
+      "auc_deltas": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_score_differences": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "errors": []
+    },
+    {
+      "dataset": "nursery_variant1",
+      "auc_per_seed": [
+        0.9878567144125339,
+        0.9840096931308333,
+        0.9844468437342546
+      ],
+      "mean": 0.9854377504258739,
+      "std": 0.002106256214017231,
+      "table_mean": 0.985,
+      "table_std": 0.002,
+      "table_match": true,
+      "auc_deltas": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_score_differences": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "errors": []
+    },
+    {
+      "dataset": "ionosphere_b_24_variant1",
+      "auc_per_seed": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "mean": 1.0,
+      "std": 0.0,
+      "table_mean": 1.0,
+      "table_std": 0.0,
+      "table_match": true,
+      "auc_deltas": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_score_differences": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "errors": []
+    },
+    {
+      "dataset": "zoo_variant1",
+      "auc_per_seed": [
+        0.9775910364145659,
+        0.9355742296918768,
+        0.9761904761904762
+      ],
+      "mean": 0.9631185807656396,
+      "std": 0.02386438453619433,
+      "table_mean": 0.963,
+      "table_std": 0.024,
+      "table_match": true,
+      "auc_deltas": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_score_differences": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "errors": []
+    },
+    {
+      "dataset": "sick_sick_72_variant1",
+      "auc_per_seed": [
+        0.9059068950373298,
+        0.9007309116004769,
+        0.8967705000313695
+      ],
+      "mean": 0.9011361022230586,
+      "std": 0.004581655051038357,
+      "table_mean": 0.901,
+      "table_std": 0.005,
+      "table_match": true,
+      "auc_deltas": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_score_differences": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "errors": []
+    },
+    {
+      "dataset": "autos_variant1",
+      "auc_per_seed": [
+        0.8048888888888889,
+        0.8115555555555556,
+        0.7946666666666666
+      ],
+      "mean": 0.8037037037037037,
+      "std": 0.008506593908121864,
+      "table_mean": 0.804,
+      "table_std": 0.009,
+      "table_match": true,
+      "auc_deltas": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_score_differences": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "errors": []
+    },
+    {
+      "dataset": "annealing_variant1",
+      "auc_per_seed": [
+        0.9206349206349206,
+        0.9098639455782312,
+        0.9008566389518771
+      ],
+      "mean": 0.9104518350550096,
+      "std": 0.009902237984977627,
+      "table_mean": 0.91,
+      "table_std": 0.01,
+      "table_match": true,
+      "auc_deltas": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_score_differences": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "errors": []
+    },
+    {
+      "dataset": "lymphography",
+      "auc_per_seed": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "mean": 1.0,
+      "std": 0.0,
+      "table_mean": 1.0,
+      "table_std": 0.0,
+      "table_match": true,
+      "auc_deltas": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_score_differences": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "errors": []
+    },
+    {
+      "dataset": "bands_band_6_variant1",
+      "auc_per_seed": [
+        0.9326923076923077,
+        0.9177350427350428,
+        0.9615384615384616
+      ],
+      "mean": 0.9373219373219374,
+      "std": 0.022265668137237283,
+      "table_mean": 0.937,
+      "table_std": 0.022,
+      "table_match": true,
+      "auc_deltas": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_score_differences": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "errors": []
+    },
+    {
+      "dataset": "audiology_variant1",
+      "auc_per_seed": [
+        0.9909184726522187,
+        0.9793601651186792,
+        0.9791537667698659
+      ],
+      "mean": 0.9831441348469213,
+      "std": 0.006733564902988296,
+      "table_mean": 0.983,
+      "table_std": 0.007,
+      "table_match": true,
+      "auc_deltas": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_score_differences": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "errors": []
+    }
+  ]
+}

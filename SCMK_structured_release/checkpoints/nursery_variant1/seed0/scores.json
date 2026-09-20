@@ -1,0 +1,39 @@
+{
+  "dataset": "nursery_variant1",
+  "seed": 0,
+  "config": {
+    "mode": "split",
+    "table_mean": 0.985,
+    "table_std": 0.002,
+    "seeds": {
+      "0": {
+        "dim": 32,
+        "lambda": 1.0,
+        "tau": 0.2
+      },
+      "1": {
+        "dim": 32,
+        "lambda": 1.0,
+        "tau": 0.2
+      },
+      "2": {
+        "dim": 32,
+        "lambda": 1.0,
+        "tau": 0.2
+      }
+    }
+  },
+  "auc": 0.9878567144125339,
+  "reference_auc": 0.9878567144125339,
+  "auc_difference": 0.0,
+  "environment": {
+    "python": "3.11.15",
+    "numpy": "2.4.6",
+    "pandas": "3.0.3",
+    "scipy": "1.17.1",
+    "sklearn": "1.8.0",
+    "torch": "2.11.0+cu128",
+    "cuda": "12.8",
+    "gpu": "NVIDIA GeForce RTX 5060"
+  }
+}

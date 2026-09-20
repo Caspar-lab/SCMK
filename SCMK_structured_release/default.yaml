@@ -1,0 +1,30 @@
+{
+  "runtime": {
+    "device": "auto",
+    "split_seeds": [0, 1, 2],
+    "network_seed": 42
+  },
+  "training": {
+    "epochs": 100,
+    "batch_size": 512,
+    "learning_rate": 0.01
+  },
+  "kernel": {
+    "ratios": [0.1, 0.5, 1, 2, 5]
+  },
+  "detector": {
+    "nu_candidates": [0.01, 0.05, 0.1, 0.2],
+    "fusion": "sample-wise-maximum"
+  },
+  "bounded": {
+    "max_train": 8000,
+    "train_batch_size": 256,
+    "bandwidth_sample": 4096,
+    "score_block_size": 1024
+  },
+  "paths": {
+    "output_dir": "outputs",
+    "experiment_configs": "configs.json",
+    "reference_scores": "reference_scores"
+  }
+}
