@@ -1,0 +1,27 @@
+{
+  "format_version": 1,
+  "alias": "glass",
+  "dataset": "glass",
+  "seed": 2,
+  "nu_directional": 0.05,
+  "nu_magnitude": 0.01,
+  "auc_directional": 0.9061488673139159,
+  "auc_magnitude": 0.6774541531823085,
+  "expected_auc": 0.9050701186623517,
+  "kernel_ratios": [
+    0.1,
+    0.5,
+    1.0,
+    2.0,
+    5.0
+  ],
+  "projection_config": {
+    "input_dim": 9,
+    "latent_dim": 64,
+    "num_heads": 5,
+    "normalize": true,
+    "lambda_scatter": 0.0,
+    "tau": 0.2
+  },
+  "note": "No final per-sample anomaly scores are stored in this example."
+}

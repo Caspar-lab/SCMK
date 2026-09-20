@@ -35,7 +35,7 @@ Mean AUC across datasets: 0.948848742176
 All manuscript rows match: True
 ```
 
-## 2. Verify the released checkpoint runs without training
+## 2. Verify archived checkpoint-associated outputs
 
 Each `checkpoints/<dataset>/seed<seed>/` directory contains:
 
@@ -51,11 +51,31 @@ Verify all checkpoint-associated results with:
 python evaluate_pretrained.py
 ```
 
-The expected overall mean is `0.948848742176`. The paired score files make the
-reported AUC directly auditable without retraining or storing prohibitively
-large full Gram matrices.
+The expected overall mean is `0.948848742176`. This command reads the archived
+`scores.csv` files associated with the released projection weights. It audits
+their reported outputs but does not regenerate anomaly scores from the weights.
 
-## 3. Run SCMK from scratch
+## 3. End-to-end inference from pretrained checkpoints
+
+Glass, Ecoli, and WBC include compact, complete inference checkpoints that do
+not contain final per-sample anomaly scores. For example:
+
+```powershell
+python evaluate_full_checkpoint.py --dataset glass --seed 0
+python evaluate_full_checkpoint.py --dataset ecoli --seed 1
+python evaluate_full_checkpoint.py --dataset wbc --seed 2
+```
+
+These commands load the projection heads, fitted directional and magnitude
+OC-SVMs, kernel bandwidths, directional training embeddings, and split indices.
+They then regenerate both anomaly signals and their fused AUC without fitting
+either the representation model or the detectors. All nine example runs (three
+datasets by three seeds) reproduce their expected AUC exactly.
+
+The complete example files and further instructions are under
+`examples/pretrained_pipeline/`.
+
+## 4. Run SCMK from scratch
 
 Run one dataset and split:
 
@@ -74,7 +94,7 @@ New scores are written to `outputs/<dataset>/seed<seed>/`. Existing results are
 skipped unless `--force` is supplied. Use `--device cpu`, `--device cuda`, or
 `--device cuda:0` to override automatic device selection.
 
-## 4. Regenerate the released checkpoints
+## 5. Regenerate the released checkpoints
 
 Retrain every final dataset-specific configuration and export new projection
 weights and paired scores with:
@@ -104,6 +124,7 @@ SCMK_structured_release/
 |-- model/                    SCMK and bounded-memory implementations
 |-- utils/                    configuration, data, evaluation, and run helpers
 |-- checkpoints/              60 pretrained runs and paired scores
+|-- examples/                 complete no-training inference examples
 |-- reference_scores/         exact manuscript per-sample scores
 |-- configs.json              final dataset- and seed-specific settings
 |-- default.yaml              shared training and detector settings
@@ -111,6 +132,8 @@ SCMK_structured_release/
 |-- run_experiments.py        multi-run training entry point
 |-- export_checkpoints.py     checkpoint regeneration
 |-- evaluate_pretrained.py    checkpoint-result AUC verification
+|-- evaluate_full_checkpoint.py end-to-end checkpoint inference
+|-- export_full_examples.py   regenerate compact inference examples
 |-- verify_auc.py             exact manuscript AUC verification
 `-- requirements.txt
 ```

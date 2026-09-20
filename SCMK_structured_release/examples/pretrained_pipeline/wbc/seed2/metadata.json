@@ -1,0 +1,27 @@
+{
+  "format_version": 1,
+  "alias": "wbc",
+  "dataset": "wbc_malignant_39_variant1",
+  "seed": 2,
+  "nu_directional": 0.2,
+  "nu_magnitude": 0.2,
+  "auc_directional": 0.42700392700392703,
+  "auc_magnitude": 0.9982674982674983,
+  "expected_auc": 0.993993993993994,
+  "kernel_ratios": [
+    0.1,
+    0.5,
+    1.0,
+    2.0,
+    5.0
+  ],
+  "projection_config": {
+    "input_dim": 9,
+    "latent_dim": 16,
+    "num_heads": 5,
+    "normalize": true,
+    "lambda_scatter": 1.0,
+    "tau": 0.1
+  },
+  "note": "No final per-sample anomaly scores are stored in this example."
+}

@@ -1,0 +1,27 @@
+{
+  "format_version": 1,
+  "alias": "ecoli",
+  "dataset": "ecoli",
+  "seed": 2,
+  "nu_directional": 0.01,
+  "nu_magnitude": 0.01,
+  "auc_directional": 0.880027266530334,
+  "auc_magnitude": 0.9188820722563055,
+  "expected_auc": 0.9168370824812543,
+  "kernel_ratios": [
+    0.1,
+    0.5,
+    1.0,
+    2.0,
+    5.0
+  ],
+  "projection_config": {
+    "input_dim": 9,
+    "latent_dim": 64,
+    "num_heads": 5,
+    "normalize": true,
+    "lambda_scatter": 1.0,
+    "tau": 0.5
+  },
+  "note": "No final per-sample anomaly scores are stored in this example."
+}
