@@ -1,8 +1,10 @@
 # SCMK reproducibility package
 
-This directory contains the code, datasets, pretrained projection heads, and
-per-sample anomaly scores used to reproduce the SCMK results reported in the
-manuscript. It is self-contained and does not depend on other repository files.
+This directory contains the SCMK code, three compact example datasets,
+pretrained projection heads, and per-sample anomaly scores used to reproduce
+the results reported in the manuscript. Glass, Ecoli, and WBC are included for
+end-to-end execution. The archived outputs for all 20 datasets remain available
+for exact numerical verification.
 
 ## Quick start
 
@@ -62,30 +64,33 @@ The complete example files and further instructions are under
 
 ## 3. Run SCMK from scratch
 
-Run one dataset and split:
+Run one bundled dataset and split:
 
 ```powershell
-python main.py --dataset thyroid --seed 0
+python main.py --dataset glass --seed 0
 ```
 
-Run selected datasets or the complete benchmark:
+Run all three bundled examples:
 
 ```powershell
-python run_experiments.py --datasets glass lymphography --seeds 0 1 2
-python run_experiments.py
+python run_experiments.py --datasets glass ecoli wbc_malignant_39_variant1 --seeds 0 1 2
 ```
 
 New scores are written to `outputs/<dataset>/seed<seed>/`. Existing results are
 skipped unless `--force` is supplied. Use `--device cpu`, `--device cuda`, or
 `--device cuda:0` to override automatic device selection.
 
+The configuration file and archived scores cover all 20 manuscript datasets,
+but the remaining raw datasets are not redistributed in this branch. To retrain
+the complete benchmark, obtain those datasets from their original sources and
+place them in the paths described by `data/raw/` and `data/splits/`.
+
 ## 4. Regenerate the released checkpoints
 
-Retrain every final dataset-specific configuration and export new projection
-weights and paired scores with:
+Regenerate the checkpoints for the three bundled datasets with:
 
 ```powershell
-python export_checkpoints.py
+python export_checkpoints.py --datasets glass ecoli wbc_malignant_39_variant1
 ```
 
 The export is resumable. To regenerate selected runs:
@@ -99,13 +104,16 @@ versions. Therefore, `reference_scores/` remains authoritative for the exact
 manuscript values, whereas `checkpoints/` records the released trained weights
 and their paired outputs.
 
+Running `python export_checkpoints.py` without `--datasets` requests all 20
+datasets and therefore requires the additional raw datasets and fixed split
+files to be supplied first.
+
 ## Repository layout
 
 ```text
 SCMK_structured_release/
 |-- data/
-|   |-- raw/                  17 datasets split at runtime
-|   `-- splits/               fixed splits for Nursery, Shuttle, and SMTP
+|   `-- raw/                  Glass, Ecoli, and WBC example datasets
 |-- model/                    SCMK and bounded-memory implementations
 |-- utils/                    configuration, data, evaluation, and run helpers
 |-- checkpoints/              60 pretrained runs and paired scores
@@ -127,9 +135,10 @@ SCMK_structured_release/
 
 - Seeds 0, 1, and 2 determine the normal train/test split. Network
   initialization remains fixed at seed 42.
-- For the 17 ordinary datasets, half of the normal samples are used for
-  training; the remaining normal samples and all anomalies form the test set.
-- Nursery, Shuttle, and SMTP use the included fixed split files.
+- For the bundled datasets, half of the normal samples are used for training;
+  the remaining normal samples and all anomalies form the test set.
+- In the full manuscript benchmark, Nursery, Shuttle, and SMTP use fixed split
+  files. Those large-dataset files are not redistributed in this branch.
 - Shuttle and SMTP use the bounded-memory implementation with at most 8,000
   normal training samples, training batch size 256, bandwidth sample size
   4,096, and scoring block size 1,024.
